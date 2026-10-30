@@ -694,7 +694,7 @@ def('who','02 Who is this for',{step:0,notes:[N('Branching','“My patient” re
 
 def('referral','02b Refer a patient (redirect)',{step:0,notes:[N('Redirect','Leaves this flow for the existing refer-a-patient booking form.')],render(){
  return `<div class="col">${Back()}${Header('Referring a patient?','Providers book through our referral form so we can coordinate care with you.')}
- ${Banner('Redirect','<p class="small">In production this opens the refer-a-patient booking form.</p>')}<div class="btn-row">${Btn('Go to the referral form','data-do="stub:Referral form"','btn--primary')}${Btn('Book for someone else','data-go="who"')}</div>${Help()}</div>`}});
+ <div class="btn-row">${Btn('Go to the referral form','data-do="stub:Referral form"','btn--primary')}${Btn('Book for someone else','data-go="who"')}</div>${Help()}</div>`}});
 
 def('details','03 Your details',{step:0,notes:[
  N('Variants','Self: your name, DOB, sex assigned at birth (with “Why do we need this?”), pronouns (optional), email, phone, zip. Child: “Your details” (parent/guardian name, email, phone, zip) followed by “Your child’s details” (name, DOB, sex assigned at birth, pronouns).'),
