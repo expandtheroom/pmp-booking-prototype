@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PMP Booking Flow Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
+<!--
+  FIGMA TRANSLATION NOTES
+  - Frames: desktop = 1440 wide, mobile = 402 wide (same as the Wireframes | PMP file). Every screen has data-screen="<Figma frame name>".
+  - Layout is flex only (= Figma auto-layout). Spacing scale: 4 / 8 / 16 / 24 / 32 / 48. No shadows, gradients or grid.
+  - Components carry data-component="<Figma component name>": Navbar, Footer, Button, Radio, Checkbox, Option Card, Input, Select,
+    Pill, Calendar, Confirm Card, Banner, Provider Card, Stepper, Annotation.
+  - Tokens are CSS variables on :root (names mirror what should become Figma variables).
+  - The dark toolbar and the "Prototype start" screen are scaffolding, not part of the wireframes.
+-->
+<style>
+:root{
+  --bg:#f2f5f7; --panel:#c2d1d9; --ink:#505d68; --ink-strong:#111216; --white:#fff;
+  --line:#c2d1d9;            /* decorative borders (matches wireframes) */
+  --line-ui:#7a8894;         /* interactive control borders: darker than wireframes to reach 3:1 (WCAG 1.4.11) */
+  --annotation:#0096fa; --canvas:#1e1e1e;
+  --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:32px; --s6:48px;
+  --font:'DM Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--canvas);font-family:var(--font);color:var(--ink)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--annotation);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- prototype scaffolding (not wireframe) ---------- */
+#toolbar{position:fixed;inset:0 0 auto 0;height:56px;background:#111216;color:#fff;display:flex;align-items:center;gap:var(--s3);padding:0 var(--s3);z-index:50;font-size:13px;overflow-x:auto;white-space:nowrap}
+#toolbar label{display:flex;align-items:center;gap:6px}
+#toolbar select,#toolbar button{background:#2a2c33;color:#fff;border:1px solid #444;border-radius:4px;padding:6px 10px;font-size:13px;cursor:pointer}
+#toolbar .screen-name{margin-left:auto;opacity:.75}
+#stage{padding:80px var(--s4) var(--s6);display:flex;gap:var(--s4);justify-content:center;align-items:flex-start}
+#frame-wrap{flex:none}
+#notes{width:320px;flex:none;display:flex;flex-direction:column;gap:var(--s3)}
+#notes.hidden{display:none}
+
+/* ---------- frame ---------- */
+.frame{width:1440px;background:var(--bg);min-height:900px;display:flex;flex-direction:column;font-size:16px;line-height:24px}
+.frame.is-mobile{width:402px;min-height:800px}
+h1,h2,h3,p{margin:0;font-weight:400}
+h1{font-size:32px;line-height:40px}
+h2{font-size:24px;line-height:32px}
+h3{font-size:20px;line-height:28px}
+.is-mobile h1{font-size:24px;line-height:32px}
+.is-mobile h2{font-size:20px;line-height:28px}
+.small{font-size:14px;line-height:20px}
+.strong{font-weight:700}
+a{color:var(--ink);text-decoration:underline;cursor:pointer;background:none;border:0;padding:0}
+button.link{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;font-size:inherit}
+
+/* Navbar: mirrors Components > Navbar (36:2545) and Navigation - Mobile (992:17967). Do not restyle. */
+.navbar a,.footer a{text-decoration:none}
+.navbar__top{background:var(--panel);height:37px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;font-size:14px;line-height:20px}
+.footer__col .links a{display:inline-flex;gap:4px;align-items:center}
+.navbar__top nav{display:flex;gap:24px;align-items:center}
+.navbar__main{background:var(--bg);display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:79px}
+.navbar__logo{font-size:24px;line-height:31px;font-weight:700}
+.navbar__links{display:flex;gap:32px;align-items:center}
+.navlink{display:inline-flex;gap:4px;align-items:center;font-size:16px;line-height:24px}
+.navbar__top .navlink{font-size:14px;line-height:20px}
+.navbar .btn{min-height:40px;padding:8px 20px;border-color:var(--line)}
+.navbar--mobile{height:60px;background:var(--bg);display:flex;justify-content:space-between;align-items:center;padding:4px 16px 8px}
+.navbar--mobile .cta-menu{display:flex;gap:24px;align-items:center}
+.navbar--mobile .menu{display:flex;flex-direction:column;align-items:center;font-size:12px;line-height:16px}
+.help-phone{font-weight:700}
+
+/* Footer: mirrors Components > Footer (49:3128) and Footer - Mobile (209:9009). Do not restyle. */
+.footer{margin-top:auto;background:var(--bg);padding:32px 48px;display:flex;flex-direction:column;gap:16px}
+.footer__logo-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.footer__logo{font-size:24px;line-height:32px}
+.footer__part{font-size:18px;line-height:28px}
+.footer__cols{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.footer__col{display:flex;flex-direction:column;gap:12px}
+.footer__col h4{margin:0;font-size:18px;line-height:28px;font-weight:400}
+.footer__col .links{display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:24px}
+.footer__col--stack{gap:32px}
+.footer__col--social h4{font-weight:700}
+.social{display:flex;gap:24px}
+.social svg{width:32px;height:32px;fill:var(--ink)}
+.footer__crisis{background:var(--panel);padding:12px;text-align:center;margin-top:20px}
+.footer__rule{border:0;border-top:1px solid var(--line);margin:0}
+.footer__legal{font-size:12px;line-height:16px;text-align:center;margin-top:12px}
+.is-mobile .footer{padding:32px 20px;gap:32px}
+.is-mobile .footer__logo-row,.is-mobile .footer__cols{flex-direction:column;gap:32px}
+.is-mobile .footer__logo{font-weight:700}
+.is-mobile .footer__col{gap:12px}
+.is-mobile .footer__col h4{font-size:16px;line-height:24px;font-weight:700}
+.is-mobile .footer__col h4.link-head{text-decoration:underline}
+.is-mobile .footer__crisis{margin-top:0}
+.is-mobile .footer__legal{text-align:left;margin-top:0}
+
+/* Page */
+.page{padding:var(--s5) 0 var(--s6);display:flex;flex-direction:column;gap:var(--s5);background:var(--white);flex:1}
+.col{width:100%;max-width:760px;margin:0 auto;padding:0 var(--s4);display:flex;flex-direction:column;gap:var(--s4)}
+.col--wide{max-width:1240px}
+.is-mobile .col{padding:0 var(--s3)}
+.back{align-self:flex-start;font-size:14px}
+.eyebrow{font-size:14px;line-height:20px;text-transform:uppercase;letter-spacing:.06em}
+
+/* Stepper */
+.stepper{display:flex;gap:var(--s2);list-style:none;margin:0;padding:0}
+.stepper li{flex:1;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:18px}
+.stepper li:before{content:"";height:4px;background:var(--panel)}
+.stepper li.done:before,.stepper li.now:before{background:var(--ink)}
+.stepper li.now{font-weight:700}
+.is-mobile .stepper li span{display:none}
+.is-mobile .stepper li.now span{display:block}
+
+/* Button */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);min-height:44px;padding:8px 20px;background:var(--white);border:1px solid var(--line-ui);border-radius:4px;cursor:pointer;text-decoration:none}
+.btn--primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn-row{display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center}
+
+/* Form */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.legend{font-size:16px}
+.input,.select{min-height:44px;padding:8px 12px;background:var(--white);border:1px solid var(--line-ui);border-radius:4px;width:100%}
+.select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23505d68' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+.field--error .input,.field--error .select{border:2px solid var(--ink-strong)}
+.err{display:flex;gap:6px;font-size:14px;line-height:20px;color:var(--ink-strong);font-weight:500}
+.err:before{content:"!";display:inline-flex;width:18px;height:18px;border:2px solid var(--ink-strong);border-radius:50%;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none;margin-top:1px}
+.hint{font-size:14px;line-height:20px}
+.row2{display:flex;gap:var(--s3)}
+.row2>*{flex:1}
+.is-mobile .row2{flex-direction:column}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s2)}
+details.why{font-size:14px}
+details.why summary{cursor:pointer;text-decoration:underline;width:fit-content}
+details.why p{padding:8px 0 0;max-width:560px}
+
+/* Option (Radio / Checkbox card) */
+.opts{display:flex;flex-direction:column;gap:var(--s2)}
+.opts--grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
+.is-mobile .opts--grid{grid-template-columns:1fr}
+.opt{display:flex;gap:12px;align-items:flex-start;background:var(--white);border:1px solid var(--line-ui);border-radius:4px;padding:14px 16px;cursor:pointer}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.mark{flex:none;width:21px;height:21px;border:1px solid var(--ink);border-radius:50%;margin-top:2px;display:flex;align-items:center;justify-content:center;background:#fff}
+.opt--check .mark{border-radius:3px}
+.opt:has(input:checked){border:2px solid var(--ink);padding:13px 15px;background:#fff}
+.opt:has(input:checked) .mark:after{content:"";width:13px;height:13px;background:var(--ink);border-radius:50%}
+.opt--check:has(input:checked) .mark:after{border-radius:2px;width:11px;height:11px}
+.opt:has(input:focus-visible){outline:3px solid var(--annotation);outline-offset:2px}
+.opt__body{display:flex;flex-direction:column}
+.opt__desc{font-size:14px;line-height:20px}
+.inline-radios{display:flex;gap:var(--s3);align-items:center;flex-wrap:wrap}
+.radio-inline{display:flex;align-items:center;gap:8px;cursor:pointer}
+.radio-inline input{position:absolute;opacity:0}
+.radio-inline:has(input:checked) .mark:after{content:"";width:13px;height:13px;background:var(--ink);border-radius:50%}
+.radio-inline:has(input:focus-visible){outline:3px solid var(--annotation);outline-offset:2px}
+
+/* Checkbox (standalone) */
+.check-inline{display:flex;align-items:center;gap:8px;cursor:pointer;width:fit-content}
+.check-inline input{position:absolute;opacity:0}
+.check-inline .mark{width:21px;height:21px;border:1px solid var(--ink);border-radius:3px;margin:0;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.check-inline:has(input:checked) .mark{background:var(--ink)}
+.check-inline:has(input:checked) .mark:after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.check-inline:has(input:focus-visible){outline:3px solid var(--annotation);outline-offset:2px}
+
+/* Banner */
+.banner{background:var(--bg);border:1px solid var(--line-ui);padding:20px 24px;display:flex;flex-direction:column;gap:var(--s2);border-radius:4px}
+.banner--light{background:var(--bg);border:1px solid var(--line-ui)}
+.banner--strong{background:var(--bg);border:2px solid var(--ink)}
+.banner__title{font-weight:700}
+.chip{display:inline-flex;gap:4px;align-items:center;background:#fff;border:1px solid var(--line-ui);border-radius:16px;padding:2px 4px 2px 12px;font-size:14px;min-height:32px}
+.chip__x{background:none;border:0;padding:0;cursor:pointer;font-size:18px;line-height:1;width:24px;height:24px;border-radius:50%}
+.chip__x:hover{background:var(--panel)}
+
+/* Pill */
+.pills{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.pill{min-height:32px;padding:4px 10px;background:var(--bg);border:1px solid var(--line-ui);border-radius:16px;cursor:pointer;font-size:15px;white-space:nowrap}
+.pill[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.period{font-size:16px;margin:12px 0 6px}
+
+/* Calendar */
+.cal{background:#fff;border:1px solid var(--line);border-radius:10px;padding:28px;width:363px;display:flex;flex-direction:column;gap:20px}
+.is-mobile .cal{width:100%;padding:20px}
+.cal__nav{display:flex;justify-content:space-between;align-items:center}
+.cal__nav button{background:none;border:0;cursor:pointer;font-size:20px;width:32px;height:32px}
+.cal__nav button[disabled]{opacity:.3;cursor:default}
+.cal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.cal__wd{font-size:12px;letter-spacing:.04em;opacity:.8}
+.cal__day{height:36px;border:0;background:none;border-radius:18px;font-size:15px;color:var(--ink);opacity:.45}
+.cal__day.avail{font-weight:700;opacity:1;cursor:pointer;color:var(--ink-strong)}
+.cal__day.sel{background:var(--panel)}
+.cal__day:disabled{cursor:default}
+
+/* Slot picker */
+.slots{display:flex;gap:var(--s6);align-items:flex-start}
+.is-mobile .slots{flex-direction:column;gap:var(--s4)}
+.slots__col{display:flex;flex-direction:column;gap:var(--s2)}
+.slots__time{width:300px}
+.is-mobile .slots__time,.is-mobile .slots__confirm{width:100%}
+.slots__confirm{width:419px}
+
+/* Confirm card */
+.confirm{border:1px solid var(--ink);background:#fff;padding:20px;display:flex;flex-direction:column;gap:var(--s2)}
+.detail{display:flex;gap:10px;align-items:flex-start}
+.detail .ic{width:20px;height:24px;flex:none;display:flex;align-items:center;justify-content:center}
+.detail .ic svg{width:18px;height:18px;fill:var(--ink)}
+
+/* Provider card: mirrors Components > Provider card (Size=Large) */
+.provider{background:#fff;border:1px solid var(--ink);border-radius:12px;padding:12px;display:flex;gap:20px;align-items:flex-start}
+.is-mobile .provider{flex-direction:column}
+.photo{width:190px;height:206px;flex:none;border:1px solid var(--ink);border-radius:7px;background-color:#fff;
+  background-image:linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%),linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%);
+  background-size:20px 20px;background-position:0 0,10px 10px}
+.is-mobile .photo{width:100%;height:200px}
+.provider__info{display:flex;flex-direction:column;gap:12px;flex:1;min-width:0;align-self:stretch}
+.provider__head{display:flex;flex-direction:column}
+.provider__name{font-size:20px;line-height:28px}
+.provider__sub{font-size:18px;line-height:28px}
+.ptags{display:flex;flex-direction:column}
+.ptag{display:flex;gap:6px;align-items:center;font-size:16px;line-height:24px}
+.ptag svg{width:14px;height:14px;flex:none;fill:var(--ink)}
+.provider__bio{font-size:16px;line-height:24px}
+.nextappt{align-self:flex-start;background:var(--bg);padding:0 4px;font-weight:700}
+.provider__info{position:relative}
+.provider__cta{position:absolute;top:0;right:0}
+.provider__head{padding-right:220px}
+.is-mobile .provider__cta{position:static;align-self:stretch}
+.is-mobile .provider__head{padding-right:0}
+.is-mobile .provider__cta .btn{width:100%}
+.provider__link{align-self:flex-end;margin-top:auto;background:none;border:0;padding:0;cursor:pointer;font-size:16px;line-height:24px;text-decoration:none}
+.provider__link:hover{text-decoration:underline}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:13px;line-height:18px;border:1px solid var(--line-ui);border-radius:12px;padding:1px 8px;background:var(--bg)}
+
+/* Profile overlay */
+/* mirrors Provider Profile page (992:18768), minus booking placeholder, resources and more-providers */
+#profile{width:min(1320px,calc(100vw - 32px));max-width:none;max-height:calc(100vh - 48px);padding:48px;border:1px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink);font-family:var(--font);font-size:16px;line-height:24px}
+#profile.is-mobile{width:min(402px,calc(100vw - 32px));padding:24px 20px}
+.prof{display:flex;flex-direction:column;gap:48px}
+
+.crumb{font-size:16px;line-height:24px;color:var(--ink)}
+.pg-head{display:flex;gap:40px;align-items:flex-start}
+.pg-photo{width:480px;height:368px;flex:none;border:1px solid var(--ink);background:#fff}
+.is-mobile .pg-head{flex-direction:column;gap:24px}.is-mobile .pg-photo{width:100%;height:240px}
+.pg-book{background:var(--bg);padding:32px 30px;display:flex;flex-direction:column;gap:24px}.pg-book h2{font-size:24px;line-height:32px;margin:0}
+.page--provider-page .pg-photo{width:275px;height:320px;background-image:linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%),linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%);background-size:20px 20px;background-position:0 0,10px 10px;border:0}
+.page--provider-page .crumb a{color:inherit}
+.loc__info{width:300px;flex:none;display:flex;flex-direction:column;gap:16px}.loc__info .pg-hours ul{margin:0;padding-left:20px}
+.loc__media{flex:1;display:flex;flex-direction:column;align-items:center;gap:16px}
+.page--location-page .pg-photo{width:100%;height:280px;border:0;background-image:linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%),linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%);background-size:60px 60px;background-position:0 0,30px 30px}
+.page--location-page .crumb a{color:inherit}
+.carousel{display:flex;align-items:center;gap:16px}.carousel__btn{width:32px;height:32px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:22px}.dots{display:flex;gap:8px}.dots i{width:8px;height:8px;border-radius:50%;background:var(--panel)}.dots i.on{background:var(--ink)}
+.is-mobile .loc__info{width:100%}
+.chk{background-color:#fff;background-image:linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%),linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%);background-size:30px 30px;background-position:0 0,15px 15px}
+.cp{display:flex;flex-direction:column;gap:64px;padding-bottom:64px}.cp h2{font-size:32px;line-height:40px;margin:0}.cp h3{font-size:24px;line-height:32px;margin:0}.cp p{margin:0}
+.cp-hero{background:var(--panel);text-align:center;padding:56px 24px;display:flex;flex-direction:column;align-items:center;gap:16px}.cp-hero h1{font-size:36px;line-height:46px;margin:0}.cp-hero p{max-width:640px}
+.cp-wrap{width:100%;max-width:1272px;margin:0 auto;padding:0 var(--s4);display:flex;flex-direction:column;gap:64px}
+.cp-sbs{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}.cp-sbs .chk{height:442px}.cp-sbs>div:not(.chk){display:flex;flex-direction:column;gap:24px;padding-right:48px}
+.cp-how{display:grid;grid-template-columns:repeat(3,1fr);gap:48px}.cp-how>div{display:flex;flex-direction:column;gap:8px}.cp-how .num{display:flex;align-items:center;gap:16px;font-size:48px}.cp-how .dot{width:132px;height:132px;border-radius:50%;background:var(--panel)}
+.cp-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}.cp-grid>div{display:flex;flex-direction:column;gap:16px;align-items:flex-start}.cp-grid>div:last-child:nth-child(odd){grid-column:1/3;width:50%;margin:0 auto}.cp-grid .chk{width:100%;height:200px}
+.cp-ins{background:var(--panel);padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px}.cp-ins>div{display:flex;flex-direction:column;gap:24px}.cp-ins .logos{display:flex;flex-wrap:wrap;gap:16px 32px;font-weight:700;font-size:20px;opacity:.7}.cp-ins .sel{display:flex;gap:24px}.cp-ins .sel>div{display:flex;flex-direction:column;gap:6px;flex:1;max-width:200px}.cp-ins .sel span.fake{height:40px;border:1px solid var(--line-ui);background:var(--panel)}
+.cp-pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}.cp-pcard{border:1px solid var(--line-ui);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px;font-size:15px}.cp-pcard .top{display:flex;gap:16px}.cp-pcard .av{width:84px;height:84px;border-radius:50%;flex:none;border:1px solid var(--line-ui)}
+.cp-life{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.cp-life .chk{height:255px;display:flex;align-items:flex-end;justify-content:center;font-weight:700;font-size:20px;padding-bottom:8px}
+.cp-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:24px}.cp-stats strong{display:block;font-size:32px}
+.cp-test{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.cp-test>div{background:var(--bg);padding:24px;min-height:330px;display:flex;flex-direction:column;justify-content:center;gap:40px}
+.cp-faq>div{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 4px;display:flex;justify-content:space-between;font-weight:700;margin-top:10px}
+.cp-res{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.cp-res>div{display:flex;flex-direction:column;gap:8px}.cp-res .chk{height:195px}.cp-res .tag{align-self:flex-start;border:1px solid var(--line-ui);border-radius:12px;padding:0 10px;font-size:13px}
+.cp-cta{background:#505d68;color:#fff;text-align:center;padding:72px 24px;display:flex;flex-direction:column;align-items:center;gap:24px}.cp-cta h2{color:#fff}.cp-cta a{color:#fff}
+.is-mobile .cp-sbs,.is-mobile .cp-how,.is-mobile .cp-grid,.is-mobile .cp-ins,.is-mobile .cp-pcards,.is-mobile .cp-life,.is-mobile .cp-stats,.is-mobile .cp-test,.is-mobile .cp-res{grid-template-columns:1fr}.is-mobile .cp-grid>div:last-child:nth-child(odd){grid-column:auto;width:100%}.is-mobile .cp-ins{padding:24px}.is-mobile .cp-sbs>div:not(.chk){padding-right:0}
+.pg-widget{border:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;max-width:560px;width:100%;background:#fff}
+.pg-widget h2{font-size:24px;line-height:32px;margin:0}
+.pg-sec{display:flex;flex-direction:column;gap:16px}.pg-sec h2{font-size:24px;line-height:32px;margin:0}.pg-sec p{margin:0}
+.pg-hours{margin:0;font-size:16px;line-height:24px}
+.prof__header{display:flex;gap:40px;align-items:flex-start}
+#profile.is-mobile .prof__header{flex-direction:column;gap:24px}
+.prof__photo{width:480px;height:368px;flex:none;background-color:#fff;border:1px solid var(--ink);
+  background-image:linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%),linear-gradient(45deg,#e8edf0 25%,transparent 25%,transparent 75%,#e8edf0 75%);background-size:20px 20px;background-position:0 0,10px 10px}
+#profile.is-mobile .prof__photo{width:100%;height:240px}
+.prof__who{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.prof__name{font-size:36px;line-height:46px;margin:0}
+.prof__cred{font-size:24px;line-height:32px}
+#profile.is-mobile .prof__name{font-size:28px;line-height:36px}
+#profile.is-mobile .prof__cred{font-size:20px;line-height:28px}
+.prof__close{position:absolute;top:12px;right:12px;width:44px;height:44px;background:none;border:0;font-size:28px;cursor:pointer;line-height:1}
+.prof__sec{display:flex;flex-direction:column;gap:24px}
+.prof__sec h3{font-size:24px;line-height:32px;margin:0}
+.prof__sec p{margin:0}
+.prof__about{display:flex;flex-direction:column;gap:16px;max-width:900px}
+.prof__grid{display:flex;flex-wrap:wrap;gap:24px 56px}
+#profile.is-mobile .prof__grid{flex-direction:column}
+.prof__f{display:flex;flex-direction:column;gap:12px;max-width:340px}
+.prof__f dt{font-size:16px;line-height:24px;font-weight:700;text-transform:uppercase}
+.prof__f dd{margin:0;font-size:20px;line-height:28px}
+.prof__ins{display:flex;gap:56px;flex-wrap:wrap}
+.prof__ins ul{margin:8px 0 0;padding:0;list-style:none;font-size:18px;line-height:28px}
+.prof__ins strong{font-size:18px;line-height:28px;font-weight:400}
+
+/* Landing steps */
+.steps{display:flex;gap:var(--s3)}
+.is-mobile .steps{flex-direction:column}
+.step{flex:1;background:#fff;border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:var(--s2)}
+.step__n{width:32px;height:32px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* Entry launcher (scaffold) */
+.launch{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)}
+.is-mobile .launch{grid-template-columns:1fr}
+.launch .card{background:#fff;border:1px dashed var(--line-ui);padding:20px;display:flex;flex-direction:column;gap:var(--s2);align-items:flex-start}
+
+/* Self Pay Rates (mirrors Components > Self Pay Rates) */
+.selfpay{display:flex;flex-direction:column;gap:var(--s3);margin-top:var(--s2)}
+.rates{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.is-mobile .rates{grid-template-columns:1fr}
+.rate{background:var(--bg);padding:32px;display:flex;flex-direction:column;gap:16px;justify-content:center}
+.rate h3{font-size:24px;line-height:32px}
+.rate__lines{display:flex;flex-direction:column;gap:6px}
+.rate a{text-decoration:underline}
+
+/* Get started landing: white page area, extra air between header and footer */
+.page--landing{padding:96px 0}
+.is-mobile .page--landing{padding:64px 0}
+.step{background:var(--bg)}
+.chip{background:var(--bg)}
+
+/* Prototype start screen: deliberately unlike the wireframes (dark, no site chrome) */
+.frame--scaffold{background:#111216;color:#e8ecef;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;min-height:640px;justify-content:center}
+.frame--scaffold .page{padding:var(--s6) 0;background:transparent}
+.frame--scaffold h1,.frame--scaffold h3{font-family:inherit;font-weight:700}
+.frame--scaffold h1{font-size:28px}
+.frame--scaffold h3{font-size:16px}
+.frame--scaffold .eyebrow{color:#0096fa}
+.frame--scaffold .launch .card{background:#1e1f26;border:1px solid #3a3d47;border-radius:8px;color:#e8ecef}
+.frame--scaffold .btn{background:#2a2c33;color:#fff;border:1px solid #555;border-radius:6px;font-family:inherit;font-size:14px}
+.frame--scaffold .btn--primary{background:#0096fa;border-color:#0096fa;color:#fff}
+.frame--scaffold :focus-visible{outline-color:#fff}
+
+/* Annotation */
+.annotation{background:var(--bg);border-radius:6px;overflow:hidden;color:var(--ink-strong);font-size:14px;line-height:20px}
+.annotation header{background:var(--annotation);color:#fff;padding:8px 16px;font-size:16px;line-height:24px}
+.annotation div{padding:12px 16px}
+.annotation.q header{background:#7a4dff}
+
+dialog{border:2px solid var(--ink);border-radius:4px;max-width:520px;padding:var(--s4);background:var(--bg);color:var(--ink)}
+dialog::backdrop{background:rgba(17,18,22,.5)}
+</style>
+</head>
+<body>
+<div id="toolbar" role="toolbar" aria-label="Prototype controls">
+  <strong>PMP booking prototype</strong>
+  <button id="tb-restart" type="button">Start over</button>
+  <label>Viewport
+    <select id="tb-vp"><option value="desktop">Desktop 1440</option><option value="mobile">Mobile 402</option></select></label>
+  <label>User state
+    <select id="tb-state"><option value="">From zip code</option><option>CT</option><option>FL</option><option>NJ</option><option>NY</option><option>TX</option><option value="OT">Other state</option></select></label>
+  <label><input type="checkbox" id="tb-notes" checked> Annotations</label>
+  <label><input type="checkbox" id="tb-validate"> Field validation</label>
+  <button id="tb-fill" type="button">Fill sample data</button>
+  <label>Jump to <select id="tb-jump"></select></label>
+  <span class="screen-name" id="tb-name"></span>
+</div>
+<div id="stage">
+  <div id="frame-wrap"><div id="frame" class="frame"></div></div>
+  <aside id="notes" aria-label="Design annotations"></aside>
+</div>
+<dialog id="dlg" aria-labelledby="dlg-h"></dialog>
+<dialog id="profile"></dialog>
+
+<script>
+/* =====================================================================
+   DATA
+   ===================================================================== */
+const PHONE='(800) 555-0123';              // placeholder number
+const IN_PERSON_STATES=['NY'];             // board: in-person currently NY only
+const STATE_NAMES={CT:'Connecticut',FL:'Florida',NJ:'New Jersey',NY:'New York',TX:'Texas',OT:'your state'};
+const LIMITED_ONLINE=['CT','FL','TX'];
+
+const SERVICES=[
+ {id:'therapy',l:'Therapy',d:'Meet with a licensed therapist to work through what’s on your mind.'},
+ {id:'med',l:'Medication & Psychiatry',d:'Start with an assessment, then ongoing medication management.'},
+ {id:'adhd',l:'ADHD Evaluation',d:'A comprehensive evaluation to understand attention and focus.'},
+ {id:'ef',l:'Executive Functioning Coaching',d:'Build skills for planning, organization and follow-through.'},
+ {id:'parent',l:'Parent Coaching',d:'Practical guidance for parents supporting their child.'},
+ {id:'maternal',l:'Maternal Mental Health',d:'Support during pregnancy and after birth.'},
+ {id:'dbt',l:'DBT Skills Group',d:'A skills-based group for managing intense emotions.'},
+ {id:'unsure',l:'I’m not sure',d:'No problem. A free consult will help you find the right fit.'}];
+const BY_STATE={
+ CT:['therapy','med','ef','parent'],
+ FL:['therapy','med','adhd','ef','parent','maternal'],
+ NJ:['therapy','med','adhd','ef','parent','maternal'],
+ NY:['therapy','med','adhd','parent','maternal','dbt'],
+ TX:['therapy','med','adhd','ef','parent'],
+ OT:['ef','parent']};
+const HEARD=['Google/Internet Search','Social Media','Physician/PCP referral','PM Urgent Care','PM School Health','Family/friend','Insurance company','ZocDoc','Psychology Today'];
+const AREAS=['ADHD','Anxiety','Behavioral Issues','Chronic Illness','Depression','EMDR','Grief & Loss','LGBTQIA+','Maternal & Perinatal','OCD','Parenting','Stress & Burnout','Trauma & PTSD','I’m not sure'];
+const LANGS=['English','Spanish','French','Bengali','Haitian Creole'];
+const INS={NY:['Aetna','Affinity by Molina Healthcare','Anthem','Cigna','GHI','Fidelis Care','Healthfirst','Horizon','MVP Healthcare','NYSHIP','Point Comfort Group'],
+ NJ:['Aetna','Anthem','Cigna','Horizon','Point Comfort Group'],CT:['Aetna','Anthem','Cigna','Point Comfort Group'],
+ FL:['Aetna','Cigna','Point Comfort Group'],TX:['Aetna','Cigna','Point Comfort Group'],OT:[]};
+
+const PROVIDERS=[
+ {id:'jw',n:'Jennifer Weber',c:'LCSW',st:['NJ','NY'],modes:['virtual','in-person'],loc:'Brooklyn, NY',addr:'118 Court St, Brooklyn, NY 11201',zip:'11201',areas:['Anxiety','Depression','Parenting','Stress & Burnout','Trauma & PTSD'],g:'Female',lang:['English','Spanish'],accept:true,bio:'Works with teens and parents on anxiety, school stress and family transitions.'},
+ {id:'ml',n:'Marcus Lee',c:'LMFT',st:['CT'],modes:['virtual'],zip:'06103',areas:['ADHD','Behavioral Issues','Parenting','OCD'],g:'Male',lang:['English'],accept:true,bio:'Helps children and families build routines and manage big behaviors.'},
+ {id:'lp',n:'Lena Park',c:'PsyD',st:['FL'],modes:['virtual'],zip:'33101',areas:['Anxiety','OCD','Trauma & PTSD'],g:'Female',lang:['English'],accept:false,bio:'Specializes in OCD and anxiety using exposure-based approaches.'},
+ {id:'ar',n:'Anika Rahman',c:'LMHC',st:['NY','NJ'],modes:['virtual','in-person'],loc:'Queens, NY',addr:'37-10 Main St, Queens, NY 11354',zip:'11354',areas:['Anxiety','Depression','Stress & Burnout','Grief & Loss'],g:'Female',lang:['English','Bengali'],accept:true,bio:'Supports young adults and families navigating cultural and generational pressure.'},
+ {id:'do',n:'Daniel Ortiz',c:'LCSW',st:['TX','FL'],modes:['virtual'],zip:'78701',areas:['ADHD','Anxiety','Parenting','Depression'],g:'Male',lang:['English','Spanish'],accept:true,bio:'Bilingual therapist for kids, teens and caregivers.'},
+ {id:'sr',n:'Sam Rivera',c:'LMSW',st:['NY'],modes:['virtual','in-person'],loc:'Manhattan, NY',addr:'45 W 36th St, New York, NY 10018',zip:'10018',areas:['LGBTQIA+','Grief & Loss','Depression','Anxiety'],g:'Non-Binary',lang:['English','French'],accept:true,bio:'Affirming care for LGBTQIA+ teens and young adults.'},
+ {id:'cd',n:'Claire Dubois',c:'LCSW-R',st:['NY','NJ'],modes:['virtual'],zip:'10001',areas:['Maternal & Perinatal','Depression','Anxiety'],g:'Female',lang:['English','French'],accept:true,bio:'Perinatal mental health, from pregnancy through the first year.'},
+ {id:'nj',n:'Nadège Joseph',c:'LMHC',st:['FL','NY'],modes:['virtual'],zip:'33128',areas:['Trauma & PTSD','Chronic Illness','Stress & Burnout','Grief & Loss'],g:'Female',lang:['English','French','Haitian Creole'],accept:true,bio:'Trauma-informed therapy for families living with chronic illness.'},
+ {id:'th',n:'Tom Hanley',c:'LCSW',st:['CT','NJ','NY'],modes:['virtual','in-person'],loc:'Bridgewater, NJ',addr:'966 US-22 East, Bridgewater, NJ 08807',zip:'08807',areas:['EMDR','Trauma & PTSD','Behavioral Issues','Anxiety'],g:'Male',lang:['English'],accept:true,bio:'EMDR and trauma work with school-age children and teens.'}];
+const EXTRA={
+ jw:{offers:'Therapy, Parent Coaching',aud:'Kids, Teens, Young Adults, Adults',bio:'is a child and adolescent therapist, specializing in anxiety, school stress and family transitions. She works directly with children, teens, and young adults'},
+ ml:{offers:'Therapy',aud:'Kids, Teens',bio:'is a family therapist who helps children and families build routines and manage big behaviors. He works with ADHD, OCD and behavioral concerns'},
+ lp:{offers:'Therapy',aud:'Teens, Young Adults, Adults',bio:'is a psychologist specializing in OCD and anxiety using exposure-based approaches. She works with teens and adults'},
+ ar:{offers:'Therapy',aud:'Teens, Young Adults, Adults',bio:'is a counselor who supports young adults and families navigating cultural and generational pressure. She offers sessions in English and Bengali'},
+ do:{offers:'Therapy, Parent Coaching',aud:'Kids, Teens, Adults',bio:'is a bilingual therapist who works with kids, teens and caregivers in English and Spanish. He focuses on ADHD, anxiety and parenting'},
+ sr:{offers:'Therapy',aud:'Teens, Young Adults, Adults',bio:'provides affirming care for LGBTQIA+ teens and young adults. Sam works with grief, depression and anxiety'},
+ cd:{offers:'Therapy, Maternal Mental Health',aud:'Adults',bio:'focuses on perinatal mental health, from pregnancy through the first year. She offers sessions in English and French'},
+ nj:{offers:'Therapy',aud:'Kids, Teens, Adults',bio:'offers trauma-informed therapy for families living with chronic illness. She offers sessions in English, French and Haitian Creole'},
+ th:{offers:'Therapy',aud:'Kids, Teens',bio:'does EMDR and trauma work with school-age children and teens. He also helps with anxiety and behavioral concerns'}};
+const PROFILE={
+ jw:{role:'Psychologist',creds:'PsyD, EdM, SM',therapyType:'Cognitive Behavioral Therapy (CBT), EMDR',edu:'Attended Capella University',
+  about:['Dr. Jennifer Weber is a child and adolescent psychologist, specializing in trauma, identity development, mood and anxiety disorders, ADHD, and adjustment disorders. She works directly with children, teens, and young adults, offering therapy that meets them where they are. As the Senior Director of Mental Health Services at PM Pediatric Care, she leads the development and delivery of the program’s clinical services and supports a team of therapists and staff.','Previously, Dr. Weber served as a Clinical Manager for the large community-based outpatient mental health clinic of Jamaica Hospital Medical Center in Queens, NY. She completed her undergraduate degree in psychology and American studies at Brandeis University, and her doctorate in psychology at the Ferkauf Graduate School of Psychology of Yeshiva University, her Masters of Education in Human Development and Psychology from Harvard Graduate School of Education and her Masters of Science in Society, Human Development, and Health from Harvard School of Public Health.']},
+ ml:{role:'Marriage and Family Therapist',creds:'LMFT'},lp:{role:'Psychologist',creds:'PsyD'},ar:{role:'Mental Health Counselor',creds:'LMHC'},
+ do:{role:'Clinical Social Worker',creds:'LCSW'},sr:{role:'Social Worker',creds:'LMSW'},cd:{role:'Clinical Social Worker',creds:'LCSW-R'},
+ nj:{role:'Mental Health Counselor',creds:'LMHC'},th:{role:'Clinical Social Worker',creds:'LCSW',therapyType:'EMDR, Cognitive Behavioral Therapy (CBT)'}};
+PROVIDERS.forEach(p=>Object.assign(p,EXTRA[p.id],PROFILE[p.id]));
+const PSYCH=[{id:'ep',n:'Elena Park',c:'PMHNP'},{id:'rk',n:'Raj Kapoor',c:'MD'},{id:'ma',n:'Maya Allen',c:'PMHNP'}];
+const LOCATION={name:'Brooklyn',state:'NY',addr:'118 Court St, Brooklyn, NY 11201'};
+/* in-person practice locations (derived from provider data) + rough coordinates for the 30-mile check */
+const LOCS=[
+ {id:'bk',name:'Brooklyn',loc:'Brooklyn, NY',addr:'118 Court St, Brooklyn, NY 11201',lat:40.693,lon:-73.990},
+ {id:'qn',name:'Queens',loc:'Queens, NY',addr:'37-10 Main St, Queens, NY 11354',lat:40.760,lon:-73.830},
+ {id:'mn',name:'Manhattan',loc:'Manhattan, NY',addr:'45 W 36th St, New York, NY 10018',lat:40.752,lon:-73.990},
+ {id:'bw',name:'Bridgewater',loc:'Bridgewater, NJ',addr:'966 US-22 East, Bridgewater, NJ 08807',lat:40.590,lon:-74.620}];
+const RADIUS_MI=30;
+const ZIP3=[[100,102,40.75,-73.99],[103,103,40.58,-74.15],[104,104,40.85,-73.87],[105,109,41.05,-73.8],[110,111,40.72,-73.80],[112,112,40.65,-73.95],[113,114,40.72,-73.80],[115,119,40.80,-73.30],[120,129,42.65,-73.75],[130,139,43.05,-76.15],[140,149,42.90,-78.85],
+ [70,79,40.72,-74.2],[80,89,40.40,-74.6],[60,69,41.76,-72.67],[320,349,27.9,-81.8],[750,799,32.5,-97.5]];
+function zipLatLon(z){const n=parseInt(String(z).slice(0,3),10); const r=ZIP3.find(x=>n>=x[0]&&n<=x[1]); return r?[r[2],r[3]]:null;}
+function miles(a,b){const R=3958.8,t=x=>x*Math.PI/180,dl=t(b[0]-a[0]),dn=t(b[1]-a[1]);
+  const h=Math.sin(dl/2)**2+Math.cos(t(a[0]))*Math.cos(t(b[0]))*Math.sin(dn/2)**2; return 2*R*Math.asin(Math.sqrt(h));}
+function nearbyLocs(){const u=zipLatLon(S.f.zip||'11201')||[40.75,-73.99];
+  return LOCS.map(l=>({...l,mi:Math.round(miles(u,[l.lat,l.lon]))})).filter(l=>l.mi<=RADIUS_MI).sort((a,b)=>a.mi-b.mi);}
+const selLocs=()=>S.mode==='in-person'?(S.locIds||[]).map(id=>LOCS.find(l=>l.id===id)).filter(Boolean):[];
+const atSel=p=>{const s=selLocs(); return !s.length||s.some(l=>l.loc===p.loc);};
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+const today=new Date(); today.setHours(0,0,0,0);
+const blank=()=>({entry:null,provider:null,service:null,condition:null,location:null,pre:null,
+  who:null,f:{},heard:null,svc:null,ins:null,areas:[],mode:null,gender:null,langs:[],incVirtual:false,
+  book:null,locIds:[],sel:{date:null,time:null,mode:null},calMonth:null,err:{},hist:[],screen:'entry',taken:false,takenShown:false,assigned:null});
+let S=blank();
+const UI={vp:'desktop',notes:true,stateOverride:'',simTaken:false,validate:false};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const ord=n=>n+(['th','st','nd','rd'][(n%100>10&&n%100<14)?0:Math.min(n%10,4)>3?0:n%10]||'th');
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const fmtLong=d=>`${MONTHS[d.getMonth()]} ${ord(d.getDate())}`;
+const fmtShort=d=>`${DOW[d.getDay()].slice(0,3)}, ${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}`;
+const stateName=()=>STATE_NAMES[userState()];
+
+function zipState(z){const n=parseInt(String(z).slice(0,3),10);
+  if(n>=60&&n<=69)return'CT'; if(n>=70&&n<=89)return'NJ'; if(n>=100&&n<=149)return'NY';
+  if(n>=320&&n<=349)return'FL'; if((n>=750&&n<=799)||n===733)return'TX'; return'OT';}
+function userState(){ if(UI.stateOverride)return UI.stateOverride;
+  if(/^\d{5}$/.test(S.f.zip||''))return zipState(S.f.zip);
+  if(S.location)return S.location.state; return 'NY'; }
+/* in-person is offered if the visitor's state offers it, or if they came from a location page in a state that does */
+const inPersonOK=()=>IN_PERSON_STATES.includes(userState())||!!(S.location&&IN_PERSON_STATES.includes(S.location.state));
+function parseDob(s){const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec((s||'').trim()); if(!m)return null;
+  const mo=+m[1],d=+m[2],y=+m[3]; const dt=new Date(y,mo-1,d); if(dt.getMonth()!==mo-1||dt.getDate()!==d||y<1900||dt>today)return null; return dt;}
+function age(dt){let a=today.getFullYear()-dt.getFullYear(); const m=today.getMonth()-dt.getMonth(); if(m<0||(m===0&&today.getDate()<dt.getDate()))a--; return a;}
+const patientAge=()=>{const d=parseDob(S.f.dob); return d?age(d):null};
+const patientName=()=>S.f.first?`${S.f.first}`:'you';
+
+/* ---- availability (deterministic fake data) ---- */
+const TIMES=[9,10,11,12,13,14,15,16,18,19];
+const fmtT=h=>`${h>12?h-12:h}:00 ${h>=12?'PM':'AM'} ET`;
+function slotsFor(pid,accept,d,mode){
+  if(accept===false)return []; const diff=Math.round((d-today)/864e5);
+  if(diff<1||diff>60||d.getDay()===0)return [];
+  const h=hash(pid+d.toDateString()); if(h%6===0)return [];
+  if(mode==='in-person'&&![2,4].includes(d.getDay()))return [];
+  let ts=TIMES.filter((t,i)=>((h>>(i+2))&3)!==0 && !(d.getDay()===6&&t>15));
+  if(ts.length<3)ts=TIMES.slice(0,4); return ts.map(fmtT);}
+function poolOf(book,mode){
+  if(book.p)return [book.p];
+  if(book.pool)return book.pool;
+  const st=userState();
+  if(book.kind==='assessment')return PSYCH.map(p=>({...p,accept:true}));
+  if(book.kind==='consult')return [{id:'consult',n:'Care Navigator',accept:true}];
+  const okMode=p=>mode!=='in-person'||(p.modes.includes('in-person')&&atSel(p));
+  let list=PROVIDERS.filter(p=>p.accept&&p.st.includes(st)&&okMode(p));
+  if(!list.length)list=PROVIDERS.filter(p=>p.accept&&okMode(p)); return list;}
+function daySlots(book,d,mode){const out={};
+  for(const p of poolOf(book,mode)){ for(const t of slotsFor(p.id,p.accept,d,mode)){ if(!out[t])out[t]=p; } }
+  return Object.entries(out).sort((a,b)=>TIMES.findIndex(h=>fmtT(h)===a[0])-TIMES.findIndex(h=>fmtT(h)===b[0]));}
+function nextSlot(p,mode){for(let i=1;i<=60;i++){const d=new Date(today);d.setDate(d.getDate()+i);const s=slotsFor(p.id,p.accept,d,mode);if(s.length)return {d,t:s[0]};}return null;}
+
+/* =====================================================================
+   COMPONENT HELPERS (each = one Figma component)
+   ===================================================================== */
+const Btn=(l,attr,cls='')=>`<button type="button" class="btn ${cls}" data-component="Button" ${attr}>${l}</button>`;
+function Field(label,name,o={}){const e=S.err[name], v=S.f[name]??''; const id='f-'+name;
+  return `<div class="field ${e?'field--error':''}" data-component="Input">
+   <label for="${id}">${label}${o.opt?' <span class="small">(optional)</span>':''}</label>
+   <input class="input" id="${id}" name="${name}" data-bind="f.${name}" value="${esc(v)}" ${o.type?`type="${o.type}"`:''} ${o.ph?`placeholder="${o.ph}"`:''} ${o.ac?`autocomplete="${o.ac}"`:''} ${o.im?`inputmode="${o.im}"`:''} ${e?`aria-invalid="true"`:''} aria-describedby="${id}-m">
+   <div id="${id}-m">${e?`<div class="err" role="alert">${e}</div>`:''}${o.hint?`<div class="hint">${o.hint}</div>`:''}</div></div>`;}
+function Select(label,name,opts,o={}){const e=S.err[name], v=S.f[name]??''; const id='f-'+name;
+  return `<div class="field ${e?'field--error':''}" data-component="Select">
+   <label for="${id}">${label}${o.opt?' <span class="small">(optional)</span>':''}</label>
+   <select class="select" id="${id}" data-bind="f.${name}" aria-describedby="${id}-m"><option value="">Select…</option>${opts.map(x=>`<option ${x===v?'selected':''}>${esc(x)}</option>`).join('')}</select>
+   <div id="${id}-m">${e?`<div class="err" role="alert">${e}</div>`:''}</div></div>`;}
+function Opts(name,list,val,o={}){ // list: [{v,l,d}] ; val string or array
+  const multi=Array.isArray(val);
+  return `<fieldset ${o.legend?'':`aria-label="${o.aria||name}"`}>${o.legend?`<legend class="legend">${o.legend}</legend>`:''}
+  <div class="opts ${o.grid?'opts--grid':''}">${list.map(x=>{const on=multi?val.includes(x.v):val===x.v;
+   return `<label class="opt ${multi?'opt--check':''}" data-component="${multi?'Checkbox':'Radio'} Card"><input type="${multi?'checkbox':'radio'}" name="${name}" value="${esc(x.v)}" ${on?'checked':''} data-opt="${name}">
+   <span class="mark"></span><span class="opt__body"><span>${x.l}</span>${x.d?`<span class="opt__desc">${x.d}</span>`:''}</span></label>`}).join('')}</div></fieldset>`;}
+const Banner=(title,body,cls='')=>`<div class="banner ${cls}" data-component="Banner" role="status">${title?`<div class="banner__title">${title}</div>`:''}${body}</div>`;
+const Help=()=>`<p class="small">Need help? Call <a class="help-phone" href="tel:${PHONE}">${PHONE}</a></p>`;
+const Back=()=>S.hist.length?`<button type="button" class="link back" data-do="back">← Back</button>`:'';
+const STEPS=['About you','Your needs','Find a provider','Pick a time','Confirmation'];
+const Stepper=n=>`<ol class="stepper" data-component="Stepper" aria-label="Progress">${STEPS.map((s,i)=>`<li class="${i<n?'done':i===n?'now':''}" ${i===n?'aria-current="step"':''}><span>${s}</span></li>`).join('')}</ol>`;
+const Header=(title,sub)=>`<div><h1 tabindex="-1" id="h1">${title}</h1>${sub?`<p style="margin-top:8px">${sub}</p>`:''}</div>`;
+
+function Calendar(book){
+  const m=S.calMonth||new Date(today.getFullYear(),today.getMonth(),1); S.calMonth=m;
+  const first=new Date(m.getFullYear(),m.getMonth(),1), n=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
+  const mode=S.sel.mode; let cells='';
+  for(let i=0;i<first.getDay();i++)cells+='<span></span>';
+  for(let d=1;d<=n;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d); const av=daySlots(book,dt,mode).length>0;
+    const sel=S.sel.date&&S.sel.date.toDateString()===dt.toDateString();
+    cells+=`<button type="button" class="cal__day ${av?'avail':''} ${sel?'sel':''}" ${av?`data-do="pickDate:${dt.getTime()}" data-key="d${d}"`:'disabled'} ${sel?'aria-pressed="true"':''} aria-label="${fmtLong(dt)}${av?'':', no availability'}">${d}</button>`;}
+  const prevOk=m>new Date(today.getFullYear(),today.getMonth(),1), nextOk=m<new Date(today.getFullYear(),today.getMonth()+1,1);
+  return `<div class="cal" data-component="Calendar"><div class="cal__nav"><button type="button" data-do="month:-1" aria-label="Previous month" ${prevOk?'':'disabled'}>‹</button><span>${MONTHS[m.getMonth()]} ${m.getFullYear()}</span><button type="button" data-do="month:1" aria-label="Next month" ${nextOk?'':'disabled'}>›</button></div>
+   <div class="cal__grid" aria-hidden="true">${['SUN','MON','TUE','WED','THU','FRI','SAT'].map(x=>`<span class="cal__wd">${x}</span>`).join('')}</div>
+   <div class="cal__grid" role="group" aria-label="Select a date">${cells}</div></div>`;}
+
+const IC={
+ dollar:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.800 10.900c-2.270-.59-3-1.200-3-2.150 0-1.090 1.010-1.850 2.700-1.850 1.780 0 2.440.85 2.500 2.100h2.210c-.07-1.720-1.120-3.300-3.210-3.810V3h-3v2.160c-1.940.42-3.500 1.680-3.500 3.610 0 2.310 1.910 3.460 4.700 4.130 2.500.6 3 1.480 3 2.410 0 .69-.49 1.790-2.700 1.790-2.060 0-2.870-.92-2.980-2.100h-2.200c.12 2.190 1.760 3.420 3.680 3.830V21h3v-2.150c1.950-.37 3.500-1.500 3.500-3.550 0-2.840-2.430-3.810-4.700-4.400z"/></svg>',
+ cal:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm0 16H5V9h14v11z"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm.5-13H11v6l5.250 3.150.75-1.230-4.500-2.670V7z"/></svg>',
+ pin:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 00-7 7c0 5.250 7 13 7 13s7-7.750 7-13a7 7 0 00-7-7zm0 9.500A2.500 2.500 0 1112 6.500a2.500 2.500 0 010 5z"/></svg>',
+ people:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 100-6 3 3 0 000 6zM8 11a3 3 0 100-6 3 3 0 000 6zm0 2c-2.300 0-7 1.200-7 3.500V19h14v-2.500C15 14.200 10.300 13 8 13zm8 0c-.3 0-.6 0-1 .1 1.200.9 2 2 2 3.400V19h6v-2.500c0-2.300-4.700-3.500-7-3.500z"/></svg>',
+ heart:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.350l-1.450-1.320C5.400 15.360 2 12.280 2 8.500 2 5.420 4.420 3 7.500 3c1.740 0 3.410.81 4.500 2.090C13.090 3.810 14.760 3 16.500 3 19.580 3 22 5.420 22 8.500c0 3.780-3.400 6.860-8.550 11.540z"/></svg>'};
+/* Cost shown on the confirm card: depends on the booking type, the selected service and how they’re paying */
+function costText(){
+ const b=S.book; if(!b)return '';
+ if(b.kind==='consult')return '$0 (free)';
+ const covered=!!S.ins&&(INS[userState()]||[]).includes(S.ins);
+ if(covered||!S.ins)return 'Pending based on your insurance';
+ return S.svc==='med'?'$200 (self-pay)':'$250 (special self-pay rate: $99)';}
+function costNote(){
+ const b=S.book; if(!b||b.kind==='consult'||b.kind==='assessment'||S.svc==='med')return '';
+ const covered=!!S.ins&&(INS[userState()]||[]).includes(S.ins);
+ return (covered||!S.ins)?'Most new patients with in-network insurance pay $0, on average, for their initial assessment visit.':'';}
+const CostRow=()=>{const n=costNote(); return `<div class="detail"><span class="ic">${IC.dollar}</span><span>Cost: ${costText()}${n?`<br><span class="small">${n}</span>`:''}</span></div>`;};
+const ST_FULL={CT:'Connecticut',FL:'Florida',NJ:'New Jersey',NY:'New York',TX:'Texas'};
+const visitText=p=>p.modes.map(m=>m==='virtual'?'Virtual':'In-person ('+p.loc+')').join(', ');
+function ProviderCard(p,cta,mode){
+  const nx=nextSlot(p,mode==='in-person'?'in-person':null);
+  const more=p.areas.length>3?` +${p.areas.length-3} more`:'';
+  return `<article class="provider" data-component="Provider Card"><div class="photo" role="img" aria-label="Photo of ${p.n}"></div>
+  <div class="provider__info">${nx&&cta?`<div class="provider__cta">${cta}</div>`:''}<div class="provider__head"><h3 class="provider__name">${p.n}</h3><span class="provider__sub">${p.c} • Offers ${p.offers}</span><span class="provider__sub">${p.st.map(s=>ST_FULL[s]).join(', ')}</span></div>
+  <div class="ptags"><span class="ptag">${IC.pin}${visitText(p)}</span><span class="ptag">${IC.people}${p.aud}</span><span class="ptag">${IC.heart}${p.areas.slice(0,3).join(', ')}${more}</span></div>
+  <p class="provider__bio">“${p.n} ${p.bio}…”</p>
+  ${nx?`<span class="nextappt">Next Available Appointment: ${fmtLong(nx.d)}</span>`:`<span class="nextappt">No upcoming availability</span>`}
+  <button type="button" class="provider__link" data-do="profile:${p.id}">View Profile →</button></div></article>`;}
+function openProfile(id){
+  const p=PROVIDERS.find(x=>x.id===id), d=$('#profile'), nx=nextSlot(p,null), first=p.n.split(' ')[0];
+  const F=(k,v)=>`<div class="prof__f"><dt>${k}</dt><dd>${v}</dd></div>`;
+  const about=p.about||[`${p.n} ${p.bio}.`,'[Placeholder] More about their background, approach and what to expect in a first session.'];
+  const addr=p.modes.includes('in-person')?F('In-person practice address',`${p.addr}<br><a href="#" data-do="stub:Location page">Learn more about this location →</a>`):'';
+  d.className=(UI.vp==='mobile'||innerWidth<760)?'is-mobile':'';
+  d.setAttribute('aria-labelledby','prof-h');
+  d.innerHTML=`<div class="prof" data-component="Provider Profile"><button type="button" class="prof__close" data-do="closeProfile" aria-label="Close profile">×</button>
+  <div class="prof__header"><div class="prof__photo" role="img" aria-label="Photo of ${p.n}"></div>
+   <div class="prof__who"><h2 class="prof__name" id="prof-h">${p.n}</h2><span class="prof__cred">${p.role}</span><span class="prof__cred">${p.creds}</span>
+   ${nx?`<span class="nextappt" style="margin-top:8px">Next Available Appointment: ${fmtLong(nx.d)}</span>`:`<span class="nextappt" style="margin-top:8px">No upcoming availability</span>`}
+   ${nx?`<div style="margin-top:16px">${Btn('Book with '+first,`data-do="bookFromProfile:${p.id}"`,'btn--primary')}</div>`:''}</div></div>
+  <section class="prof__sec"><h3>About this provider</h3><div class="prof__about">${about.map(t=>`<p>${t}</p>`).join('')}</div></section>
+  <section class="prof__sec"><h3>Specialty</h3><dl class="prof__grid" style="margin:0">${F('Concerns',p.areas.join(', '))}${F('Life stage',p.aud)}${F('Therapy type',p.therapyType||'Cognitive Behavioral Therapy (CBT)')}${F('Services',p.offers)}</dl></section>
+  <section class="prof__sec"><h3>Location</h3><dl class="prof__grid" style="margin:0">${F('Licensed in',p.st.map(s=>ST_FULL[s]).join(', '))}${F('Appointment type',p.modes.map(m=>m==='virtual'?'Virtual':'In-Person').join(', '))}${addr}</dl></section>
+  <section class="prof__sec"><h3>Education and Background</h3><dl class="prof__grid" style="margin:0">${F('Education',p.edu||'[Placeholder] Education details')}${F('Languages spoken',p.lang.join(', '))}</dl></section>
+  <section class="prof__sec"><h3>Covered Insurance</h3><p style="font-size:18px;line-height:28px">${p.n} accepts the following insurance plans. Self-pay is also an option.</p>
+   <div class="prof__ins">${p.st.map(s=>`<div><strong>${ST_FULL[s]}</strong><ul>${(INS[s]||[]).slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}</div></section>
+  <div class="btn-row">${Btn('Close','data-do="closeProfile"')}</div></div>`;
+  d.showModal();}
+
+/* =====================================================================
+   SCREENS
+   ===================================================================== */
+const N=(t,b)=>({t,b});
+const SC={};
+const def=(id,name,o)=>SC[id]={id,name,...o};
+
+def('entry','00 Prototype start (scaffold)',{step:null,notes:[N('Prototype scaffold','Simulates the four entry points from the board. Not a wireframe screen. Each CTA hands different remembered context to the landing page.')],render(){
+ const t=nextSlot(PROVIDERS[0],null);
+ return `<div class="col"><div><p class="eyebrow">Prototype scaffold · not part of the wireframes</p><h1 id="h1" tabindex="-1">Choose an entry point</h1><p style="margin-top:8px">Simulates where a visitor clicks “book” from. Each option shows what the flow remembers.</p></div>
+ <div class="launch">
+  <div class="card" data-component="Entry Card"><h3>“Get started” call to action</h3><p class="small">No context carried through.</p>${Btn('Get started','data-do="start:get-started"','btn--primary')}</div>
+  <div class="card"><h3>Provider page → Book appointment</h3><p class="small">Opens Jennifer Weber’s page; the visitor picks a type and time, then books.</p>${Btn('Book appointment','data-do="start:provider"','btn--primary')}</div>
+  <div class="card"><h3>Service / condition page</h3><p class="small">Opens an Anxiety condition page; “Get Started” remembers the condition: Anxiety.</p>${Btn('Open condition page','data-do="start:service"','btn--primary')}</div>
+  <div class="card"><h3>Location page → Book at this location</h3><p class="small">Remembers ${LOCATION.name} location; in-person pre-selected.</p>${Btn('Book at this location','data-do="start:location"','btn--primary')}</div>
+ </div></div>`}});
+
+function BookPanel(o){ // shared by the provider and location entry pages
+ const b=o.b, mode=S.sel.mode, d=S.sel.date, slots=d?daySlots(b,d,mode):[];
+ const groups=[['Morning',t=>t.includes('AM')],['Afternoon',t=>t.includes('PM')&&parseInt(t)!==6&&parseInt(t)!==7||parseInt(t)===12],['Evening',t=>t.includes('PM')&&(parseInt(t)===6||parseInt(t)===7)]];
+ const timeCol=d?groups.map(([g,f])=>{const ts=slots.filter(([t])=>f(t));return ts.length?`<div><div class="period">${g}</div><div class="pills">${ts.map(([t])=>`<button type="button" class="pill" data-component="Pill" data-do="pickTime:${t}" data-key="t${t.replace(/\W/g,'')}" aria-pressed="${S.sel.time===t}">${t}</button>`).join('')}</div></div>`:''}).join(''):`<p class="small">Choose a date to see available times.</p>`;
+ const addr=mode==='in-person'?o.addr:null;
+ const confirm=S.sel.time?`<div class="confirm" data-component="Confirm Card"><strong>Initial Assessment</strong>
+   <div class="detail"><span class="ic">${IC.cal}</span>${fmtLong(d)}</div><div class="detail"><span class="ic">${IC.clock}</span>${S.sel.time} · 60 Minutes</div><div class="detail"><span class="ic">${IC.pin}</span>${addr?`<u>${addr}</u>`:'Virtual'}</div>
+   <div style="margin-top:8px">${Btn('Book Appointment',`data-do="${o.action}"`,'btn--primary')}</div></div>`:`<p class="small">Choose a time to continue.</p>`;
+ return `<section class="pg-book" data-component="Booking Widget"><div><h2>${o.title}</h2><p class="small" style="margin-top:6px">60 minutes${o.both?'':` <span style="margin-left:12px">${o.type}</span>`}</p>
+  ${o.both?`<fieldset style="margin-top:8px;border:0;padding:0" aria-label="Appointment type"><div class="inline-radios">${['virtual','in-person'].map(m=>`<label class="radio-inline" data-component="Radio"><input type="radio" name="mode" value="${m}" ${mode===m?'checked':''} data-do="setMode:${m}"><span class="mark"></span>${m==='virtual'?'Virtual':'In-Person'}</label>`).join('')}</div></fieldset>`:''}</div>
+  <div class="slots"><div class="slots__col"><h3>Select Date</h3>${Calendar(b)}</div>
+  <div class="slots__col slots__time"><h3>Select Time</h3>${timeCol}</div>
+  <div class="slots__col slots__confirm"><h3>Confirm Appointment</h3>${confirm}</div></div></section>`;}
+
+def('provider-page','00a Provider page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates the provider profile page a visitor books from. The booking widget works like the slot picker: the visitor can change type, date and time, then “Book Appointment” starts the flow with that choice remembered.')],render(){
+ const p=PROVIDERS[0], b=S.book;
+ const F=(k,v)=>`<div class="prof__f"><dt>${k}</dt><dd>${v}</dd></div>`;
+ const both=p.modes.includes('virtual')&&p.modes.includes('in-person');
+ return `<div class="col col--wide" style="padding-top:40px;padding-bottom:64px;gap:40px"><span class="crumb"><a href="#" data-do="stub:Meet Our Providers">Meet Our Providers</a> &gt; ${p.n}</span>
+ <div class="pg-head" style="align-items:center" data-component="Provider Header"><div class="pg-photo" role="img" aria-label="Photo of ${p.n}"></div>
+  <div class="prof__who"><h1 class="prof__name" id="h1" tabindex="-1">${p.n}</h1><span class="prof__cred">${p.role}</span><span class="prof__cred">${p.creds}</span></div></div>
+ ${BookPanel({b,title:`Book Initial Assessment with ${p.n}`,both,addr:p.addr,type:'Virtual',action:'providerBook'})}
+ <section class="prof__sec"><h2>About this provider</h2>${(p.about||[]).map(t=>`<p>${t}</p>`).join('')}</section>
+ <section class="prof__sec"><h2>Specialty</h2><dl class="prof__grid" style="margin:0">${F('Concerns',p.areas.join(', '))}${F('Life stage',p.aud)}${F('Therapy type',p.therapyType||'Cognitive Behavioral Therapy (CBT)')}${F('Services',p.offers)}</dl></section>
+ <section class="prof__sec"><h2>Location</h2><dl class="prof__grid" style="margin:0">${F('Licensed in',p.st.map(s=>ST_FULL[s]).join(', '))}${F('Appointment type',p.modes.map(m=>m==='virtual'?'Virtual':'In-Person').join(', '))}${p.modes.includes('in-person')?F('In-person practice address',p.addr):''}</dl></section>
+ <section class="prof__sec"><h2>Education and Background</h2><dl class="prof__grid" style="margin:0">${F('Education',p.edu||'')}${F('Languages spoken',p.lang.join(', '))}</dl></section>
+ <section class="prof__sec"><h2>Covered Insurance</h2><p>${p.n} accepts the following insurance plans. Self-pay is also an option.</p>
+  <div class="prof__ins">${p.st.map(s=>`<div><strong>${ST_FULL[s]}</strong><ul>${(INS[s]||[]).slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}</div></section></div>`}});
+
+def('location-page','00b Location page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates an individual location page. The booking widget is in-person only. “Book Appointment” starts the flow with this location remembered and in-person pre-selected.')],render(){
+ const L=LOCATION, [street,city]=[L.addr.split(', ')[0],L.addr.split(', ').slice(1).join(', ')], nm=L.name+', '+L.state;
+ const hrs=['Sunday: 8:00 AM - 10:00 PM','Monday: 8:00 AM - 10:00 PM','Tuesday: 10:00 AM - 10:00 PM','Wednesday: 10:00 AM - 10:00 PM','Thursday: 10:00 AM - 10:00 PM','Friday: 10:00 AM - 10:00 PM','Saturday: 8:00 AM - 10:00 PM'];
+ return `<div class="col col--wide" style="padding-top:40px;padding-bottom:64px;gap:40px"><span class="crumb"><a href="#" data-do="stub:Locations">Locations</a> &gt; ${nm}</span>
+ <div class="pg-head" data-component="Location Header"><div class="loc__info"><h1 class="prof__name" id="h1" tabindex="-1">${nm}</h1>
+   <p class="pg-hours"><u>${street}<br>${city}</u></p>
+   <div class="pg-hours">Hours:<ul>${hrs.map(h=>`<li>${h}</li>`).join('')}</ul>All times are displayed in EDT</div>
+   <p class="pg-hours">Phone: <u>${PHONE}</u></p>
+   <p class="pg-hours">Note: all mental health related appointments are by appointment only, we do not take walk-ins. Give us a call or schedule below.</p></div>
+  <div class="loc__media"><div class="pg-photo" role="img" aria-label="Photos of the ${L.name} location"></div>
+   <div class="carousel" aria-hidden="true"><span class="carousel__btn">‹</span><span class="dots"><i class="on"></i><i></i><i></i></span><span class="carousel__btn">›</span></div></div></div>
+ ${BookPanel({b:S.book,title:'Book Initial Assessment at this location',both:false,type:'In Person',addr:L.addr,action:'locationBook'})}
+ <section class="pg-sec"><h2>About this location</h2><p>[Placeholder] Description of the ${L.name} practice, parking and transit information, and what to expect at your first visit.</p></section></div>`}});
+
+def('service-page','00c Service / condition page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates a condition page (Anxiety). Every “Get Started” on the page launches the booking flow with the condition remembered (it preselects the area of help later). “Learn More” links and the insurance checker are not part of this prototype.')],render(){
+ const LOREM='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', GS=Btn('Get Started','data-do="serviceGo"');
+ const svc=['Therapy','Medication & Psychiatry','ADHD Evaluations','Executive Functioning Coaching','Parent Coaching'];
+ const pc=()=>`<div class="cp-pcard" data-component="Provider Card"><div class="top"><span class="av chk"></span><div><div style="font-size:18px">Jennifer Weber</div><div>LCSW • Offers Medication &amp; Psychiatry</div><div>New Jersey</div></div></div><div class="small">Virtual<br>Kids, Teens, Young Adults, Adults<br>ADHD, Depression, Anxiety +3 more</div><div class="small">“Dr. Jennifer Weber is a child and adolescent psychologist, specializing in trauma, identity development, mood and anxiety disorders, ADHD, and adjustment disorders. She works directly with children, teens, and young adults…”</div><div><strong class="nextappt">Next Available Appointment: November 5th</strong></div><div class="small" style="text-align:right">View Profile →</div></div>`;
+ return `<div class="cp" data-component="Concern Page"><div class="cp-hero"><h1 id="h1" tabindex="-1">Anxiety</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>${GS}</div>
+ <div class="cp-wrap">
+  <div class="cp-sbs"><div><h2>[Intro section about the condition]</h2><p>${LOREM}</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div><div class="chk"></div></div>
+  <div class="cp-sbs"><div class="chk"></div><div><h2>Optional additional side-by-side block</h2><p>${LOREM}</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div></div>
+  <div><h2>Optional Simple Header/Text block</h2><p style="margin-top:16px;max-width:1000px">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p><p style="margin-top:16px;max-width:1000px">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p></div>
+  <div data-component="How It Works"><h2 style="text-align:center;margin-bottom:32px">How it works</h2><div class="cp-how">${['Give us some details on you or your family member, what you need support with and your preferences.','We’ll match you with a provider right away, or you have the option for a free consult to get more information before making a decision.','Schedule and meet with your provider online or in-person to start your journey of a better you. Billing and scheduling is handled in our convenient patient portal.'].map((t,i)=>`<div><div class="num">${i+1}<span class="dot"></span></div><h3 style="font-size:18px;line-height:26px">Optional Heading</h3><p>${t}</p></div>`).join('')}</div><div style="text-align:center;margin-top:32px">${GS}</div></div>
+  <div data-component="Service Grid"><h2 style="margin-bottom:32px">Services to treat anxiety</h2><div class="cp-grid">${svc.map(x=>`<div><div class="chk"></div><h3>${x}</h3><p>${LOREM}</p>${Btn('Learn More About '+x,'data-do="stub:'+x+'"')}</div>`).join('')}</div></div>
+  <div class="cp-ins" data-component="Insurance Checker"><div><h2>Check if you’re covered</h2><p>We are proudly in-network with many major insurance providers, offer competitive self-pay rates if we are out-of-network with your insurance or prefer to pay directly, and most services, including therapy, psychiatry, and medication management, are HSA/FSA eligible.</p><div class="logos"><span>aetna</span><span>cigna</span><span>Anthem</span><span>Horizon</span><span>Point Comfort</span><span>+ More</span></div><a href="#" data-do="stub:Covered insurance plans">See all covered insurance plans by state</a></div>
+   <div><h3 style="font-size:20px">Check your insurance eligibility</h3><div class="sel"><div><span class="small">State</span><span class="fake"></span></div><div><span class="small">Insurance Plan</span><span class="fake"></span></div></div></div></div>
+  <div data-component="Provider Carousel"><h2 style="margin-bottom:24px">Providers Who Treat Anxiety</h2><div class="cp-pcards">${pc()}${pc()}${pc()}</div><p style="text-align:center;margin-top:24px"><a href="#" data-do="stub:Providers">See more providers who work in Medication &amp; Psychiatry →</a></p></div>
+  <div><h2 style="text-align:center;margin-bottom:32px">Effective Help for All Stages of Life</h2><div class="cp-life">${['Kids','Teens','Young Adults','Adults','Maternal & Perinatal','Parents & Families'].map(x=>`<div class="chk">${x}</div>`).join('')}</div></div>
+  <div><h2 style="text-align:center;margin-bottom:32px">Proven results</h2><div class="cp-stats"><div><strong>3,000+</strong>positive reviews</div><div><strong>20,000+</strong>appointments completed</div><div><strong>90%</strong>Improvement rate over 5 sessions</div></div></div>
+  <div><h2 style="text-align:center;margin-bottom:32px">Don’t Just Take Our Word for It</h2><div class="cp-test">${[1,2,3].map(()=>`<div><p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p><p>-- Danielle, Parent</p></div>`).join('')}</div></div>
+  <div class="cp-faq"><h2>Frequently Asked Questions</h2>${[1,2,3,4,5,6,7].map(()=>'<div><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</span><span>+</span></div>').join('')}</div>
+  <div><h2 style="margin-bottom:24px">Anxiety Resources</h2><div class="cp-res">${[1,2,3].map(()=>'<div><div class="chk"></div><span class="small">Article • August 1st 2023</span><h3 style="font-size:20px;line-height:28px">Managing Anxiety: Cognitive and Behavioral Approaches</h3><p class="small">Discover practical methods to reduce anxiety symptoms and enhance daily functioning through therapy and lifestyle changes.</p><span class="tag">Anxiety</span></div>').join('')}</div><p style="text-align:center;margin-top:24px"><a href="#" data-do="stub:Resources">See more anxiety resources →</a></p></div>
+ </div>
+ <div class="cp-cta" data-component="CTA"><h2>Take the next step towards mental health support.</h2>${GS}<p>Still have questions? Check out our <a href="#" data-do="stub:FAQs">Frequency Asked Questions</a> or <a href="#" data-do="stub:Contact Us">Contact Us</a></p></div></div>`}});
+
+def('landing','01 Get started landing',{step:0,notes:[
+ N('Remembered context','Provider + appointment type + day/time, selected service or condition (one or the other), or location is remembered from the entry point and shown here as a reminder chip.'),
+ N('Secondary messaging','“Already a current patient? Log in to the patient portal to manage your appointments.”'),
+ N('Phone number','Clear phone number on every page for anyone who wants to call (Diana).')],render(){
+ let ctx='';
+ const saved=t=>Banner('',`<p><strong>We saved your selection:</strong> ${t}</p>`,'banner--light');
+ if(S.provider){const p=S.provider; ctx=saved(`Booking with <strong>${p.n}, ${p.c}</strong> · ${S.pre.mode==='in-person'?'In-person':'Virtual'}${S.pre.date?` · ${fmtShort(S.pre.date)} at ${S.pre.time}`:''}`);}
+ else if(S.condition)ctx=saved(`Interested in help with <strong>${S.condition}</strong>`);
+ else if(S.service)ctx=saved(`Interested in <strong>${SERVICES.find(s=>s.id===S.service).l}</strong>`);
+ else if(S.location)ctx=saved(`Booking at our <strong>${S.location.name}</strong> location · ${S.location.addr}${S.pre&&S.pre.date?` · ${fmtShort(S.pre.date)} at ${S.pre.time}`:''}`);
+ return `<div class="col col--wide"><div style="max-width:760px">${Header('Let’s get you scheduled','It takes about 3 minutes. Here’s what to expect.')}</div>${ctx}
+ <div class="steps">${[['Tell us about you','Who the visit is for and how to reach you.'],['Tell us what you need','Choose a service and check your insurance.'],['Find the right fit','We’ll match you with a provider, or you can book a free consult.'],['Pick a time','Choose a day and time that works.']].map((s,i)=>`<div class="step" data-component="Step Card"><span class="step__n">${i+1}</span><strong>${s[0]}</strong><span class="small">${s[1]}</span></div>`).join('')}</div>
+ <div class="btn-row">${Btn('Get started','data-go="who"','btn--primary')}</div>
+ <p class="small">Already a current patient? <a href="#" data-do="portal">Log in to the patient portal</a> to manage your appointments.</p>${Help()}</div>`}});
+
+def('who','02 Who is this for',{step:0,notes:[N('Branching','“My patient” redirects to the refer-a-patient booking form. “Myself” and “My child” lead to different contact forms.')],render(){
+ return `<div class="col">${Back()}${Stepper(0)}${Header('Who are you seeking care for?')}
+ ${Opts('who',[{v:'self',l:'Myself'},{v:'child',l:'My child'},{v:'patient',l:'My patient',d:'For healthcare professionals referring a patient'}],S.who,{aria:'Who are you seeking care for'})}
+ <div class="btn-row">${Btn('Continue','data-do="whoNext"','btn--primary')}</div>${S.err.who?`<div class="err" role="alert">${S.err.who}</div>`:''}${Help()}</div>`}});
+
+def('referral','02b Refer a patient (redirect)',{step:0,notes:[N('Redirect','Leaves this flow for the existing refer-a-patient booking form.')],render(){
+ return `<div class="col">${Back()}${Header('Referring a patient?','Providers book through our referral form so we can coordinate care with you.')}
+ ${Banner('Redirect','<p class="small">In production this opens the refer-a-patient booking form.</p>')}<div class="btn-row">${Btn('Go to the referral form','data-do="stub:Referral form"','btn--primary')}${Btn('Book for someone else','data-go="who"')}</div>${Help()}</div>`}});
+
+def('details','03 Your details',{step:0,notes:[
+ N('Variants','Self: your name, DOB, sex assigned at birth (with “Why do we need this?”), pronouns (optional), email, phone, zip. Child: “Your details” (parent/guardian name, email, phone, zip) followed by “Your child’s details” (name, DOB, sex assigned at birth, pronouns).'),
+ N('Phone number','Phone often causes drop-off. Added “why we ask” messaging. Open question: is this the best place to collect it?'),
+ N('Booking on behalf of someone else','Collect parent/guardian name, phone and email as well as the patient’s name, DOB and zip.'),
+ N('Date format','Date of birth is entered as MM/DD/YYYY.'),
+ N('Validation','DOB guard: adults only for “Myself”, under-18 only for “My child”. Email, phone and zip formats are validated.')],render(){
+ const c=S.who==='child';
+ const contact=`${Field('Email address','email',{type:'email',ac:'email'})}
+ ${Field('Preferred phone number','phone',{type:'tel',ac:'tel',hint:'We only use your phone number for appointment reminders and to reach you if something changes.'})}
+ ${Field('Zip code','zip',{im:'numeric',ac:'postal-code',hint:'We use this to show you the services available in your state.'})}`;
+ return `<div class="col">${Back()}${Stepper(0)}${Header(c?'Tell us about you and your child':'Tell us about you')}
+ <form id="form" novalidate class="col" style="padding:0;max-width:none">
+ ${c?`<h2>Your details</h2><div class="row2">${Field('Your first name','gFirst',{ac:'given-name'})}${Field('Your last name','gLast',{ac:'family-name'})}</div>`:''}
+ ${c?contact:''}
+ ${c?'<h2>Your child’s details</h2>':''}
+ <div class="row2">${Field(c?'Child’s first name':'First name','first',{ac:c?'off':'given-name'})}${Field(c?'Child’s last name':'Last name','last',{ac:c?'off':'family-name'})}</div>
+ ${Field(c?'Child’s date of birth':'Date of birth','dob',{ph:'MM/DD/YYYY',im:'numeric',hint:'Format: MM/DD/YYYY'})}
+ <div>${Select('Sex assigned at birth','sex',['Female','Male','Prefer not to say'])}<details class="why" style="margin-top:6px"><summary>Why do we need this?</summary><p>[Placeholder] Some clinical assessments and insurance claims rely on sex assigned at birth. Needs clinical/legal review.</p></details></div>
+ ${Select('Preferred pronouns','pron',['she/her','he/him','they/them','Other','Prefer not to say'],{opt:true})}
+ ${c?'':contact}
+ </form>
+ <div class="btn-row">${Btn('Continue','data-do="detailsNext"','btn--primary')}</div>${Help()}</div>`}});
+
+def('block-minor','03b Must be 18 to book for yourself',{step:0,notes:[N('Guard','Board message: you must be over 18 to book an appointment for yourself, ask a parent/guardian. Copy is a placeholder.')],render(){
+ return `<div class="col">${Back()}${Header('You’ll need a parent or guardian to book')}${Banner('','<p>[Placeholder] You must be 18 or older to book an appointment for yourself. Please ask a parent or guardian to book for you.</p>','banner--light')}
+ ${Help()}</div>`}});
+def('block-adult','03c Must book for yourself if 18+',{step:0,notes:[N('Guard','Board message: you cannot book on behalf of someone over 18, they must book themselves. Copy is a placeholder.')],render(){
+ return `<div class="col">${Back()}${Header('This person will need to book for themselves')}${Banner('','<p>[Placeholder] We can’t book an appointment on behalf of someone who is 18 or older. They’ll need to book for themselves.</p>','banner--light')}
+ ${Help()}</div>`}});
+
+def('heard','04 How did you hear about us',{step:0,notes:[N('Optional','Question is optional. Order is randomised on each visit; “Other” stays last.')],render(){
+ if(!S._heardOrder)S._heardOrder=[...HEARD].sort(()=>Math.random()-.5).concat(['Other']);
+ return `<div class="col">${Back()}${Stepper(0)}${Header('How did you hear about us?','Optional')}
+ ${Opts('heard',S._heardOrder.map(x=>({v:x,l:x})),S.heard,{aria:'How did you hear about us',grid:true})}
+ <div class="btn-row">${Btn('Continue','data-do="heardNext"','btn--primary')}</div>${Help()}</div>`}});
+
+def('services','05 Choose a service',{step:1,notes:[
+ N('State-based list','Services shown depend on the state derived from the zip code (CT, FL, NJ, NY, TX, all other states).'),
+ N('Preselection','If the visitor came from a service page, that service is preselected.'),
+ N('Limited online availability','CT, FL and TX have limited online availability: tell users to call if they don’t see times.'),
+ N('Copy','Short service descriptions are placeholder copy for content review.')],render(){
+ const st=userState(), ids=[...BY_STATE[st],'unsure'];
+ const sel=S.svc||S.service;
+ return `<div class="col">${Back()}${Stepper(1)}${Header(st==='OT'?'In your state, we currently offer these services':`In ${stateName()}, we currently offer the following services`,'What type of support are you looking for?')}
+ ${Opts('svc',ids.map(id=>{const s=SERVICES.find(x=>x.id===id);return {v:id,l:s.l,d:s.d}}),ids.includes(sel)?sel:null,{aria:'Service'})}
+ ${S.err.svc?`<div class="err" role="alert">${S.err.svc}</div>`:''}
+ <p class="small">Not in ${stateName()==='your state'?'this state':stateName()}? <button type="button" class="link" data-go="details">Change your zip code</button></p>
+ <div class="btn-row">${Btn('Continue','data-do="svcNext"','btn--primary')}</div>${Help()}</div>`}});
+
+const SELF_PAY='I prefer self-pay', NO_PLAN='I don’t see my insurance plan';
+const RATES={
+ consult:{t:'Initial Consultation',lines:['Get your questions answered, learn about our services, and get matched with a provider: <strong>$0</strong>'],links:[['Schedule a free consult →','toSlots:consult']]},
+ therapy:{t:'Therapy',lines:['Initial Assessment: <strong>$250</strong> (special self-pay rate: $99)','Individual or family therapy: <strong>$130</strong>','Group therapy: <strong>$75</strong>'],links:[['Learn more about therapy →','stub:Therapy page']]},
+ med:{t:'Medication Management',lines:['Initial Assessment: <strong>$200</strong>','Follow-up visit: <strong>$75</strong>'],links:[['Learn more about medication management →','stub:Medication management page']]},
+ coaching:{t:'Coaching',lines:['Initial Assessment: <strong>$150</strong>','60-minute follow up visit: <strong>$150</strong>','30-minute follow up visit (Parent Coaching only): <strong>$75</strong>'],links:[['Parent Coaching →','stub:Parent coaching page'],['Executive Functioning Coaching →','stub:Executive functioning coaching page']]}};
+const rateKey=id=>id==='therapy'?'therapy':id==='med'?'med':['ef','parent'].includes(id)?'coaching':null;
+function SelfPayRates(svc){
+ const keys=['consult',rateKey(svc)].filter(Boolean);
+ return `<section class="selfpay" data-component="Self Pay Rates" aria-label="Self pay rates">
+  <div class="rates">${keys.map(k=>{const r=RATES[k];return `<div class="rate" data-component="Rate Card"><h3>${r.t}</h3><div class="rate__lines">${r.lines.map(l=>`<p>${l}</p>`).join('')}</div></div>`}).join('')}</div></section>`;}
+
+def('insurance','06 Check your insurance',{step:1,notes:[N('Insurance checker','Uses the existing Insurance Checker pattern: choose from plans covered in the selected state, “I prefer self-pay” or “I don’t see my insurance plan”. Plan names are placeholders.'),N('Result message','Shows “we cover you” or the self-pay message, then continues.'),N('Self-pay rates','“I prefer self-pay” and “I don’t see my insurance plan” both show the Self Pay Rates from the Insurance & Cost page: the free consult plus the rates for the selected service (Therapy or Medication Management). Rates and copy are from the wireframe, so confirm with the client.')],render(){
+ const st=userState(), list=[...(INS[st]||[]),SELF_PAY,NO_PLAN];
+ let msg='',rates='';
+ if(S.ins){const cov=INS[st]?.includes(S.ins);
+  if(cov)msg=Banner('Good news, we cover your insurance!','<p class="small">[Message about coverage] You’ll confirm your insurance details when you complete registration.</p>','banner--light');
+  else{ msg=S.ins===SELF_PAY?Banner('Self-pay is a great option.','<p class="small">[Message about self pay] You’ll see the rates below before you commit to a visit.</p>','banner--light'):Banner('We don’t currently cover your plan, but we have affordable self-pay options available.','<p class="small">[Message about self pay] You’ll see the rates below before you commit to a visit.</p>','banner--light'); rates=SelfPayRates(S.svc); } }
+ return `<div class="col">${Back()}${Stepper(1)}${Header('Let’s check your insurance coverage')}
+ <div class="field" data-component="Select"><label for="ins">Insurance plan in ${stateName()}</label><select class="select" id="ins" data-do="insPick"><option value="">Select…</option>${list.map(x=>`<option ${x===S.ins?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
+ <div aria-live="polite">${msg}</div>${rates}
+ <div class="btn-row">${Btn('Continue','data-do="insNext"','btn--primary')}</div>${S.err.ins?`<div class="err" role="alert">${S.err.ins}</div>`:''}${Help()}</div>`}});
+
+def('consult-intro','07 Free consult',{step:2,notes:[N('Who lands here','Coaching, ADHD evaluation, DBT, maternal health, “I’m not sure”, and children 4 and younger.')],render(){
+ const young=patientAge()!==null&&patientAge()<5&&S.who==='child';
+ return `<div class="col">${Back()}${Stepper(2)}${Header('Schedule a free informational consult')}
+ ${Banner('',`<p>We’d love to schedule you for a free informational consult. Here you can get your questions answered, get guidance on the right service for your needs, and learn more about our programs and pricing.</p>${young?'<p class="small">[Placeholder] For children 4 and younger, we start with a consult so we can guide you to the right support.</p>':''}`)}
+ <div class="btn-row">${Btn('Choose a time','data-do="toSlots:consult"','btn--primary')}</div>${Help()}</div>`}});
+
+def('assessment-intro','08 Initial assessment (medication)',{step:2,notes:[N('No provider choice','For Medication & Psychiatry we book an assessment, not a specific provider. Times come from all assessing providers; the user is booked with whoever fits the slot.')],render(){
+ return `<div class="col">${Back()}${Stepper(2)}${Header('Start with an initial assessment')}
+ ${Banner('',`<p>[Message about getting an initial assessment followed by matching with a doctor] You’ll meet with one of our psychiatric providers for an assessment. After your visit, we’ll match you with the provider who’s the best fit for ongoing care.</p>`)}
+ <div class="btn-row">${Btn('Choose a time','data-do="toSlots:assessment"','btn--primary')}</div>${Help()}</div>`}});
+
+def('ready','09 Ready to be matched?',{step:2,notes:[N('Decision','Ready to get matched? Or free consult if they still have questions. Or book the next available therapist if they have no preference.')],render(){
+ return `<div class="col">${Back()}${Stepper(2)}${Header('Ready to get matched with a therapist?','Pick the option that feels right. You can always call us.')}
+ ${Opts('ready',[{v:'match',l:'Match me with a therapist',d:'Answer a few questions and see therapists who fit.'},{v:'consult',l:'I still have questions',d:'Book a free informational consult.'},{v:'next',l:'No preference',d:'Book me with the next available therapist.'}],null,{aria:'Next step'})}
+ <div class="btn-row">${Btn('Continue','data-do="readyNext"','btn--primary')}</div>${Help()}</div>`}});
+
+def('alt','10 Provider unavailable',{step:2,notes:[N('Fallbacks','Shown when the chosen provider doesn’t practice in the user’s state, or has no upcoming availability. Shows similar therapists, then continues to the “Ready to be matched?” step.')],render(){
+ const p=S.provider, st=userState(); const reason=S._altReason;
+ const alts=PROVIDERS.filter(x=>x.accept&&x.st.includes(st)&&x.id!==p?.id).slice(0,3);
+ return `<div class="col col--wide">${Back()}${Stepper(2)}${Header(reason==='state'?`${p.n} doesn’t practice in ${stateName()}`:`${p.n} doesn’t have any upcoming availability`,reason==='state'?'Let’s find someone who does.':'Let’s find someone who does.')}
+ <div class="col" style="padding:0;max-width:none">${alts.map(a=>ProviderCard(a,Btn('Book with '+a.n.split(' ')[0],`data-do="pickProvider:${a.id}"`,'btn--primary'),null)).join('')||Banner('',`<p>No exact matches. ${Help()}</p>`)}</div>
+ <div class="btn-row">${Btn('See other options','data-go="ready"')}</div>${Help()}</div>`}});
+
+def('m-areas','11 Match: areas of help',{step:2,notes:[N('Preselection','If they came from a condition page, that condition is preselected. Filters from the provider directory are NOT carried through.'),N('Multi-select','Options per the board; “I’m not sure” included.')],render(){
+ const val=S.areas; return `<div class="col">${Back()}${Stepper(2)}${Header('What areas are you looking for help with?','Select all that apply.')}
+ ${Opts('areas',AREAS.map(a=>({v:a,l:a})),val,{aria:'Areas of help',grid:true})}
+ <div class="btn-row">${Btn('Continue','data-do="areasNext"','btn--primary')}</div>${Help()}</div>`}});
+def('m-mode','12 Match: how to meet',{step:2,notes:[N('State rule','Only shown in states that offer in-person (currently NY). Include messaging that in-person is limited.'),N('Location entry','If they came from “Book at this location”, in-person is preselected with the address of that practice.')],render(){
+ const loc=S.location;
+ return `<div class="col">${Back()}${Stepper(2)}${Header('How do you want to meet your therapist?')}
+ ${loc?Banner('',`<p>You chose our <strong>${loc.name}</strong> location: ${loc.addr}</p>`,'banner--light'):''}
+ ${Opts('mode',[{v:'in-person',l:'In-person'},{v:'virtual',l:'Virtual'},{v:'any',l:'No preference'}],S.mode,{aria:'Appointment type'})}
+ ${Banner('','<p class="small">In-person appointments are limited. Virtual visits usually offer more availability.</p>','banner--light')}
+ <div class="btn-row">${Btn('Continue','data-do="modeNext"','btn--primary')}</div>${Help()}</div>`}});
+def('m-location','12b Match: choose a location',{step:2,notes:[
+ N('In-person only','Shown after choosing In-person. Lists practice locations within 30 miles of the zip code they entered, nearest first. Multi-select: therapists are pulled from every location they select.'),
+ N('No locations nearby','If nothing is within 30 miles, say so and direct them to virtual (with a phone number for help). Distances here are approximate demo values.')],render(){
+ const locs=nearbyLocs();
+ if(!locs.length)return `<div class="col">${Back()}${Stepper(2)}${Header('We don’t have in-person locations near you','There aren’t any in-person locations within 30 miles of '+esc(S.f.zip||'your zip code')+'.')}
+  ${Banner('Virtual visits are available in '+stateName(),'<p class="small">Meet with a therapist by video from home, often with more availability than in-person.</p>','banner--light')}
+  <div class="btn-row">${Btn('See virtual options','data-do="goVirtual"','btn--primary')}${Btn('Edit my zip code','data-go="details"')}</div>${Help()}</div>`;
+ S.locIds=(S.locIds||[]).filter(id=>locs.some(l=>l.id===id));
+ if(!S.locIds.length&&!S._locTouched&&S.location){const m=locs.find(l=>l.name===S.location.name); if(m)S.locIds=[m.id];}
+ return `<div class="col">${Back()}${Stepper(2)}${Header('Choose locations near you',`Select one or more in-person locations within ${RADIUS_MI} miles of ${esc(S.f.zip||'your zip code')}.`)}
+ ${Opts('locIds',locs.map(l=>({v:l.id,l:l.name+' · '+l.mi+' mi',d:l.addr})),S.locIds,{aria:'In-person locations'})}
+ ${Banner('',`<p class="small">We’ll show you therapists from the locations you select.</p>`,'banner--light')}
+ ${S.err.loc?`<div class="err" role="alert">${S.err.loc}</div>`:''}
+ <p class="small">Prefer not to travel? <button type="button" class="link" data-do="goVirtual">See virtual options</button></p>
+ <div class="btn-row">${Btn('Continue','data-do="locNext"','btn--primary')}</div>${Help()}</div>`}});
+
+def('m-gender','13 Match: therapist gender',{step:2,notes:[],render(){
+ return `<div class="col">${Back()}${Stepper(2)}${Header('Do you have a preference on the gender identity of your therapist?')}
+ ${Opts('gender',['Male','Female','Non-Binary','No preference'].map(x=>({v:x,l:x})),S.gender,{aria:'Therapist gender'})}
+ <div class="btn-row">${Btn('Continue','data-do="genderNext"','btn--primary')}</div>${Help()}</div>`}});
+def('m-lang','14 Match: languages',{step:2,notes:[],render(){
+ return `<div class="col">${Back()}${Stepper(2)}${Header('What about languages spoken?','Select all that apply, or skip.')}
+ ${Opts('langs',LANGS.map(x=>({v:x,l:x})),S.langs,{aria:'Languages'})}
+ <div class="btn-row">${Btn('See therapists','data-do="langNext"','btn--primary')}</div>${Help()}</div>`}});
+
+function matchList(){
+ const st=userState(); let pool=PROVIDERS.filter(p=>p.accept);
+ const flags=p=>({state:p.st.includes(st),
+  mode:S.mode==='in-person'?(p.modes.includes('in-person')&&atSel(p)):S.mode==='virtual'?p.modes.includes('virtual'):true,
+  gender:!S.gender||S.gender==='No preference'||p.g===S.gender,
+  lang:!S.langs.length||S.langs.some(l=>p.lang.includes(l)),
+  area:!S.areas.length||S.areas.includes('I’m not sure')||S.areas.some(a=>p.areas.includes(a))});
+ let rows=pool.map(p=>{const f=flags(p);const score=Object.values(f).filter(Boolean).length+(f.state?2:0);return {p,f,score,exact:Object.values(f).every(Boolean)}});
+ const zipNum=+((S.f.zip||'0').slice(0,5));
+ const prox=p=>Math.abs((+p.zip)-zipNum);
+ const useProx=S.mode==='in-person'||S.mode==='any';
+ rows.sort((a,b)=>(b.exact-a.exact)||(b.score-a.score)||(useProx?prox(a.p)-prox(b.p):(nextSlot(a.p)?.d-nextSlot(b.p)?.d)));
+ let exact=rows.filter(r=>r.exact);
+ if(S.mode==='in-person'&&!S.incVirtual)exact=exact.filter(r=>r.p.modes.includes('in-person')&&atSel(r.p));
+ const near=rows.filter(r=>!r.exact).slice(0,4);
+ return {exact:exact.slice(0,5),near,none:!exact.length};}
+
+def('results','15 Recommended therapists',{step:2,notes:[
+ N('Never empty','We never show zero providers. If nothing matches exactly, say so and show the closest matches. Always offer a call option.'),
+ N('Sorting','In-person / no preference: closest to their zip first, with a toggle to include virtual therapists. Virtual: earliest availability first.'),
+ N('Provider card','Uses the Provider card (Large) from the wireframes. Each card has a “Book with [name]” button, and “View Profile →” opens the full provider profile in an overlay (which also has a book button). The overlay follows the Provider Profile page, without the booking placeholder, resources or more-providers sections.'),
+ N('Provider data','Provider information would be manual; opportunity to automate via the Healow API (location, accepted insurance).')],render(){
+ const m=matchList();
+ const toggle=S.mode==='in-person'?`<label class="check-inline" data-component="Checkbox"><input type="checkbox" ${S.incVirtual?'checked':''} data-do="toggleVirtual"><span class="mark"></span>Also show virtual therapists</label>`:'';
+ const list=m.none?m.near:m.exact;
+ return `<div class="col col--wide">${Back()}${Stepper(2)}${Header('Therapists who may be a great fit',`Showing therapists in ${stateName()}, soonest availability first.`)}
+ <div class="tags" role="group" aria-label="Your answers">${[...S.areas.map(v=>['area',v,v]),
+   S.mode&&S.mode!=='any'?['mode',S.mode,S.mode==='in-person'?'In-person':'Virtual']:null,
+   S.gender&&S.gender!=='No preference'?['gender',S.gender,S.gender]:null,
+   ...S.langs.map(v=>['lang',v,v])].filter(Boolean).map(([t,v,l])=>`<span class="chip" data-component="Tag">${l}<button type="button" class="chip__x" data-do="removeTag:${t}:${esc(v)}" aria-label="Remove ${esc(l)}">×</button></span>`).join('')}<button class="link small edit-answers" type="button" data-go="m-areas">Edit answers</button></div>
+ ${toggle}
+ ${m.none?Banner('No therapists match all of your requirements',`<p>Here are some who might be a good fit. ${Help()}</p>`,'banner--strong'):''}
+ <div class="col" style="padding:0;max-width:none">${list.map(r=>ProviderCard(r.p,Btn('Book with '+r.p.n.split(' ')[0],`data-do="pickProvider:${r.p.id}"`,'btn--primary'),S.mode)).join('')}</div>
+ ${Banner('Want help choosing?',`<p class="small">Call us at <a href="tel:${PHONE}">${PHONE}</a> or book a free consult.</p>`,'banner--light')}
+ <div class="btn-row">${Btn('Book a free consult','data-do="toSlots:consult"')}</div></div>`}});
+
+def('slots','16 Pick a time',{step:3,notes:[
+ N('Appointment type','Show the Virtual / In-person selector only if the provider does both, otherwise just text. If both exist, only show appointments for the selected option.'),
+ N('API-driven (ECW)','Times come from the API; a booking is created through the API. For consults, open question: integrate the HubSpot meeting scheduler API or keep it a separate embed?'),
+ N('Cost','Shown on the confirm card and changes with the service and how they’re paying. Free consult: $0. Therapy or medication through insurance: “Pending based on your insurance” (therapy also shows “Most new patients with in-network insurance pay $0, on average, for their initial assessment visit.”). Self-pay (including “I don’t see my insurance plan”): the self-pay rate for the service. Rates come from the Self Pay Rates wireframe.'),
+ N('Same-day','Same-day availability is only available via form / phone.'),
+ N('Time no longer available','If the selected time is gone we offer alternatives. Use the toolbar toggle to simulate it.'),
+ N('Limited availability states','CT, FL and TX have limited online availability: message to call for more options.')],render(){
+ const b=S.book, st=userState();
+ const both=b.p?(b.p.modes.includes('virtual')&&b.p.modes.includes('in-person')&&inPersonOK()):(b.kind==='next'&&inPersonOK()&&S.mode==='any');
+ if(!S.sel.mode)S.sel.mode=b.p?(!b.p.modes.includes('virtual')?'in-person':(S.mode==='in-person'&&b.p.modes.includes('in-person')&&inPersonOK()?'in-person':'virtual')):(b.kind==='next'&&S.mode==='in-person'&&inPersonOK()?'in-person':'virtual');
+ const mode=S.sel.mode, d=S.sel.date;
+ const title=b.kind==='consult'?'Book a Free Informational Consult':b.kind==='assessment'?'Book Initial Assessment':b.p?`Book Initial Assessment with ${b.p.n}`:'Book Initial Assessment with the next available therapist';
+ const mins=b.kind==='consult'?30:60;
+ const slots=d?daySlots(b,d,mode):[];
+ const groups=[['Morning',t=>t.includes('AM')],['Afternoon',t=>t.includes('PM')&&parseInt(t)!==6&&parseInt(t)!==7||parseInt(t)===12],['Evening',t=>t.includes('PM')&&(parseInt(t)===6||parseInt(t)===7)]];
+ const timeCol=d?groups.map(([g,f])=>{const ts=slots.filter(([t])=>f(t));return ts.length?`<div><div class="period">${g}</div><div class="pills">${ts.map(([t])=>`<button type="button" class="pill" data-component="Pill" data-do="pickTime:${t}" data-key="t${t.replace(/\W/g,'')}" aria-pressed="${S.sel.time===t}">${t}</button>`).join('')}</div></div>`:''}).join(''):`<p class="small">Choose a date to see available times.</p>`;
+ const prov=S.sel.time?(b.p||(slots.find(([t])=>t===S.sel.time)||[])[1]):null;
+ const loc=mode==='in-person'?(b.p?.addr||prov?.addr||selLocs()[0]?.addr||S.location?.addr):null;
+ const confirm=S.sel.time?`<div class="confirm" data-component="Confirm Card"><strong>${b.kind==='consult'?'Free Informational Consult':'Initial Assessment'}</strong>
+   <div class="detail"><span class="ic">${IC.cal}</span>${fmtLong(d)}</div><div class="detail"><span class="ic">${IC.clock}</span>${S.sel.time} · ${mins} Minutes</div><div class="detail"><span class="ic">${IC.pin}</span>${loc?`<u>${loc}</u>`:'Virtual'}</div>${CostRow()}
+   <div style="margin-top:8px">${Btn('Book Appointment','data-do="book"','btn--primary')}</div></div>`:`<p class="small">Choose a time to continue.</p>`;
+ const preNote=S.pre&&S._preApplied?Banner('',`<p class="small">We saved the time you chose on the provider page.</p>`,'banner--light'):'';
+ return `<div class="col col--wide">${Back()}${Stepper(3)}
+ <div><h1 id="h1" tabindex="-1" style="font-size:${UI.vp==='mobile'?24:24}px">${title}</h1><p class="small" style="margin-top:6px">${mins} minutes</p>
+ ${both?`<fieldset style="margin-top:8px" aria-label="Appointment type"><div class="inline-radios">${['virtual','in-person'].map(m=>`<label class="radio-inline" data-component="Radio"><input type="radio" name="mode" value="${m}" ${mode===m?'checked':''} data-do="setMode:${m}"><span class="mark"></span>${m==='virtual'?'Virtual':'In-Person'}</label>`).join('')}</div></fieldset>`:`<p class="small">${mode==='in-person'?'In-person':'Virtual'}</p>`}</div>
+ ${preNote}${LIMITED_ONLINE.includes(st)?Banner('Online availability is limited in '+stateName(),`<p class="small">If you don’t see a time that works, please call us at <a href="tel:${PHONE}">${PHONE}</a> for more options.</p>`,'banner--light'):''}
+ <div class="slots"><div class="slots__col"><h3>Select Date</h3>${Calendar(b)}</div>
+ <div class="slots__col slots__time"><h3>Select Time</h3>${timeCol}</div>
+ <div class="slots__col slots__confirm"><h3>Confirm Appointment</h3>${confirm}</div></div>
+ <p class="small">Need a same-day appointment? Same-day visits are only available by phone or form: <a href="tel:${PHONE}">${PHONE}</a>.</p></div>`}});
+
+def('confirm','17 Confirmation and next steps',{step:4,notes:[N('Registration caveat','For therapy and medication visits, the visit is only confirmed once registration is completed, including insurance. Registration next steps are sent by email, so there is no registration button on this page.'),N('Free consults','No registration step is needed for a free consult, so the registration messaging is not shown.'),N('API','Confirmation shown after a successful API response.')],render(){
+ const b=S.book, d=S.sel.date, mode=S.sel.mode, p=S.assigned, consult=b.kind==='consult', email=esc(S.f.email||'your email');
+ const who=b.kind==='consult'?'a Care Navigator':p?`${p.n}${p.c?', '+p.c:''}`:'your provider';
+ const loc=mode==='in-person'?(b.p?.addr||p?.addr||selLocs()[0]?.addr||S.location?.addr):null;
+ const head=consult?Header('Your free consult is booked',`We’ve sent the details to ${email}.`):Header('Your appointment is reserved',`We’ll email the registration next steps to ${email}.`);
+ const caveat=consult?'':Banner('Your visit isn’t confirmed yet',`<p>Your visit will be confirmed when you complete registration, including your insurance information. We’ll send the registration next steps by email.</p>`,'banner--strong');
+ const steps=consult?['Check your email for your confirmation and visit details.','Join your consult on time. We’ll send a reminder by text.']:[`Check ${email} for your registration next steps.`,'Complete registration and add your insurance information to confirm your visit.','Join your visit on time. We’ll send a reminder by text.'];
+ return `<div class="col">${Stepper(4)}${head}
+ ${caveat}
+ <div class="confirm" data-component="Confirm Card"><strong>${b.kind==='consult'?'Free Informational Consult':'Initial Assessment'} with ${who}</strong>
+ <div class="detail"><span class="ic">${IC.cal}</span>${fmtLong(d)}</div><div class="detail"><span class="ic">${IC.clock}</span>${S.sel.time} · ${b.kind==='consult'?30:60} Minutes</div><div class="detail"><span class="ic">${IC.pin}</span>${loc?`<u>${loc}</u>`:'Virtual'}</div>${CostRow()}</div>
+ <div class="btn-row">${Btn('Add to calendar','data-do="stub:Calendar file"')}</div>
+ <h2>Next steps</h2><ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">${steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+ <p class="small">Need to change something? Call <a href="tel:${PHONE}">${PHONE}</a>.</p></div>`}});
+
+/* =====================================================================
+   FRAME SHELL
+   ===================================================================== */
+const CARET='<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4z" fill="#505d68"/></svg>';
+const EXT='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5h4v1.5H6.5v7h7V11H15v4H5zM11 5h4v4h-1.5V7.6l-4 4-1.1-1.1 4-4H11z" fill="#505d68"/></svg>';
+const SOCIAL=`<div class="social" data-component="Social Icons"><svg viewBox="0 0 32 32" aria-label="Instagram" role="img"><path d="M9 2h14a7 7 0 017 7v14a7 7 0 01-7 7H9a7 7 0 01-7-7V9a7 7 0 017-7zm0 3a4 4 0 00-4 4v14a4 4 0 004 4h14a4 4 0 004-4V9a4 4 0 00-4-4zm7 4.5a6.5 6.5 0 110 13 6.5 6.5 0 010-13zm0 3a3.5 3.5 0 100 7 3.5 3.5 0 000-7zM24 7.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/></svg><svg viewBox="0 0 32 32" aria-label="LinkedIn" role="img"><path d="M4 2h24a2 2 0 012 2v24a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm3 11v12h4V13zm2-6a2.3 2.3 0 100 4.6A2.3 2.3 0 009 7zm5 6v12h4v-6.5c0-1.7.8-2.7 2.2-2.7s2 1 2 2.7V25H27v-7.5c0-3.2-1.7-4.7-4-4.7-1.8 0-2.9 1-3.4 1.8V13z"/></svg><svg viewBox="0 0 32 32" aria-label="Facebook" role="img"><path d="M16 2a14 14 0 00-2.2 27.8V20h-3.6v-4h3.6v-3c0-3.6 2.100-5.600 5.300-5.600 1.500 0 3.100.3 3.100.3v3.500h-1.800c-1.700 0-2.300 1.100-2.300 2.200V16h3.900l-.6 4h-3.300v9.800A14 14 0 0016 2z"/></svg></div>`;
+function Navbar(){
+ if(UI.vp==='mobile')return `<header class="navbar navbar--mobile" data-component="Navbar / Mobile"><span class="navbar__logo">LOGO</span>
+  <div class="cta-menu"><span class="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 3h14M1 8h14M1 13h14" stroke="#505d68" stroke-width="2"/></svg><span>Menu</span></span></div></header>`;
+ return `<header class="navbar" data-component="Navbar"><div class="navbar__top">
+  <a class="navlink" href="#">Part of PM Pediatric Care (linked logo)</a>
+  <nav><a class="navlink" href="#">English ${CARET}</a><a class="navlink" href="#" data-do="stub:Pay My Bill">Pay My Bill ${EXT}</a><a class="navlink" href="#">Find a Provider</a><a class="navlink" href="#">Contact Us</a><a class="navlink" href="#" data-do="portal">Log In to Patient Portal ${EXT}</a></nav></div>
+  <div class="navbar__main"><span class="navbar__logo">LOGO</span><div class="navbar__links">
+  <a class="navlink" href="#">Our Care ${CARET}</a><a class="navlink" href="#">Insurance & Cost</a><a class="navlink" href="#">Locations</a><a class="navlink" href="#">Resources ${CARET}</a><a class="navlink" href="#">About Us ${CARET}</a><a class="navlink" href="#">For Providers & Partners ${CARET}</a>
+  <button type="button" class="btn" data-component="Button" data-do="stub:Get started">Get Started</button></div></div></header>`;}
+function Footer(){
+ const m=UI.vp==='mobile';
+ const L=(a)=>a.map(x=>`<a href="#">${x}</a>`).join('');
+ const care=L(['Therapy','Medication & Psychiatry','ADHD Evaluations',m?'Executive Functioning Coaching':'Executive Function Coaching','Parent Coaching','DBT Skills Group','Maternal & Perinatal','School-Based Services']);
+ const res=m?`<a href="#">FAQs</a><a href="#">All Resources</a><a href="#">Articles</a><a href="#">Patient Portal ${EXT}</a><a href="#">Pay My Bill ${EXT}</a><a href="#">Records Request</a><a href="#">Policies & Forms</a><a href="#">FAQs</a>`
+  :`<a href="#">FAQs</a><a href="#">Blog</a><a href="#">Patient Portal ${EXT}</a><a href="#">Pay My Bill ${EXT}</a><a href="#">Records Request</a><a href="#">Policies & Forms</a><a href="#">Contact Us</a>`;
+ const about=L(['Our Approach','Why PM Mental Health?','Meet our Provider Team','Meet our Leadership Team','Careers']);
+ const pp=L(['Overview','Make a referral','For Referring Providers','For Schools','For Employers','For Health Systems and Hospitals']);
+ const crisis='<div class="footer__crisis">Having a mental health crisis? Text or call 988 for immediate 24/7 support</div><hr class="footer__rule">';
+ const legal='<div class="footer__legal">© 2026 PM Mental Health. All Rights Reserved. <a href="#">Privacy Policy</a> | <a href="#">HIPPA Notice</a> | <a href="#">Terms of Use</a> | <a href="#">Accessibility Statement</a></div>';
+ if(m)return `<footer class="footer" data-component="Footer / Mobile"><span class="footer__logo">PM Mental Health (logo)</span><span class="footer__part">Part of PM Pediatrics (linked logo)</span>
+  <div class="footer__cols"><div class="footer__col"><h4>Our Care</h4><div class="links">${care}</div></div><h4 class="footer__col link-head" style="margin:0">Insurance & Cost</h4><h4 class="footer__col link-head" style="margin:0">Locations</h4>
+  <div class="footer__col"><h4>Resources</h4><div class="links">${res}</div></div><div class="footer__col"><h4>About Us</h4><div class="links">${about}</div></div><div class="footer__col"><h4>Providers & Partners</h4><div class="links">${pp}</div></div></div>
+  <div class="footer__col footer__col--social" style="gap:16px"><h4 style="font-size:18px;line-height:23px">Connect With Us</h4>${SOCIAL}</div>${crisis}${legal}</footer>`;
+ return `<footer class="footer" data-component="Footer"><div class="footer__logo-row"><span class="footer__logo">PM Mental Health (logo)</span><span class="footer__part">Part of PM Pediatric Care (linked logo)</span></div>
+  <div class="footer__cols"><div class="footer__col"><h4>Our Care</h4><div class="links" style="max-width:172px">${care}</div></div>
+  <div class="footer__col footer__col--stack"><h4>Insurance & Cost</h4><h4>Locations</h4></div>
+  <div class="footer__col"><h4>Resources</h4><div class="links">${res}</div></div><div class="footer__col"><h4>About Us</h4><div class="links">${about}</div></div>
+  <div class="footer__col"><h4>Providers & Partners</h4><div class="links" style="max-width:202px;gap:8px">${pp}</div></div>
+  <div class="footer__col footer__col--social"><h4 style="font-size:18px;line-height:23px">Connect With Us</h4>${SOCIAL}</div></div>${crisis}${legal}</footer>`;}
+
+/* =====================================================================
+   RENDER / NAV
+   ===================================================================== */
+function render(){
+ const sc=SC[S.screen], fr=$('#frame');
+ const scaffold=S.screen==='entry';
+ fr.className='frame '+(UI.vp==='mobile'?'is-mobile ':'')+(scaffold?'frame--scaffold':'');
+ fr.setAttribute('data-screen',scaffold?'Prototype scaffold (not a wireframe)':sc.name+' / '+UI.vp);
+ fr.innerHTML=scaffold?`<main class="page" id="main">${sc.render()}</main>`:Navbar()+`<main class="page page--${S.screen}" id="main" data-screen="${sc.name}">${sc.render()}</main>`+Footer();
+ $('#tb-name').textContent=sc.name;
+ $('#tb-jump').value=S.screen;
+ const nt=$('#notes'); nt.classList.toggle('hidden',!UI.notes);
+ const notes=(UI.vp==='mobile'&&!scaffold)?[...sc.notes,N('Mobile header','The Get Started button is hidden in the mobile header while in the booking flow. Only the logo and Menu are shown.')]:sc.notes;
+ nt.innerHTML=notes.map(n=>`<div class="annotation" data-component="Annotation"><header>${n.t}</header><div>${n.b}</div></div>`).join('');
+ fit();
+ if(S._focus){const el=document.querySelector(S._focus); if(el)el.focus({preventScroll:true}); S._focus=null;}
+ else if(S._focusH1){const h=$('#h1'); if(h)h.focus({preventScroll:true}); S._focusH1=false;}
+}
+function fit(){const w=UI.vp==='mobile'?402:1440; const avail=innerWidth-48-(UI.notes?344:0);
+ $('#frame-wrap').style.zoom=Math.min(1,avail/w);}
+addEventListener('resize',fit);
+function go(id,push=true){ if(push&&S.screen&&S.screen!=='entry')S.hist.push(S.screen); else if(push&&S.screen==='entry')S.hist=[];
+ S.screen=id; S.err={}; S._focusH1=true; render(); scrollTo({top:0}); }
+
+/* ---- actions ---- */
+const req=(v)=>!!(v&&String(v).trim());
+const A={
+ back(){const p=S.hist.pop(); if(p)go(p,false)},
+ portal(){stub('Patient portal')},
+ stub(name){stub(name)},
+ restart(){S=blank(); render()},
+ serviceGo(){go('landing')},
+ locationBook(){S.pre={mode:'in-person',date:S.sel.date,time:S.sel.time}; go('landing')},
+ providerBook(){S.pre={mode:S.sel.mode,date:S.sel.date,time:S.sel.time}; go('landing')},
+ start(kind){const pg=kind==='provider'||kind==='location'||kind==='service'; S=blank(); S.entry=kind;
+  if(kind==='provider'){S.provider=PROVIDERS[0]; S.pre=null; S.book={kind:'therapy',p:S.provider}; S.sel={date:null,time:null,mode:'virtual'}; S.calMonth=null;}
+  if(kind==='service'){S.condition='Anxiety';}
+  if(kind==='location'){S.location=LOCATION; S.mode='in-person'; S.book={kind:'therapy',p:null,pool:PROVIDERS.filter(x=>x.accept&&x.addr===LOCATION.addr)}; S.sel={date:null,time:null,mode:'in-person'}; S.calMonth=null;}
+  go(pg?kind+'-page':'landing');},
+ whoNext(){ if(!S.who){S.err.who='Choose one to continue.';return render();} go(S.who==='patient'?'referral':'details'); },
+ switchWho(w){S.who=w; go('details')},
+ detailsNext(){const f=S.f,e={},c=S.who==='child';
+  if(c){if(!req(f.gFirst))e.gFirst='Enter your first name.'; if(!req(f.gLast))e.gLast='Enter your last name.';}
+  if(!req(f.first))e.first=c?'Enter your child’s first name.':'Enter your first name.'; if(!req(f.last))e.last=c?'Enter your child’s last name.':'Enter your last name.';
+  const dob=parseDob(f.dob); if(!req(f.dob))e.dob='Enter a date of birth.'; else if(!dob)e.dob='Enter a valid date as MM/DD/YYYY.';
+  if(!req(f.sex))e.sex='Select an option.';
+  if(!/^\S+@\S+\.\S+$/.test(f.email||''))e.email='Enter a valid email address, like name@example.com.';
+  if(((f.phone||'').replace(/\D/g,'')).length!==10)e.phone='Enter a 10-digit phone number.';
+  if(!/^\d{5}$/.test(f.zip||''))e.zip='Enter a 5-digit zip code.';
+  if(UI.validate&&Object.keys(e).length){S.err=e;render();const first=document.querySelector('.field--error input,.field--error select');first&&first.focus();return;}
+  if(dob){const a=age(dob); if(!c&&a<18)return go('block-minor'); if(c&&a>=18)return go('block-adult');}
+  go('heard'); },
+ heardNext(){ if(S.who==='child'&&patientAge()!==null&&patientAge()<5){S.svc='unsure';return go('consult-intro');} go('services'); },
+ svcNext(){const id=S.svc||S.service; const ids=BY_STATE[userState()]; if(!id||(!ids.includes(id)&&id!=='unsure')){S.err.svc='Choose a service to continue.';return render();} S.svc=id;
+  go(id==='therapy'||id==='med'?'insurance':'consult-intro');},
+ insPick(v,el){S.ins=el.value; render()},
+ insNext(){ if(!S.ins){S.err.ins='Choose an option to continue.';return render();}
+  if(S.svc==='med')return go('assessment-intro');
+  if(S.provider){ if(!S.provider.st.includes(userState())){S._altReason='state';return go('alt');} if(!S.provider.accept){S._altReason='avail';return go('alt');}
+    S.book={kind:'therapy',p:S.provider}; S.sel={date:null,time:null,mode:null}; applyPre(); return go('slots');}
+  go('ready'); },
+ readyNext(){const v=S.ready; if(!v){S.err.r='x';return;}
+  S.flow=v;
+  if(v==='match'){ if(S.condition&&!S.areas.length)S.areas=[S.condition]; return go('m-areas');} if(v==='consult')return A.toSlots('consult');
+  if(inPersonOK())return go('m-mode'); S.mode='virtual'; A.toSlots('next'); },
+ areasNext(){ go(inPersonOK()?'m-mode':'m-gender'); if(!inPersonOK())S.mode='virtual'; },
+ modeNext(){ if(!S.mode)S.mode='any'; if(S.mode==='in-person')return go('m-location'); S.locIds=[]; A.afterMode(); },
+ afterMode(){ if(S.flow==='next')return A.toSlots('next'); go('m-gender') },
+ locNext(){ const ids=nearbyLocs().map(l=>l.id); S.locIds=(S.locIds||[]).filter(id=>ids.includes(id));
+  if(!S.locIds.length){S.err.loc='Choose at least one location to continue.';return render();} A.afterMode(); },
+ goVirtual(){ S.mode='virtual'; S.locIds=[]; S.hist=S.hist.filter(h=>h!=='m-location'); A.afterMode(); },
+ genderNext(){ go('m-lang') },
+ langNext(){ go('results') },
+ removeTag(arg){const i=arg.indexOf(':'), type=arg.slice(0,i), val=arg.slice(i+1);
+  if(type==='area')S.areas=S.areas.filter(x=>x!==val);
+  if(type==='lang')S.langs=S.langs.filter(x=>x!==val);
+  if(type==='gender')S.gender='No preference';
+  if(type==='mode'){S.mode='any'; S.locIds=[]; S.incVirtual=false;}
+  S._focus='.chip__x, .edit-answers'; render(); },
+ toggleVirtual(v,el){S.incVirtual=el.checked; render()},
+ profile(id){openProfile(id)},
+ closeProfile(){$('#profile').close()},
+ bookFromProfile(id){$('#profile').close(); A.pickProvider(id)},
+ pickProvider(id){S.provider=PROVIDERS.find(p=>p.id===id); S.pre=null; S.book={kind:'therapy',p:S.provider}; S.sel={date:null,time:null,mode:null}; go('slots')},
+ toSlots(kind){S.book=kind==='next'?{kind:'next',p:null}:{kind,p:null}; S.sel={date:null,time:null,mode:null}; S.calMonth=null; go('slots')},
+ setMode(m){S.sel.mode=m; S.sel.date=null; S.sel.time=null; render()},
+ month(d){const m=S.calMonth; S.calMonth=new Date(m.getFullYear(),m.getMonth()+ +d,1); S._focus=`[data-do="month:${d}"]`; render()},
+ pickDate(ms){S.sel.date=new Date(+ms); S.sel.time=null; S._focus=`[data-do="pickDate:${ms}"]`; render()},
+ pickTime(t){S.sel.time=t; S._focus=`[data-key="t${t.replace(/\W/g,'')}"]`; render()},
+ book(){ const slots=daySlots(S.book,S.sel.date,S.sel.mode);
+  if(UI.simTaken&&!S.takenShown){S.takenShown=true; return showTaken(slots);}
+  const hit=slots.find(([t])=>t===S.sel.time); S.assigned=S.book.p||(hit&&hit[1])||null; go('confirm'); }
+};
+function applyPre(){S._preApplied=false; if(!S.pre||!S.pre.date)return; const m=S.pre.mode;
+  const b=S.book; if(daySlots(b,S.pre.date,m).some(([t])=>t===S.pre.time)){S.sel={date:S.pre.date,time:S.pre.time,mode:m};S.calMonth=new Date(S.pre.date.getFullYear(),S.pre.date.getMonth(),1);S._preApplied=true;}}
+function stub(name){const d=$('#dlg'); d.innerHTML=`<h2 id="dlg-h">${name}</h2><p style="margin:12px 0 20px">Not part of this prototype. This is where the existing page or flow would open.</p><form method="dialog">${Btn('Close','','btn--primary')}</form>`; d.showModal();}
+function showTaken(slots){const d=$('#dlg'); const alts=slots.filter(([t])=>t!==S.sel.time).slice(0,3);
+  d.innerHTML=`<h2 id="dlg-h">That time is no longer available</h2><p style="margin:12px 0">Someone else just booked ${S.sel.time} on ${fmtLong(S.sel.date)}. Here are other times that day:</p>
+  <div class="pills">${alts.map(([t])=>`<button type="button" class="pill" data-do="altTime:${t}">${t}</button>`).join('')}</div>
+  <p class="small" style="margin:16px 0">Or pick another day, or call <a href="tel:${PHONE}">${PHONE}</a>.</p><form method="dialog">${Btn('Choose another time','')}</form>`;
+  d.showModal();}
+$('#profile').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();
+  if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.currentTarget.close()});
+A.altTime=t=>{$('#dlg').close(); S.sel.time=t; render();};
+
+/* ---- events ---- */
+document.addEventListener('click',e=>{
+ const g=e.target.closest('[data-go]'); if(g){e.preventDefault(); return go(g.dataset.go);}
+ const t=e.target.closest('[data-do]'); if(!t||t.tagName==='INPUT'||t.tagName==='SELECT')return;
+ e.preventDefault(); const [fn,...r]=t.dataset.do.split(':'); A[fn]&&A[fn](r.join(':'),t);});
+document.addEventListener('change',e=>{
+ const t=e.target;
+ if(t.dataset.do){const [fn,...r]=t.dataset.do.split(':'); A[fn]&&A[fn](r.join(':'),t); return;}
+ if(t.dataset.bind){setPath(t.dataset.bind,t.value); return;}
+ if(t.dataset.opt){const n=t.dataset.opt; const cur=S[n];
+  if(Array.isArray(cur)){S[n]=t.checked?[...cur,t.value]:cur.filter(x=>x!==t.value);} else S[n]=t.value;
+  if(n==='who'||n==='svc'||n==='ready'||n==='mode'||n==='gender'||n==='heard'){delete S.err[n];}
+  if(n==='who')S.f={...S.f};
+  if(n==='locIds'){S._locTouched=true; delete S.err.loc;} }});
+document.addEventListener('input',e=>{const t=e.target; if(t.dataset.bind)setPath(t.dataset.bind,t.value)});
+function setPath(p,v){const [a,b]=p.split('.'); if(b)S[a][b]=v; else S[a]=v;}
+const mapF={gFirst:'gFirst'};
+
+/* ---- toolbar ---- */
+$('#tb-vp').onchange=e=>{UI.vp=e.target.value; render()};
+$('#tb-state').onchange=e=>{UI.stateOverride=e.target.value; render()};
+$('#tb-notes').onchange=e=>{UI.notes=e.target.checked; render()};
+$('#tb-validate').onchange=e=>{UI.validate=e.target.checked; S.err={}; render()};
+function sample(){const c=S.who==='child'; S.who=S.who||'self';
+ Object.assign(S.f,{first:c?'Riley':'Alex',last:'Morgan',dob:c?'03/09/2014':'06/14/1988',sex:'Female',email:'alex.morgan@example.com',phone:'(212) 555-0148',zip:'11201'},c?{gFirst:'Alex',gLast:'Morgan'}:{});
+ S.svc=S.svc||'therapy'; S.ins=S.ins||'Aetna'; S.areas=S.areas.length?S.areas:['Anxiety']; S.mode=S.mode||'any'; S.gender=S.gender||'No preference';}
+$('#tb-restart').onclick=()=>{S=blank(); render(); scrollTo({top:0});};
+$('#tb-fill').onclick=()=>{sample(); render()};
+$('#tb-jump').innerHTML=Object.values(SC).map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+$('#tb-jump').onchange=e=>{const id=e.target.value; if(id==='entry'){S=blank();return render();} if(!S.entry)S.entry='get-started';
+ if(id!=='landing'&&id!=='who'){sample();}
+ if(id==='slots'||id==='confirm'){S.book=S.book||{kind:'therapy',p:PROVIDERS[0]}; S.sel=S.sel.date?S.sel:{date:null,time:null,mode:null}; if(id==='confirm'){const d=new Date(today);d.setDate(d.getDate()+3);while(!daySlots(S.book,d,'virtual').length)d.setDate(d.getDate()+1);S.sel={date:d,time:daySlots(S.book,d,'virtual')[0][0],mode:'virtual'};S.assigned=S.book.p;}}
+ if(id==='alt'){S.provider=S.provider||PROVIDERS[1];S._altReason=S._altReason||'state';}
+ if(id==='block-minor'){S.who='self';} if(id==='block-adult'){S.who='child';}
+ S.hist=[]; go(id,false);};
+
+render();
+</script>
+</body>
+</html>
