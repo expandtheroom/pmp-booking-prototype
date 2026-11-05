@@ -459,6 +459,7 @@ const blank=()=>({entry:null,provider:null,service:null,condition:null,location:
   book:null,locIds:[],sel:{date:null,time:null,mode:null},calMonth:null,err:{},hist:[],screen:'entry',taken:false,takenShown:false,assigned:null});
 let S=blank();
 const UI={vp:'desktop',notes:true,stateOverride:'',simTaken:false,validate:false};
+if(innerWidth<700){UI.vp='mobile';UI.notes=false;} // phones open in the mobile layout with annotations hidden
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
