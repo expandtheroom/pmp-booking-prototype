@@ -222,11 +222,11 @@ details.why p{padding:8px 0 0;max-width:560px}
 .provider__bio{font-size:16px;line-height:24px}
 .nextappt{align-self:flex-start;background:var(--bg);padding:0 4px;font-weight:700}
 .provider__info{position:relative}
-.provider__cta{position:absolute;top:0;right:0}
-.provider__head{padding-right:220px}
-.is-mobile .provider__cta{position:static;align-self:stretch}
-.is-mobile .provider__head{padding-right:0}
-.is-mobile .provider__cta .btn{width:100%}
+.provider__actions{display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center}
+.nextbar{background:var(--bg);padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;align-self:flex-start;max-width:100%}
+.nextbar__i{display:inline-flex;gap:6px;align-items:center}
+.nextbar__i svg{width:14px;height:14px;fill:var(--ink)}
+.is-mobile .provider__actions .btn{width:100%}
 .provider__link{align-self:flex-end;margin-top:auto;background:none;border:0;padding:0;cursor:pointer;font-size:16px;line-height:24px;text-decoration:none}
 .provider__link:hover{text-decoration:underline}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
@@ -307,6 +307,14 @@ details.why p{padding:8px 0 0;max-width:560px}
 .launch .card{background:#fff;border:1px dashed var(--line-ui);padding:20px;display:flex;flex-direction:column;gap:var(--s2);align-items:flex-start}
 
 /* Self Pay Rates (mirrors Components > Self Pay Rates) */
+.visit{display:flex;flex-direction:column;gap:16px}.visit__photo{height:240px;border:1px solid var(--line)}.visit__list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.fees{width:100%;border-collapse:collapse;background:var(--bg);text-align:center}
+.fees caption{background:var(--ink);color:#fff;padding:16px;font-weight:700;caption-side:top}
+.fees th,.fees td{border:1px solid var(--line);padding:16px;font-weight:400}
+.fees thead th{font-weight:700}
+.fees td{font-weight:700}
+.fees tbody th{font-weight:400}
+.is-mobile .fees th,.is-mobile .fees td{padding:12px}
 .selfpay{display:flex;flex-direction:column;gap:var(--s3);margin-top:var(--s2)}
 .rates{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .is-mobile .rates{grid-template-columns:1fr}
@@ -375,21 +383,21 @@ const LIMITED_ONLINE=['CT','FL','TX'];
 
 const SERVICES=[
  {id:'therapy',l:'Therapy',d:'Meet with a licensed therapist to work through what’s on your mind.'},
- {id:'med',l:'Medication & Psychiatry',d:'Start with an assessment, then ongoing medication management.'},
+ {id:'med',l:'Medication Management & Psychiatry',d:'Start with an assessment and then we’ll develop a tailored treatment plan.'},
  {id:'adhd',l:'ADHD Evaluation',d:'A comprehensive evaluation to understand attention and focus.'},
- {id:'ef',l:'Executive Functioning Coaching',d:'Build skills for planning, organization and follow-through.'},
+ {id:'ef',l:'Executive Function Coaching',d:'Build skills for planning, organization and follow-through.'},
  {id:'parent',l:'Parent Coaching',d:'Practical guidance for parents supporting their child.'},
- {id:'maternal',l:'Maternal Mental Health',d:'Support during pregnancy and after birth.'},
+ {id:'maternal',l:'Maternal Mental Health',d:'Support for moms through every stage of the perinatal journey.'},
  {id:'dbt',l:'DBT Skills Group',d:'A skills-based group for managing intense emotions.'},
- {id:'unsure',l:'I’m not sure',d:'No problem. A free consult will help you find the right fit.'}];
+ {id:'unsure',l:'I’m not sure',d:'No problem. A free consultation will help you find the right fit.'}];
 const BY_STATE={
  CT:['therapy','med','ef','parent'],
  FL:['therapy','med','adhd','ef','parent','maternal'],
  NJ:['therapy','med','adhd','ef','parent','maternal'],
- NY:['therapy','med','adhd','parent','maternal','dbt'],
+ NY:['therapy','med','adhd','ef','parent','maternal','dbt'],
  TX:['therapy','med','adhd','ef','parent'],
  OT:['ef','parent']};
-const HEARD=['Google/Internet Search','Social Media','Physician/PCP referral','PM Urgent Care','PM School Health','Family/friend','Insurance company','ZocDoc','Psychology Today'];
+const HEARD=['Google/Internet Search','Social Media','Physician/PCP referral','PM Urgent Care','School','Family/friend','Insurance company','Zocdoc','Psychology Today'];
 const AREAS=['ADHD','Anxiety','Behavioral Issues','Chronic Illness','Depression','EMDR','Grief & Loss','LGBTQIA+','Maternal & Perinatal','OCD','Parenting','Stress & Burnout','Trauma & PTSD','I’m not sure'];
 const LANGS=['English','Spanish','French','Bengali','Haitian Creole'];
 const INS={NY:['Aetna','Affinity by Molina Healthcare','Anthem','Cigna','GHI','Fidelis Care','Healthfirst','Horizon','MVP Healthcare','NYSHIP','Point Comfort Group'],
@@ -545,6 +553,8 @@ const IC={
  clock:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm.5-13H11v6l5.250 3.150.75-1.230-4.500-2.670V7z"/></svg>',
  pin:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 00-7 7c0 5.250 7 13 7 13s7-7.750 7-13a7 7 0 00-7-7zm0 9.500A2.500 2.500 0 1112 6.500a2.500 2.500 0 010 5z"/></svg>',
  people:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 100-6 3 3 0 000 6zM8 11a3 3 0 100-6 3 3 0 000 6zm0 2c-2.300 0-7 1.200-7 3.500V19h14v-2.500C15 14.200 10.300 13 8 13zm8 0c-.3 0-.6 0-1 .1 1.200.9 2 2 2 3.400V19h6v-2.500c0-2.300-4.700-3.500-7-3.500z"/></svg>',
+ house:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 12h3v8h5v-5h4v5h5v-8h3L12 3z"/></svg>',
+ video:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.500V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.500l4 4v-11l-4 4z"/></svg>',
  heart:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.350l-1.450-1.320C5.400 15.360 2 12.280 2 8.500 2 5.420 4.420 3 7.500 3c1.740 0 3.410.81 4.500 2.090C13.090 3.810 14.760 3 16.500 3 19.580 3 22 5.420 22 8.500c0 3.780-3.400 6.860-8.550 11.540z"/></svg>'};
 /* Cost shown on the confirm card: depends on the booking type, the selected service and how they’re paying */
 function costText(){
@@ -561,14 +571,17 @@ const CostRow=()=>{const n=costNote(); return `<div class="detail"><span class="
 const ST_FULL={CT:'Connecticut',FL:'Florida',NJ:'New Jersey',NY:'New York',TX:'Texas'};
 const visitText=p=>p.modes.map(m=>m==='virtual'?'Virtual':'In-person ('+p.loc+')').join(', ');
 function ProviderCard(p,cta,mode){
-  const nx=nextSlot(p,mode==='in-person'?'in-person':null);
+  const showIP=p.modes.includes('in-person')&&inPersonOK();
+  const nxV=p.modes.includes('virtual')?nextSlot(p,'virtual'):null, nxI=showIP?nextSlot(p,'in-person'):null;
+  const any=nxV||nxI;
   const more=p.areas.length>3?` +${p.areas.length-3} more`:'';
+  const next=any?`<div class="nextbar"><span>Next Available:</span>${nxI?`<span class="nextbar__i">${IC.house}In-person: <strong>${fmtLong(nxI.d)}</strong></span>`:''}${nxV?`<span class="nextbar__i">${IC.video}Virtual: <strong>${fmtLong(nxV.d)}</strong></span>`:''}</div>`:`<span class="nextappt">No upcoming availability</span>`;
   return `<article class="provider" data-component="Provider Card"><div class="photo" role="img" aria-label="Photo of ${p.n}"></div>
-  <div class="provider__info">${nx&&cta?`<div class="provider__cta">${cta}</div>`:''}<div class="provider__head"><h3 class="provider__name">${p.n}</h3><span class="provider__sub">${p.c} • Offers ${p.offers}</span><span class="provider__sub">${p.st.map(s=>ST_FULL[s]).join(', ')}</span></div>
-  <div class="ptags"><span class="ptag">${IC.pin}${visitText(p)}</span><span class="ptag">${IC.people}${p.aud}</span><span class="ptag">${IC.heart}${p.areas.slice(0,3).join(', ')}${more}</span></div>
+  <div class="provider__info"><div class="provider__head"><h3 class="provider__name">${p.n}</h3><span class="provider__sub">${p.c} • Offers ${p.offers}</span><span class="provider__sub small">${p.st.map(s=>ST_FULL[s]).join(', ')}</span></div>
+  <div class="ptags"><span class="ptag">${IC.pin}${[p.modes.includes('virtual')?'Virtual':'',showIP?`In-person (${p.loc})`:''].filter(Boolean).join(', ')}</span><span class="ptag">${IC.people}${p.aud}</span><span class="ptag">${IC.heart}${p.areas.slice(0,3).join(', ')}${more}</span></div>
   <p class="provider__bio">“${p.n} ${p.bio}…”</p>
-  ${nx?`<span class="nextappt">Next Available Appointment: ${fmtLong(nx.d)}</span>`:`<span class="nextappt">No upcoming availability</span>`}
-  <button type="button" class="provider__link" data-do="profile:${p.id}">View Profile →</button></div></article>`;}
+  ${next}
+  <div class="provider__actions">${any&&cta?cta:''}${Btn('View Profile',`data-do="profile:${p.id}"`)}</div></div></article>`;}
 function openProfile(id){
   const p=PROVIDERS.find(x=>x.id===id), d=$('#profile'), nx=nextSlot(p,null), first=p.n.split(' ')[0];
   const F=(k,v)=>`<div class="prof__f"><dt>${k}</dt><dd>${v}</dd></div>`;
@@ -619,7 +632,7 @@ function BookPanel(o){ // shared by the provider and location entry pages
   ${o.both?`<fieldset style="margin-top:8px;border:0;padding:0" aria-label="Appointment type"><div class="inline-radios">${['virtual','in-person'].map(m=>`<label class="radio-inline" data-component="Radio"><input type="radio" name="mode" value="${m}" ${mode===m?'checked':''} data-do="setMode:${m}"><span class="mark"></span>${m==='virtual'?'Virtual':'In-Person'}</label>`).join('')}</div></fieldset>`:''}</div>
   <div class="slots"><div class="slots__col"><h3>Select Date</h3>${Calendar(b)}</div>
   <div class="slots__col slots__time"><h3>Select Time</h3>${timeCol}</div>
-  <div class="slots__col slots__confirm"><h3>Confirm Appointment</h3>${confirm}</div></div></section>`;}
+  <div class="slots__col slots__confirm"><h3>${o.confirmTitle||'Confirm Appointment'}</h3>${confirm}</div></div></section>`;}
 
 def('provider-page','00a Provider page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates the provider profile page a visitor books from. The booking widget works like the slot picker: the visitor can change type, date and time, then “Book Appointment” starts the flow with that choice remembered.')],render(){
  const p=PROVIDERS[0], b=S.book;
@@ -628,7 +641,7 @@ def('provider-page','00a Provider page (entry point)',{step:null,notes:[N('Proto
  return `<div class="col col--wide" style="padding-top:40px;padding-bottom:64px;gap:40px"><span class="crumb"><a href="#" data-do="stub:Meet Our Providers">Meet Our Providers</a> &gt; ${p.n}</span>
  <div class="pg-head" style="align-items:center" data-component="Provider Header"><div class="pg-photo" role="img" aria-label="Photo of ${p.n}"></div>
   <div class="prof__who"><h1 class="prof__name" id="h1" tabindex="-1">${p.n}</h1><span class="prof__cred">${p.role}</span><span class="prof__cred">${p.creds}</span></div></div>
- ${BookPanel({b,title:`Book Initial Assessment with ${p.n}`,both,addr:p.addr,type:'Virtual',action:'providerBook'})}
+ ${BookPanel({b,title:`Book Initial Assessment with ${p.n}`,both,addr:p.addr,type:'Virtual',action:'providerBook',confirmTitle:'Confirm Appointment Details'})}
  <section class="prof__sec"><h2>About this provider</h2>${(p.about||[]).map(t=>`<p>${t}</p>`).join('')}</section>
  <section class="prof__sec"><h2>Specialty</h2><dl class="prof__grid" style="margin:0">${F('Concerns',p.areas.join(', '))}${F('Life stage',p.aud)}${F('Therapy type',p.therapyType||'Cognitive Behavioral Therapy (CBT)')}${F('Services',p.offers)}</dl></section>
  <section class="prof__sec"><h2>Location</h2><dl class="prof__grid" style="margin:0">${F('Licensed in',p.st.map(s=>ST_FULL[s]).join(', '))}${F('Appointment type',p.modes.map(m=>m==='virtual'?'Virtual':'In-Person').join(', '))}${p.modes.includes('in-person')?F('In-person practice address',p.addr):''}</dl></section>
@@ -644,7 +657,7 @@ def('location-page','00b Location page (entry point)',{step:null,notes:[N('Proto
    <p class="pg-hours"><u>${street}<br>${city}</u></p>
    <div class="pg-hours">Hours:<ul>${hrs.map(h=>`<li>${h}</li>`).join('')}</ul>All times are displayed in EDT</div>
    <p class="pg-hours">Phone: <u>${PHONE}</u></p>
-   <p class="pg-hours">Note: all mental health related appointments are by appointment only, we do not take walk-ins. Give us a call or schedule below.</p></div>
+   <p class="pg-hours">All mental health related visits are by appointment only, we do not accept walk-ins. Please click below to schedule your visit or give us a call.</p></div>
   <div class="loc__media"><div class="pg-photo" role="img" aria-label="Photos of the ${L.name} location"></div>
    <div class="carousel" aria-hidden="true"><span class="carousel__btn">‹</span><span class="dots"><i class="on"></i><i></i><i></i></span><span class="carousel__btn">›</span></div></div></div>
  ${BookPanel({b:S.book,title:'Book Initial Assessment at this location',both:false,type:'In Person',addr:L.addr,action:'locationBook'})}
@@ -659,7 +672,7 @@ def('service-page','00c Service / condition page (entry point)',{step:null,notes
   <div class="cp-sbs"><div><h2>[Intro section about the condition]</h2><p>${LOREM}</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div><div class="chk"></div></div>
   <div class="cp-sbs"><div class="chk"></div><div><h2>Optional additional side-by-side block</h2><p>${LOREM}</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div></div>
   <div><h2>Optional Simple Header/Text block</h2><p style="margin-top:16px;max-width:1000px">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p><p style="margin-top:16px;max-width:1000px">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p></div>
-  <div data-component="How It Works"><h2 style="text-align:center;margin-bottom:32px">How it works</h2><div class="cp-how">${['Give us some details on you or your family member, what you need support with and your preferences.','We’ll match you with a provider right away, or you have the option for a free consult to get more information before making a decision.','Schedule and meet with your provider online or in-person to start your journey of a better you. Billing and scheduling is handled in our convenient patient portal.'].map((t,i)=>`<div><div class="num">${i+1}<span class="dot"></span></div><h3 style="font-size:18px;line-height:26px">Optional Heading</h3><p>${t}</p></div>`).join('')}</div><div style="text-align:center;margin-top:32px">${GS}</div></div>
+  <div data-component="How It Works"><h2 style="text-align:center;margin-bottom:32px">How it works</h2><div class="cp-how">${['Give us some details on you or your family member, what you need support with and your preferences.','We’ll match you with a provider right away, or you have the option for a free consultation to get more information before making a decision.','Schedule and meet with your provider online or in-person to start your journey of a better you. Billing and scheduling is handled in our convenient patient portal.'].map((t,i)=>`<div><div class="num">${i+1}<span class="dot"></span></div><h3 style="font-size:18px;line-height:26px">Optional Heading</h3><p>${t}</p></div>`).join('')}</div><div style="text-align:center;margin-top:32px">${GS}</div></div>
   <div data-component="Service Grid"><h2 style="margin-bottom:32px">Services to treat anxiety</h2><div class="cp-grid">${svc.map(x=>`<div><div class="chk"></div><h3>${x}</h3><p>${LOREM}</p>${Btn('Learn More About '+x,'data-do="stub:'+x+'"')}</div>`).join('')}</div></div>
   <div class="cp-ins" data-component="Insurance Checker"><div><h2>Check if you’re covered</h2><p>We are proudly in-network with many major insurance providers, offer competitive self-pay rates if we are out-of-network with your insurance or prefer to pay directly, and most services, including therapy, psychiatry, and medication management, are HSA/FSA eligible.</p><div class="logos"><span>aetna</span><span>cigna</span><span>Anthem</span><span>Horizon</span><span>Point Comfort</span><span>+ More</span></div><a href="#" data-do="stub:Covered insurance plans">See all covered insurance plans by state</a></div>
    <div><h3 style="font-size:20px">Check your insurance eligibility</h3><div class="sel"><div><span class="small">State</span><span class="fake"></span></div><div><span class="small">Insurance Plan</span><span class="fake"></span></div></div></div></div>
@@ -683,7 +696,7 @@ def('landing','01 Get started landing',{step:0,notes:[
  else if(S.service)ctx=saved(`Interested in <strong>${SERVICES.find(s=>s.id===S.service).l}</strong>`);
  else if(S.location)ctx=saved(`Booking at our <strong>${S.location.name}</strong> location · ${S.location.addr}${S.pre&&S.pre.date?` · ${fmtShort(S.pre.date)} at ${S.pre.time}`:''}`);
  return `<div class="col col--wide"><div style="max-width:760px">${Header('Let’s get you scheduled','It takes about 3 minutes. Here’s what to expect.')}</div>${ctx}
- <div class="steps">${[['Tell us about you','Who the visit is for and how to reach you.'],['Tell us what you need','Choose a service and check your insurance.'],['Find the right fit','We’ll match you with a provider, or you can book a free consult.'],['Pick a time','Choose a day and time that works.']].map((s,i)=>`<div class="step" data-component="Step Card"><span class="step__n">${i+1}</span><strong>${s[0]}</strong><span class="small">${s[1]}</span></div>`).join('')}</div>
+ <div class="steps">${[['A Little About You','We’ll begin with a few questions about who this appointment is for.'],['Find The Right Fit','We’ll help match you with the options that fit your needs.'],['Choose A Time','Select an appointment that works for your schedule.'],['Review & Confirm','Review your information and complete a few final details.']].map((s,i)=>`<div class="step" data-component="Step Card"><span class="step__n">${i+1}</span><strong>${s[0]}</strong><span class="small">${s[1]}</span></div>`).join('')}</div>
  <div class="btn-row">${Btn('Get started','data-go="who"','btn--primary')}</div>
  <p class="small">Already a current patient? <a href="#" data-do="portal">Log in to the patient portal</a> to manage your appointments.</p>${Help()}</div>`}});
 
@@ -697,18 +710,19 @@ def('referral','02b Refer a patient (redirect)',{step:0,notes:[N('Redirect','Lea
  <div class="btn-row">${Btn('Go to the referral form','data-do="stub:Referral form"','btn--primary')}${Btn('Book for someone else','data-go="who"')}</div>${Help()}</div>`}});
 
 def('details','03 Your details',{step:0,notes:[
- N('Variants','Self: your name, DOB, sex assigned at birth (with “Why do we need this?”), pronouns (optional), email, phone, zip. Child: “Your details” (parent/guardian name, email, phone, zip) followed by “Your child’s details” (name, DOB, sex assigned at birth, pronouns).'),
- N('Phone number','Phone often causes drop-off. Added “why we ask” messaging. Open question: is this the best place to collect it?'),
+ N('Variants','Self: your name, DOB, sex assigned at birth (with “Why do we need this?”), pronouns (optional), email, phone, zip. Child: “Your details” (parent/guardian name, relation to patient, email, phone, zip) followed by “Your child’s details” (name, DOB, sex assigned at birth, pronouns).'),
+ N('Phone number','Phone often causes drop-off. Open question: is this the best place to collect it? Opt-in messaging (2 separate checkboxes: appointment texts and marketing texts) is needed somewhere in the workflow, but doesn’t have to live here. Copy to come.'),
  N('Booking on behalf of someone else','Collect parent/guardian name, phone and email as well as the patient’s name, DOB and zip.'),
+ N('Relation to patient','Dropdown on the “my child” version only. Options: Parent, Grandparent, Guardian, Relative, Friend, Other.'),
  N('Date format','Date of birth is entered as MM/DD/YYYY.'),
  N('Validation','DOB guard: adults only for “Myself”, under-18 only for “My child”. Email, phone and zip formats are validated.')],render(){
  const c=S.who==='child';
  const contact=`${Field('Email address','email',{type:'email',ac:'email'})}
- ${Field('Preferred phone number','phone',{type:'tel',ac:'tel',hint:'We only use your phone number for appointment reminders and to reach you if something changes.'})}
- ${Field('Zip code','zip',{im:'numeric',ac:'postal-code',hint:'We use this to show you the services available in your state.'})}`;
- return `<div class="col">${Back()}${Stepper(0)}${Header(c?'Tell us about you and your child':'Tell us about you')}
+ ${Field('Phone number','phone',{type:'tel',ac:'tel'})}
+ ${Field('Zip code','zip',{im:'numeric',ac:'postal-code',hint:'We use this to show you the services available in your area.'})}`;
+ return `<div class="col">${Back()}${Stepper(0)}${Header(c?'A Little About You & Your Child':'A Little About You')}
  <form id="form" novalidate class="col" style="padding:0;max-width:none">
- ${c?`<h2>Your details</h2><div class="row2">${Field('Your first name','gFirst',{ac:'given-name'})}${Field('Your last name','gLast',{ac:'family-name'})}</div>`:''}
+ ${c?`<h2>Your details</h2><div class="row2">${Field('Your first name','gFirst',{ac:'given-name'})}${Field('Your last name','gLast',{ac:'family-name'})}</div>${Select('Relation to patient','relation',['Parent','Grandparent','Guardian','Relative','Friend','Other'])}`:''}
  ${c?contact:''}
  ${c?'<h2>Your child’s details</h2>':''}
  <div class="row2">${Field(c?'Child’s first name':'First name','first',{ac:c?'off':'given-name'})}${Field(c?'Child’s last name':'Last name','last',{ac:c?'off':'family-name'})}</div>
@@ -735,11 +749,12 @@ def('heard','04 How did you hear about us',{step:0,notes:[N('Optional','Question
 def('services','05 Choose a service',{step:1,notes:[
  N('State-based list','Services shown depend on the state derived from the zip code (CT, FL, NJ, NY, TX, all other states).'),
  N('Preselection','If the visitor came from a service page, that service is preselected.'),
+ N('Executive Function Coaching','Available in all states. Links to the consultations calendar (skips insurance).'),
  N('Limited online availability','CT, FL and TX have limited online availability: tell users to call if they don’t see times.'),
  N('Copy','Short service descriptions are placeholder copy for content review.')],render(){
  const st=userState(), ids=[...BY_STATE[st],'unsure'];
  const sel=S.svc||S.service;
- return `<div class="col">${Back()}${Stepper(1)}${Header(st==='OT'?'In your state, we currently offer these services':`In ${stateName()}, we currently offer the following services`,'What type of support are you looking for?')}
+ return `<div class="col">${Back()}${Stepper(1)}${Header(st==='OT'?'In your state, we offer these services':`In ${stateName()}, we offer the following services`,'What type of support are you looking for?')}
  ${Opts('svc',ids.map(id=>{const s=SERVICES.find(x=>x.id===id);return {v:id,l:s.l,d:s.d}}),ids.includes(sel)?sel:null,{aria:'Service'})}
  ${S.err.svc?`<div class="err" role="alert">${S.err.svc}</div>`:''}
  <p class="small">Not in ${stateName()==='your state'?'this state':stateName()}? <button type="button" class="link" data-go="details">Change your zip code</button></p>
@@ -747,31 +762,34 @@ def('services','05 Choose a service',{step:1,notes:[
 
 const SELF_PAY='I prefer self-pay', NO_PLAN='I don’t see my insurance plan';
 const RATES={
- consult:{t:'Initial Consultation',lines:['Get your questions answered, learn about our services, and get matched with a provider: <strong>$0</strong>'],links:[['Schedule a free consult →','toSlots:consult']]},
+ consult:{t:'Initial Consultation',lines:['Get your questions answered, learn about our services, and get matched with a provider: <strong>$0</strong>'],links:[['Schedule a free consultation →','toSlots:consult']]},
  therapy:{t:'Therapy',lines:['Initial Assessment: <strong>$250</strong> (special self-pay rate: $99)','Individual or family therapy: <strong>$130</strong>','Group therapy: <strong>$75</strong>'],links:[['Learn more about therapy →','stub:Therapy page']]},
  med:{t:'Medication Management',lines:['Initial Assessment: <strong>$200</strong>','Follow-up visit: <strong>$75</strong>'],links:[['Learn more about medication management →','stub:Medication management page']]},
  coaching:{t:'Coaching',lines:['Initial Assessment: <strong>$150</strong>','60-minute follow up visit: <strong>$150</strong>','30-minute follow up visit (Parent Coaching only): <strong>$75</strong>'],links:[['Parent Coaching →','stub:Parent coaching page'],['Executive Functioning Coaching →','stub:Executive functioning coaching page']]}};
 const rateKey=id=>id==='therapy'?'therapy':id==='med'?'med':['ef','parent'].includes(id)?'coaching':null;
 function SelfPayRates(svc){
- const keys=['consult',rateKey(svc)].filter(Boolean);
+ const k=rateKey(svc); if(!k)return '';
+ const r=RATES[k];
+ const rows=r.lines.map(l=>{const n=l.indexOf(': ');return [l.slice(0,n),l.slice(n+2)];});
  return `<section class="selfpay" data-component="Self Pay Rates" aria-label="Self pay rates">
-  <div class="rates">${keys.map(k=>{const r=RATES[k];return `<div class="rate" data-component="Rate Card"><h3>${r.t}</h3><div class="rate__lines">${r.lines.map(l=>`<p>${l}</p>`).join('')}</div></div>`}).join('')}</div></section>`;}
+  <table class="fees"><caption>${r.t} Self Pay Rates</caption><thead><tr><th scope="col">Service</th><th scope="col">Fee</th></tr></thead>
+  <tbody>${rows.map(x=>`<tr><th scope="row">${x[0]}</th><td>${x[1]}</td></tr>`).join('')}</tbody></table></section>`;}
 
-def('insurance','06 Check your insurance',{step:1,notes:[N('Insurance checker','Uses the existing Insurance Checker pattern: choose from plans covered in the selected state, “I prefer self-pay” or “I don’t see my insurance plan”. Plan names are placeholders.'),N('Result message','Shows “we cover you” or the self-pay message, then continues.'),N('Self-pay rates','“I prefer self-pay” and “I don’t see my insurance plan” both show the Self Pay Rates from the Insurance & Cost page: the free consult plus the rates for the selected service (Therapy or Medication Management). Rates and copy are from the wireframe, so confirm with the client.')],render(){
+def('insurance','06 Check your insurance',{step:1,notes:[N('Insurance checker','Uses the existing Insurance Checker pattern: choose from plans covered in the selected state, “I prefer self-pay” or “I don’t see my insurance plan”. Plan names are placeholders.'),N('Result message','Shows “we cover you” or the self-pay message, then continues.'),N('Self-pay rates','“I prefer self-pay” and “I don’t see my insurance plan” both show the Self Pay Rates from the Insurance & Cost page: the rates for the selected service (Therapy or Medication Management), listed as a fee chart. The free consultation box is not shown, since they are requesting an intake, not a consultation. Rates and copy are from the wireframe, so confirm with the client.')],render(){
  const st=userState(), list=[...(INS[st]||[]),SELF_PAY,NO_PLAN];
  let msg='',rates='';
  if(S.ins){const cov=INS[st]?.includes(S.ins);
-  if(cov)msg=Banner('Good news, we cover your insurance!','<p class="small">[Message about coverage] You’ll confirm your insurance details when you complete registration.</p>','banner--light');
+  if(cov)msg=Banner('Good news, it looks like we may cover your insurances.','<p class="small">You’ll confirm your insurance details when you complete registration.</p>','banner--light');
   else{ msg=S.ins===SELF_PAY?Banner('Self-pay is a great option.','<p class="small">[Message about self pay] You’ll see the rates below before you commit to a visit.</p>','banner--light'):Banner('We don’t currently cover your plan, but we have affordable self-pay options available.','<p class="small">[Message about self pay] You’ll see the rates below before you commit to a visit.</p>','banner--light'); rates=SelfPayRates(S.svc); } }
  return `<div class="col">${Back()}${Stepper(1)}${Header('Let’s check your insurance coverage')}
  <div class="field" data-component="Select"><label for="ins">Insurance plan in ${stateName()}</label><select class="select" id="ins" data-do="insPick"><option value="">Select…</option>${list.map(x=>`<option ${x===S.ins?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
  <div aria-live="polite">${msg}</div>${rates}
  <div class="btn-row">${Btn('Continue','data-do="insNext"','btn--primary')}</div>${S.err.ins?`<div class="err" role="alert">${S.err.ins}</div>`:''}${Help()}</div>`}});
 
-def('consult-intro','07 Free consult',{step:2,notes:[N('Who lands here','Coaching, ADHD evaluation, DBT, maternal health, “I’m not sure”, and children 4 and younger.')],render(){
+def('consult-intro','07 Free consultation',{step:2,notes:[N('Who lands here','Coaching, ADHD evaluation, DBT, maternal health, “I’m not sure”, and children 4 and younger.')],render(){
  const young=patientAge()!==null&&patientAge()<5&&S.who==='child';
- return `<div class="col">${Back()}${Stepper(2)}${Header('Schedule a free informational consult')}
- ${Banner('',`<p>We’d love to schedule you for a free informational consult. Here you can get your questions answered, get guidance on the right service for your needs, and learn more about our programs and pricing.</p>${young?'<p class="small">[Placeholder] For children 4 and younger, we start with a consult so we can guide you to the right support.</p>':''}`)}
+ return `<div class="col">${Back()}${Stepper(2)}${Header('Schedule a free informational consultation')}
+ ${Banner('',`<p>We’re here to help. During your free informational consultation, you can get answers to your questions, discuss your needs with our team, and learn more about the programs, services, and pricing options available to you.</p>${young?'<p class="small">[Placeholder] For children 4 and younger, we start with a consultation so we can guide you to the right support.</p>':''}`)}
  <div class="btn-row">${Btn('Choose a time','data-do="toSlots:consult"','btn--primary')}</div>${Help()}</div>`}});
 
 def('assessment-intro','08 Initial assessment (medication)',{step:2,notes:[N('No provider choice','For Medication & Psychiatry we book an assessment, not a specific provider. Times come from all assessing providers; the user is booked with whoever fits the slot.')],render(){
@@ -779,9 +797,9 @@ def('assessment-intro','08 Initial assessment (medication)',{step:2,notes:[N('No
  ${Banner('',`<p>[Message about getting an initial assessment followed by matching with a doctor] You’ll meet with one of our psychiatric providers for an assessment. After your visit, we’ll match you with the provider who’s the best fit for ongoing care.</p>`)}
  <div class="btn-row">${Btn('Choose a time','data-do="toSlots:assessment"','btn--primary')}</div>${Help()}</div>`}});
 
-def('ready','09 Ready to be matched?',{step:2,notes:[N('Decision','Ready to get matched? Or free consult if they still have questions. Or book the next available therapist if they have no preference.')],render(){
+def('ready','09 Ready to be matched?',{step:2,notes:[N('Decision','Ready to get matched? Or free consultation if they still have questions. Or book the next available therapist if they want to book as soon as possible.')],render(){
  return `<div class="col">${Back()}${Stepper(2)}${Header('Ready to get matched with a therapist?','Pick the option that feels right. You can always call us.')}
- ${Opts('ready',[{v:'match',l:'Match me with a therapist',d:'Answer a few questions and see therapists who fit.'},{v:'consult',l:'I still have questions',d:'Book a free informational consult.'},{v:'next',l:'No preference',d:'Book me with the next available therapist.'}],null,{aria:'Next step'})}
+ ${Opts('ready',[{v:'match',l:'Match me with a therapist',d:'Answer a few questions and see therapists who fit.'},{v:'next',l:'Book me as soon as possible',d:'We’ll book you with the next available therapist.'},{v:'consult',l:'I still have questions',d:'Book a free informational consultation.'}],null,{aria:'Next step'})}
  <div class="btn-row">${Btn('Continue','data-do="readyNext"','btn--primary')}</div>${Help()}</div>`}});
 
 def('alt','10 Provider unavailable',{step:2,notes:[N('Fallbacks','Shown when the chosen provider doesn’t practice in the user’s state, or has no upcoming availability. Shows similar therapists, then continues to the “Ready to be matched?” step.')],render(){
@@ -792,7 +810,7 @@ def('alt','10 Provider unavailable',{step:2,notes:[N('Fallbacks','Shown when the
  <div class="btn-row">${Btn('See other options','data-go="ready"')}</div>${Help()}</div>`}});
 
 def('m-areas','11 Match: areas of help',{step:2,notes:[N('Preselection','If they came from a condition page, that condition is preselected. Filters from the provider directory are NOT carried through.'),N('Multi-select','Options per the board; “I’m not sure” included.')],render(){
- const val=S.areas; return `<div class="col">${Back()}${Stepper(2)}${Header('What areas are you looking for help with?','Select all that apply.')}
+ const val=S.areas; return `<div class="col">${Back()}${Stepper(2)}${Header('What would you like support with?','Select all that apply.')}
  ${Opts('areas',AREAS.map(a=>({v:a,l:a})),val,{aria:'Areas of help',grid:true})}
  <div class="btn-row">${Btn('Continue','data-do="areasNext"','btn--primary')}</div>${Help()}</div>`}});
 def('m-mode','12 Match: how to meet',{step:2,notes:[N('State rule','Only shown in states that offer in-person (currently NY). Include messaging that in-person is limited.'),N('Location entry','If they came from “Book at this location”, in-person is preselected with the address of that practice.')],render(){
@@ -847,7 +865,8 @@ function matchList(){
 def('results','15 Recommended therapists',{step:2,notes:[
  N('Never empty','We never show zero providers. If nothing matches exactly, say so and show the closest matches. Always offer a call option.'),
  N('Sorting','In-person / no preference: closest to their zip first, with a toggle to include virtual therapists. Virtual: earliest availability first.'),
- N('Provider card','Uses the Provider card (Large) from the wireframes. Each card has a “Book with [name]” button, and “View Profile →” opens the full provider profile in an overlay (which also has a book button). The overlay follows the Provider Profile page, without the booking placeholder, resources or more-providers sections.'),
+ N('Virtual filter','When “Also show virtual therapists” is checked, a “Virtual” tag appears next to “In-person” as an applied filter. Removing the tag unchecks the box.'),
+ N('Provider card','Uses the Provider card (Large) from the wireframes. Each card has a “Book with [name]” button, and “View Profile” opens the full provider profile in an overlay (which also has a book button). The overlay follows the Provider Profile page, without the booking placeholder, resources or more-providers sections.'),
  N('Provider data','Provider information would be manual; opportunity to automate via the Healow API (location, accepted insurance).')],render(){
  const m=matchList();
  const toggle=S.mode==='in-person'?`<label class="check-inline" data-component="Checkbox"><input type="checkbox" ${S.incVirtual?'checked':''} data-do="toggleVirtual"><span class="mark"></span>Also show virtual therapists</label>`:'';
@@ -855,18 +874,19 @@ def('results','15 Recommended therapists',{step:2,notes:[
  return `<div class="col col--wide">${Back()}${Stepper(2)}${Header('Therapists who may be a great fit',`Showing therapists in ${stateName()}, soonest availability first.`)}
  <div class="tags" role="group" aria-label="Your answers">${[...S.areas.map(v=>['area',v,v]),
    S.mode&&S.mode!=='any'?['mode',S.mode,S.mode==='in-person'?'In-person':'Virtual']:null,
+   S.mode==='in-person'&&S.incVirtual?['virtual','x','Virtual']:null,
    S.gender&&S.gender!=='No preference'?['gender',S.gender,S.gender]:null,
    ...S.langs.map(v=>['lang',v,v])].filter(Boolean).map(([t,v,l])=>`<span class="chip" data-component="Tag">${l}<button type="button" class="chip__x" data-do="removeTag:${t}:${esc(v)}" aria-label="Remove ${esc(l)}">×</button></span>`).join('')}<button class="link small edit-answers" type="button" data-go="m-areas">Edit answers</button></div>
  ${toggle}
  ${m.none?Banner('No therapists match all of your requirements',`<p>Here are some who might be a good fit. ${Help()}</p>`,'banner--strong'):''}
  <div class="col" style="padding:0;max-width:none">${list.map(r=>ProviderCard(r.p,Btn('Book with '+r.p.n.split(' ')[0],`data-do="pickProvider:${r.p.id}"`,'btn--primary'),S.mode)).join('')}</div>
- ${Banner('Want help choosing?',`<p class="small">Call us at <a href="tel:${PHONE}">${PHONE}</a> or book a free consult.</p>`,'banner--light')}
- <div class="btn-row">${Btn('Book a free consult','data-do="toSlots:consult"')}</div></div>`}});
+ ${Banner('Want help choosing?',`<p class="small">Call us at <a href="tel:${PHONE}">${PHONE}</a> or book a free consultation.</p>`,'banner--light')}
+ <div class="btn-row">${Btn('Book a free consultation','data-do="toSlots:consult"')}</div></div>`}});
 
 def('slots','16 Pick a time',{step:3,notes:[
  N('Appointment type','Show the Virtual / In-person selector only if the provider does both, otherwise just text. If both exist, only show appointments for the selected option.'),
- N('API-driven (ECW)','Times come from the API; a booking is created through the API. For consults, open question: integrate the HubSpot meeting scheduler API or keep it a separate embed?'),
- N('Cost','Shown on the confirm card and changes with the service and how they’re paying. Free consult: $0. Therapy or medication through insurance: “Pending based on your insurance” (therapy also shows “Most new patients with in-network insurance pay $0, on average, for their initial assessment visit.”). Self-pay (including “I don’t see my insurance plan”): the self-pay rate for the service. Rates come from the Self Pay Rates wireframe.'),
+ N('API-driven (ECW)','Times come from the API; a booking is created through the API. For consultations, open question: integrate the HubSpot meeting scheduler API or keep it a separate embed?'),
+ N('Cost','Shown on the confirm card and changes with the service and how they’re paying. Free consultation: $0. Therapy or medication through insurance: “Pending based on your insurance” (therapy also shows “Most new patients with in-network insurance pay $0, on average, for their initial assessment visit.”). Self-pay (including “I don’t see my insurance plan”): the self-pay rate for the service. Rates come from the Self Pay Rates wireframe.'),
  N('Same-day','Same-day availability is only available via form / phone.'),
  N('Time no longer available','If the selected time is gone we offer alternatives. Use the toolbar toggle to simulate it.'),
  N('Limited availability states','CT, FL and TX have limited online availability: message to call for more options.')],render(){
@@ -874,14 +894,14 @@ def('slots','16 Pick a time',{step:3,notes:[
  const both=b.p?(b.p.modes.includes('virtual')&&b.p.modes.includes('in-person')&&inPersonOK()):(b.kind==='next'&&inPersonOK()&&S.mode==='any');
  if(!S.sel.mode)S.sel.mode=b.p?(!b.p.modes.includes('virtual')?'in-person':(S.mode==='in-person'&&b.p.modes.includes('in-person')&&inPersonOK()?'in-person':'virtual')):(b.kind==='next'&&S.mode==='in-person'&&inPersonOK()?'in-person':'virtual');
  const mode=S.sel.mode, d=S.sel.date;
- const title=b.kind==='consult'?'Book a Free Informational Consult':b.kind==='assessment'?'Book Initial Assessment':b.p?`Book Initial Assessment with ${b.p.n}`:'Book Initial Assessment with the next available therapist';
+ const title=b.kind==='consult'?'Book a Free Informational Consultation':b.kind==='assessment'?'Book Initial Assessment':b.p?`Book Initial Assessment with ${b.p.n}`:'Book Initial Assessment with the next available therapist';
  const mins=b.kind==='consult'?30:60;
  const slots=d?daySlots(b,d,mode):[];
  const groups=[['Morning',t=>t.includes('AM')],['Afternoon',t=>t.includes('PM')&&parseInt(t)!==6&&parseInt(t)!==7||parseInt(t)===12],['Evening',t=>t.includes('PM')&&(parseInt(t)===6||parseInt(t)===7)]];
  const timeCol=d?groups.map(([g,f])=>{const ts=slots.filter(([t])=>f(t));return ts.length?`<div><div class="period">${g}</div><div class="pills">${ts.map(([t])=>`<button type="button" class="pill" data-component="Pill" data-do="pickTime:${t}" data-key="t${t.replace(/\W/g,'')}" aria-pressed="${S.sel.time===t}">${t}</button>`).join('')}</div></div>`:''}).join(''):`<p class="small">Choose a date to see available times.</p>`;
  const prov=S.sel.time?(b.p||(slots.find(([t])=>t===S.sel.time)||[])[1]):null;
  const loc=mode==='in-person'?(b.p?.addr||prov?.addr||selLocs()[0]?.addr||S.location?.addr):null;
- const confirm=S.sel.time?`<div class="confirm" data-component="Confirm Card"><strong>${b.kind==='consult'?'Free Informational Consult':'Initial Assessment'}</strong>
+ const confirm=S.sel.time?`<div class="confirm" data-component="Confirm Card"><strong>${b.kind==='consult'?'Free Informational Consultation':'Initial Assessment'}</strong>
    <div class="detail"><span class="ic">${IC.cal}</span>${fmtLong(d)}</div><div class="detail"><span class="ic">${IC.clock}</span>${S.sel.time} · ${mins} Minutes</div><div class="detail"><span class="ic">${IC.pin}</span>${loc?`<u>${loc}</u>`:'Virtual'}</div>${CostRow()}
    <div style="margin-top:8px">${Btn('Book Appointment','data-do="book"','btn--primary')}</div></div>`:`<p class="small">Choose a time to continue.</p>`;
  const preNote=S.pre&&S._preApplied?Banner('',`<p class="small">We saved the time you chose on the provider page.</p>`,'banner--light'):'';
@@ -894,18 +914,19 @@ def('slots','16 Pick a time',{step:3,notes:[
  <div class="slots__col slots__confirm"><h3>Confirm Appointment</h3>${confirm}</div></div>
  <p class="small">Need a same-day appointment? Same-day visits are only available by phone or form: <a href="tel:${PHONE}">${PHONE}</a>.</p></div>`}});
 
-def('confirm','17 Confirmation and next steps',{step:4,notes:[N('Registration caveat','For therapy and medication visits, the visit is only confirmed once registration is completed, including insurance. Registration next steps are sent by email, so there is no registration button on this page.'),N('Free consults','No registration step is needed for a free consult, so the registration messaging is not shown.'),N('API','Confirmation shown after a successful API response.')],render(){
+def('confirm','17 Confirmation and next steps',{step:4,notes:[N('Registration caveat','For therapy and medication visits, the visit is only confirmed once registration is completed, including insurance. Registration next steps are sent by email, so there is no registration button on this page.'),N('Free consultations','No registration step is needed for a free consultation, so the registration messaging is not shown.'),N('API','Confirmation shown after a successful API response.'),N('In-person visits','In-person confirmations add a “Getting to your visit” section with a photo of the office, the address and arrival instructions (arrive 10 to 15 minutes early, and that the facility is part of PM Pediatrics Urgent Care). Instruction copy is placeholder.')],render(){
  const b=S.book, d=S.sel.date, mode=S.sel.mode, p=S.assigned, consult=b.kind==='consult', email=esc(S.f.email||'your email');
  const who=b.kind==='consult'?'a Care Navigator':p?`${p.n}${p.c?', '+p.c:''}`:'your provider';
  const loc=mode==='in-person'?(b.p?.addr||p?.addr||selLocs()[0]?.addr||S.location?.addr):null;
- const head=consult?Header('Your free consult is booked',`We’ve sent the details to ${email}.`):Header('Your appointment is reserved',`We’ll email the registration next steps to ${email}.`);
+ const head=consult?Header('Your free consultation is booked','<span style="font-size:20px;line-height:28px">We’ve sent the details to your email.</span>'):Header('Your appointment is reserved',`We’ll email the registration next steps to ${email}.`);
  const caveat=consult?'':Banner('Your visit isn’t confirmed yet',`<p>Your visit will be confirmed when you complete registration, including your insurance information. We’ll send the registration next steps by email.</p>`,'banner--strong');
- const steps=consult?['Check your email for your confirmation and visit details.','Join your consult on time. We’ll send a reminder by text.']:[`Check ${email} for your registration next steps.`,'Complete registration and add your insurance information to confirm your visit.','Join your visit on time. We’ll send a reminder by text.'];
+ const steps=consult?['<strong>Check your inbox:</strong> You’ll receive a confirmation email with your appointment details and the link to join your virtual consultation.','<strong>Watch for reminders:</strong> We’ll send appointment reminders by email and text. If you have any questions before your visit, we’re here to help.']:[`Check ${email} for your registration next steps.`,'Complete registration and add your insurance information to confirm your visit.',loc?'Arrive 10 to 15 minutes early. We’ll send a reminder by text.':'Join your visit on time. We’ll send a reminder by text.'];
  return `<div class="col">${Stepper(4)}${head}
  ${caveat}
- <div class="confirm" data-component="Confirm Card"><strong>${b.kind==='consult'?'Free Informational Consult':'Initial Assessment'} with ${who}</strong>
+ <div class="confirm" data-component="Confirm Card"><strong>${b.kind==='consult'?'Free Informational Consultation':'Initial Assessment'} with ${who}</strong>
  <div class="detail"><span class="ic">${IC.cal}</span>${fmtLong(d)}</div><div class="detail"><span class="ic">${IC.clock}</span>${S.sel.time} · ${b.kind==='consult'?30:60} Minutes</div><div class="detail"><span class="ic">${IC.pin}</span>${loc?`<u>${loc}</u>`:'Virtual'}</div>${CostRow()}</div>
  <div class="btn-row">${Btn('Add to calendar','data-do="stub:Calendar file"')}</div>
+ ${loc?`<section class="visit" data-component="Visit Location"><h2>Getting to your visit</h2><div class="visit__photo chk" role="img" aria-label="Photo of the office"></div><p><strong>${loc}</strong></p><ul class="visit__list"><li>Please arrive 10 to 15 minutes early so we can get you checked in.</li><li>[Placeholder] This facility is part of PM Pediatrics Urgent Care. Look for the PM Pediatrics Urgent Care signs when you arrive.</li><li>[Placeholder] Parking and public transit directions to the office.</li><li>[Placeholder] Entrance and check-in instructions (floor, suite, buzzer).</li><li>[Placeholder] What to bring: photo ID and insurance card.</li></ul></section>`:''}
  <h2>Next steps</h2><ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">${steps.map(s=>`<li>${s}</li>`).join('')}</ol>
  <p class="small">Need to change something? Call <a href="tel:${PHONE}">${PHONE}</a>.</p></div>`}});
 
@@ -987,7 +1008,7 @@ const A={
  whoNext(){ if(!S.who){S.err.who='Choose one to continue.';return render();} go(S.who==='patient'?'referral':'details'); },
  switchWho(w){S.who=w; go('details')},
  detailsNext(){const f=S.f,e={},c=S.who==='child';
-  if(c){if(!req(f.gFirst))e.gFirst='Enter your first name.'; if(!req(f.gLast))e.gLast='Enter your last name.';}
+  if(c){if(!req(f.gFirst))e.gFirst='Enter your first name.'; if(!req(f.gLast))e.gLast='Enter your last name.'; if(!req(f.relation))e.relation='Select an option.';}
   if(!req(f.first))e.first=c?'Enter your child’s first name.':'Enter your first name.'; if(!req(f.last))e.last=c?'Enter your child’s last name.':'Enter your last name.';
   const dob=parseDob(f.dob); if(!req(f.dob))e.dob='Enter a date of birth.'; else if(!dob)e.dob='Enter a valid date as MM/DD/YYYY.';
   if(!req(f.sex))e.sex='Select an option.';
@@ -1022,6 +1043,7 @@ const A={
   if(type==='area')S.areas=S.areas.filter(x=>x!==val);
   if(type==='lang')S.langs=S.langs.filter(x=>x!==val);
   if(type==='gender')S.gender='No preference';
+  if(type==='virtual')S.incVirtual=false;
   if(type==='mode'){S.mode='any'; S.locIds=[]; S.incVirtual=false;}
   S._focus='.chip__x, .edit-answers'; render(); },
  toggleVirtual(v,el){S.incVirtual=el.checked; render()},
@@ -1074,7 +1096,7 @@ $('#tb-state').onchange=e=>{UI.stateOverride=e.target.value; render()};
 $('#tb-notes').onchange=e=>{UI.notes=e.target.checked; render()};
 $('#tb-validate').onchange=e=>{UI.validate=e.target.checked; S.err={}; render()};
 function sample(){const c=S.who==='child'; S.who=S.who||'self';
- Object.assign(S.f,{first:c?'Riley':'Alex',last:'Morgan',dob:c?'03/09/2014':'06/14/1988',sex:'Female',email:'alex.morgan@example.com',phone:'(212) 555-0148',zip:'11201'},c?{gFirst:'Alex',gLast:'Morgan'}:{});
+ Object.assign(S.f,{first:c?'Riley':'Alex',last:'Morgan',dob:c?'03/09/2014':'06/14/1988',sex:'Female',email:'alex.morgan@example.com',phone:'(212) 555-0148',zip:'11201'},c?{relation:'Parent',gFirst:'Alex',gLast:'Morgan'}:{});
  S.svc=S.svc||'therapy'; S.ins=S.ins||'Aetna'; S.areas=S.areas.length?S.areas:['Anxiety']; S.mode=S.mode||'any'; S.gender=S.gender||'No preference';}
 $('#tb-restart').onclick=()=>{S=blank(); render(); scrollTo({top:0});};
 $('#tb-fill').onclick=()=>{sample(); render()};
