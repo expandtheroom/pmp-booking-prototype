@@ -307,7 +307,6 @@ details.why p{padding:8px 0 0;max-width:560px}
 .launch .card{background:#fff;border:1px dashed var(--line-ui);padding:20px;display:flex;flex-direction:column;gap:var(--s2);align-items:flex-start}
 
 /* Self Pay Rates (mirrors Components > Self Pay Rates) */
-.visit{display:flex;flex-direction:column;gap:16px}.visit__photo{height:240px;border:1px solid var(--line)}.visit__list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 .fees{width:100%;border-collapse:collapse;background:var(--bg);text-align:center}
 .fees caption{background:var(--ink);color:#fff;padding:16px;font-weight:700;caption-side:top}
 .fees th,.fees td{border:1px solid var(--line);padding:16px;font-weight:400}
@@ -398,8 +397,8 @@ const BY_STATE={
  TX:['therapy','med','adhd','ef','parent'],
  OT:['ef','parent']};
 const HEARD=['Google/Internet Search','Social Media','Physician/PCP referral','PM Urgent Care','School','Family/friend','Insurance company','Zocdoc','Psychology Today'];
-const AREAS=['ADHD','Anxiety','Behavioral Issues','Chronic Illness','Depression','EMDR','Grief & Loss','LGBTQIA+','Maternal & Perinatal','OCD','Parenting','Stress & Burnout','Trauma & PTSD','I’m not sure'];
-const LANGS=['English','Spanish','French','Bengali','Haitian Creole'];
+const AREAS=['ADHD','Anxiety','Behavioral Issues','Chronic Illness','Depression','Grief & Loss','LGBTQIA+','Maternal & Perinatal','OCD','Parenting','Stress & Burnout','Trauma & PTSD','I’m not sure'];
+const LANGS=['English','Spanish','French','French Creole','Haitian Creole','Portuguese','Tagalog','Urdu'];
 const INS={NY:['Aetna','Affinity by Molina Healthcare','Anthem','Cigna','GHI','Fidelis Care','Healthfirst','Horizon','MVP Healthcare','NYSHIP','Point Comfort Group'],
  NJ:['Aetna','Anthem','Cigna','Horizon','Point Comfort Group'],CT:['Aetna','Anthem','Cigna','Point Comfort Group'],
  FL:['Aetna','Cigna','Point Comfort Group'],TX:['Aetna','Cigna','Point Comfort Group'],OT:[]};
@@ -408,17 +407,17 @@ const PROVIDERS=[
  {id:'jw',n:'Jennifer Weber',c:'LCSW',st:['NJ','NY'],modes:['virtual','in-person'],loc:'Brooklyn, NY',addr:'118 Court St, Brooklyn, NY 11201',zip:'11201',areas:['Anxiety','Depression','Parenting','Stress & Burnout','Trauma & PTSD'],g:'Female',lang:['English','Spanish'],accept:true,bio:'Works with teens and parents on anxiety, school stress and family transitions.'},
  {id:'ml',n:'Marcus Lee',c:'LMFT',st:['CT'],modes:['virtual'],zip:'06103',areas:['ADHD','Behavioral Issues','Parenting','OCD'],g:'Male',lang:['English'],accept:true,bio:'Helps children and families build routines and manage big behaviors.'},
  {id:'lp',n:'Lena Park',c:'PsyD',st:['FL'],modes:['virtual'],zip:'33101',areas:['Anxiety','OCD','Trauma & PTSD'],g:'Female',lang:['English'],accept:false,bio:'Specializes in OCD and anxiety using exposure-based approaches.'},
- {id:'ar',n:'Anika Rahman',c:'LMHC',st:['NY','NJ'],modes:['virtual','in-person'],loc:'Queens, NY',addr:'37-10 Main St, Queens, NY 11354',zip:'11354',areas:['Anxiety','Depression','Stress & Burnout','Grief & Loss'],g:'Female',lang:['English','Bengali'],accept:true,bio:'Supports young adults and families navigating cultural and generational pressure.'},
+ {id:'ar',n:'Anika Rahman',c:'LMHC',st:['NY','NJ'],modes:['virtual','in-person'],loc:'Queens, NY',addr:'37-10 Main St, Queens, NY 11354',zip:'11354',areas:['Anxiety','Depression','Stress & Burnout','Grief & Loss'],g:'Female',lang:['English','Urdu'],accept:true,bio:'Supports young adults and families navigating cultural and generational pressure.'},
  {id:'do',n:'Daniel Ortiz',c:'LCSW',st:['TX','FL'],modes:['virtual'],zip:'78701',areas:['ADHD','Anxiety','Parenting','Depression'],g:'Male',lang:['English','Spanish'],accept:true,bio:'Bilingual therapist for kids, teens and caregivers.'},
  {id:'sr',n:'Sam Rivera',c:'LMSW',st:['NY'],modes:['virtual','in-person'],loc:'Manhattan, NY',addr:'45 W 36th St, New York, NY 10018',zip:'10018',areas:['LGBTQIA+','Grief & Loss','Depression','Anxiety'],g:'Non-Binary',lang:['English','French'],accept:true,bio:'Affirming care for LGBTQIA+ teens and young adults.'},
  {id:'cd',n:'Claire Dubois',c:'LCSW-R',st:['NY','NJ'],modes:['virtual'],zip:'10001',areas:['Maternal & Perinatal','Depression','Anxiety'],g:'Female',lang:['English','French'],accept:true,bio:'Perinatal mental health, from pregnancy through the first year.'},
  {id:'nj',n:'Nadège Joseph',c:'LMHC',st:['FL','NY'],modes:['virtual'],zip:'33128',areas:['Trauma & PTSD','Chronic Illness','Stress & Burnout','Grief & Loss'],g:'Female',lang:['English','French','Haitian Creole'],accept:true,bio:'Trauma-informed therapy for families living with chronic illness.'},
- {id:'th',n:'Tom Hanley',c:'LCSW',st:['CT','NJ','NY'],modes:['virtual','in-person'],loc:'Bridgewater, NJ',addr:'966 US-22 East, Bridgewater, NJ 08807',zip:'08807',areas:['EMDR','Trauma & PTSD','Behavioral Issues','Anxiety'],g:'Male',lang:['English'],accept:true,bio:'EMDR and trauma work with school-age children and teens.'}];
+ {id:'th',n:'Tom Hanley',c:'LCSW',st:['CT','NJ','NY'],modes:['virtual','in-person'],loc:'Bridgewater, NJ',addr:'966 US-22 East, Bridgewater, NJ 08807',zip:'08807',areas:['Trauma & PTSD','Behavioral Issues','Anxiety'],g:'Male',lang:['English'],accept:true,bio:'EMDR and trauma work with school-age children and teens.'}];
 const EXTRA={
  jw:{offers:'Therapy, Parent Coaching',aud:'Kids, Teens, Young Adults, Adults',bio:'is a child and adolescent therapist, specializing in anxiety, school stress and family transitions. She works directly with children, teens, and young adults'},
  ml:{offers:'Therapy',aud:'Kids, Teens',bio:'is a family therapist who helps children and families build routines and manage big behaviors. He works with ADHD, OCD and behavioral concerns'},
  lp:{offers:'Therapy',aud:'Teens, Young Adults, Adults',bio:'is a psychologist specializing in OCD and anxiety using exposure-based approaches. She works with teens and adults'},
- ar:{offers:'Therapy',aud:'Teens, Young Adults, Adults',bio:'is a counselor who supports young adults and families navigating cultural and generational pressure. She offers sessions in English and Bengali'},
+ ar:{offers:'Therapy',aud:'Teens, Young Adults, Adults',bio:'is a counselor who supports young adults and families navigating cultural and generational pressure. She offers sessions in English and Urdu'},
  do:{offers:'Therapy, Parent Coaching',aud:'Kids, Teens, Adults',bio:'is a bilingual therapist who works with kids, teens and caregivers in English and Spanish. He focuses on ADHD, anxiety and parenting'},
  sr:{offers:'Therapy',aud:'Teens, Young Adults, Adults',bio:'provides affirming care for LGBTQIA+ teens and young adults. Sam works with grief, depression and anxiety'},
  cd:{offers:'Therapy, Maternal Mental Health',aud:'Adults',bio:'focuses on perinatal mental health, from pregnancy through the first year. She offers sessions in English and French'},
@@ -454,7 +453,11 @@ const atSel=p=>{const s=selLocs(); return !s.length||s.some(l=>l.loc===p.loc);};
    STATE
    ===================================================================== */
 const today=new Date(); today.setHours(0,0,0,0);
-const blank=()=>({entry:null,provider:null,service:null,condition:null,location:null,pre:null,
+const OTHER_PROVIDERS=[ // providers who are not therapists: no booking calendar, we explain how to get started instead
+ {id:'nm',n:'Nicole Mavrides',role:'Psychiatrist',creds:'MD',svc:'med',cta:'Book an intake',step:'The first step is an initial assessment. Then we’ll work together to develop a treatment plan that’s right for you.'},
+ {id:'np',n:'Priya Nair',role:'Psychiatric Nurse Practitioner',creds:'PMHNP-BC',svc:'med',cta:'Book an intake',step:'The first step is an initial assessment. Then we’ll work together to develop a treatment plan that’s right for you.'},
+ {id:'pc',n:'Dana Whitfield',role:'Parent Coach',creds:'MS',svc:'parent',cta:'Book a consultation',step:'The first step is a free consultation. Then we’ll work together to develop a plan that’s right for your family.'}];
+const blank=()=>({entry:null,provider:null,interest:null,service:null,condition:null,location:null,pre:null,
   who:null,f:{},heard:null,svc:null,ins:null,areas:[],mode:null,gender:null,langs:[],incVirtual:false,
   book:null,locIds:[],sel:{date:null,time:null,mode:null},calMonth:null,err:{},hist:[],screen:'entry',taken:false,takenShown:false,assigned:null});
 let S=blank();
@@ -564,11 +567,7 @@ function costText(){
  const covered=!!S.ins&&(INS[userState()]||[]).includes(S.ins);
  if(covered||!S.ins)return 'Pending based on your insurance';
  return S.svc==='med'?'$200 (self-pay)':'$250 (special self-pay rate: $99)';}
-function costNote(){
- const b=S.book; if(!b||b.kind==='consult'||b.kind==='assessment'||S.svc==='med')return '';
- const covered=!!S.ins&&(INS[userState()]||[]).includes(S.ins);
- return (covered||!S.ins)?'Most new patients with in-network insurance pay $0, on average, for their initial assessment visit.':'';}
-const CostRow=()=>{const n=costNote(); return `<div class="detail"><span class="ic">${IC.dollar}</span><span>Cost: ${costText()}${n?`<br><span class="small">${n}</span>`:''}</span></div>`;};
+const CostRow=()=>`<div class="detail"><span class="ic">${IC.dollar}</span><span>Cost: ${costText()}</span></div>`;
 const ST_FULL={CT:'Connecticut',FL:'Florida',NJ:'New Jersey',NY:'New York',TX:'Texas'};
 const visitText=p=>p.modes.map(m=>m==='virtual'?'Virtual':'In-person ('+p.loc+')').join(', ');
 function ProviderCard(p,cta,mode){
@@ -617,6 +616,7 @@ def('entry','00 Prototype start (scaffold)',{step:null,notes:[N('Prototype scaff
  <div class="launch">
   <div class="card" data-component="Entry Card"><h3>“Get started” call to action</h3><p class="small">No context carried through.</p>${Btn('Get started','data-do="start:get-started"','btn--primary')}</div>
   <div class="card"><h3>Provider page → Book appointment</h3><p class="small">Opens Jennifer Weber’s page; the visitor picks a type and time, then books.</p>${Btn('Book appointment','data-do="start:provider"','btn--primary')}</div>
+  <div class="card"><h3>Provider page (not a therapist)</h3><p class="small">Psychiatrist, nurse practitioner or parent coach. No calendar; the page explains how to get started and links to an intake or a consultation.</p><div class="btn-row">${OTHER_PROVIDERS.map(o=>Btn(o.role.replace('Psychiatric ',''),`data-do="startOther:${o.id}"`)).join('')}</div></div>
   <div class="card"><h3>Service / condition page</h3><p class="small">Opens an Anxiety condition page; “Get Started” remembers the condition: Anxiety.</p>${Btn('Open condition page','data-do="start:service"','btn--primary')}</div>
   <div class="card"><h3>Location page → Book at this location</h3><p class="small">Remembers ${LOCATION.name} location; in-person pre-selected.</p>${Btn('Book at this location','data-do="start:location"','btn--primary')}</div>
  </div></div>`}});
@@ -649,6 +649,15 @@ def('provider-page','00a Provider page (entry point)',{step:null,notes:[N('Proto
  <section class="prof__sec"><h2>Education and Background</h2><dl class="prof__grid" style="margin:0">${F('Education',p.edu||'')}${F('Languages spoken',p.lang.join(', '))}</dl></section>
  <section class="prof__sec"><h2>Covered Insurance</h2><p>${p.n} accepts the following insurance plans. Self-pay is also an option.</p>
   <div class="prof__ins">${p.st.map(s=>`<div><strong>${ST_FULL[s]}</strong><ul>${(INS[s]||[]).slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}</div></section></div>`}});
+
+def('provider-other-page','00d Provider page: psychiatrist, nurse practitioner, parent coach (entry point)',{step:null,notes:[N('No calendar for non-therapists','If the visitor chooses a provider other than a therapist (parent coach, psychiatrist, nurse practitioner) we don’t show a booking calendar, because they shouldn’t book an appointment with that person. A “How to get started” box explains the process for that type of provider instead.'),N('Psychiatrist / nurse practitioner','First step is an initial assessment, then we work together to develop a treatment plan. Links to book an intake.'),N('Parent coach','First step is a free consultation, then we work together to develop a plan for the family. Links to book a consultation.'),N('Hand-off to the intake team','The people running the intake or consultation need a report of what the visitor entered, including the provider page they came from. Example: someone books an intake after choosing Nicole Mavrides, Psychiatrist, so the intake person can say “you expressed interest in meeting with one of our psychiatrists, Dr. Mavrides…”. The prototype keeps this on the landing screen as a reminder chip.')],render(){
+ const o=S.interest||OTHER_PROVIDERS[0];
+ return `<div class="col col--wide" style="padding-top:40px;padding-bottom:64px;gap:40px"><span class="crumb"><a href="#" data-do="stub:Meet Our Providers">Meet Our Providers</a> &gt; ${o.n}</span>
+ <div class="pg-head" style="align-items:center" data-component="Provider Header"><div class="pg-photo" role="img" aria-label="Photo of ${o.n}"></div>
+  <div class="prof__who"><h1 class="prof__name" id="h1" tabindex="-1">${o.n}</h1><span class="prof__cred">${o.role}</span><span class="prof__cred">${o.creds}</span></div></div>
+ <section class="pg-book" data-component="Getting Started Box" style="gap:16px"><div><h2>How to get started with ${o.n.split(' ')[0]}</h2><p style="margin-top:8px">${o.step}</p></div><div class="btn-row">${Btn(o.cta,'data-do="otherGo"','btn--primary')}</div></section>
+ <section class="prof__sec"><h2>About this provider</h2><p>[Placeholder] Provider bio and approach.</p></section>
+ <section class="prof__sec"><h2>Education and Background</h2><dl class="prof__grid" style="margin:0"><div class="prof__f"><dt>Education</dt><dd>[Placeholder] Education details</dd></div><div class="prof__f"><dt>Languages spoken</dt><dd>English</dd></div></dl></section></div>`}});
 
 def('location-page','00b Location page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates an individual location page. The booking widget is in-person only. “Book Appointment” starts the flow with this location remembered and in-person pre-selected.')],render(){
  const L=LOCATION, [street,city]=[L.addr.split(', ')[0],L.addr.split(', ').slice(1).join(', ')], nm=L.name+', '+L.state;
@@ -693,6 +702,7 @@ def('landing','01 Get started landing',{step:0,notes:[
  let ctx='';
  const saved=t=>Banner('',`<p><strong>We saved your selection:</strong> ${t}</p>`,'banner--light');
  if(S.provider){const p=S.provider; ctx=saved(`Booking with <strong>${p.n}, ${p.c}</strong> · ${S.pre.mode==='in-person'?'In-person':'Virtual'}${S.pre.date?` · ${fmtShort(S.pre.date)} at ${S.pre.time}`:''}`);}
+ else if(S.interest)ctx=saved(`You expressed interest in meeting with <strong>${S.interest.n}, ${S.interest.role}</strong>`);
  else if(S.condition)ctx=saved(`Interested in help with <strong>${S.condition}</strong>`);
  else if(S.service)ctx=saved(`Interested in <strong>${SERVICES.find(s=>s.id===S.service).l}</strong>`);
  else if(S.location)ctx=saved(`Booking at our <strong>${S.location.name}</strong> location · ${S.location.addr}${S.pre&&S.pre.date?` · ${fmtShort(S.pre.date)} at ${S.pre.time}`:''}`);
@@ -800,7 +810,7 @@ def('assessment-intro','08 Initial assessment (medication)',{step:2,notes:[N('No
 
 def('ready','09 Ready to be matched?',{step:2,notes:[N('Decision','Ready to get matched? Or free consultation if they still have questions. Or book the next available therapist if they want to book as soon as possible.')],render(){
  return `<div class="col">${Back()}${Stepper(2)}${Header('Ready to get matched with a therapist?','Pick the option that feels right. You can always call us.')}
- ${Opts('ready',[{v:'match',l:'Match me with a therapist',d:'Answer a few questions and see therapists who fit.'},{v:'next',l:'Book me as soon as possible',d:'We’ll book you with the next available therapist.'},{v:'consult',l:'I still have questions',d:'Book a free informational consultation.'}],null,{aria:'Next step'})}
+ ${Opts('ready',[{v:'match',l:'Match me with a therapist',d:'We’ll use your answers to recommend available therapists.'},{v:'next',l:'Book me as soon as possible',d:'I don’t have a provider preference.'},{v:'consult',l:'I still have questions',d:'Book a free informational consultation.'}],null,{aria:'Next step'})}
  <div class="btn-row">${Btn('Continue','data-do="readyNext"','btn--primary')}</div>${Help()}</div>`}});
 
 def('alt','10 Provider unavailable',{step:2,notes:[N('Fallbacks','Shown when the chosen provider doesn’t practice in the user’s state, or has no upcoming availability. Shows similar therapists, then continues to the “Ready to be matched?” step.')],render(){
@@ -887,7 +897,7 @@ def('results','15 Recommended therapists',{step:2,notes:[
 def('slots','16 Pick a time',{step:3,notes:[
  N('Appointment type','Show the Virtual / In-person selector only if the provider does both, otherwise just text. If both exist, only show appointments for the selected option.'),
  N('API-driven (ECW)','Times come from the API; a booking is created through the API. For consultations, open question: integrate the HubSpot meeting scheduler API or keep it a separate embed?'),
- N('Cost','Shown on the confirm card and changes with the service and how they’re paying. Free consultation: $0. Therapy or medication through insurance: “Pending based on your insurance” (therapy also shows “Most new patients with in-network insurance pay $0, on average, for their initial assessment visit.”). Self-pay (including “I don’t see my insurance plan”): the self-pay rate for the service. Rates come from the Self Pay Rates wireframe.'),
+ N('Cost','Shown on the confirm card and changes with the service and how they’re paying. Free consultation: $0. Therapy or medication through insurance: “Pending based on your insurance”. Self-pay (including “I don’t see my insurance plan”): the self-pay rate for the service. Rates come from the Self Pay Rates wireframe.'),
  N('Same-day','Same-day availability is only available via form / phone.'),
  N('Time no longer available','If the selected time is gone we offer alternatives. Use the toolbar toggle to simulate it.'),
  N('Limited availability states','CT, FL and TX have limited online availability: message to call for more options.')],render(){
@@ -915,19 +925,18 @@ def('slots','16 Pick a time',{step:3,notes:[
  <div class="slots__col slots__confirm"><h3>Confirm Appointment</h3>${confirm}</div></div>
  <p class="small">Need a same-day appointment? Same-day visits are only available by phone or form: <a href="tel:${PHONE}">${PHONE}</a>.</p></div>`}});
 
-def('confirm','17 Confirmation and next steps',{step:4,notes:[N('Registration caveat','For therapy and medication visits, the visit is only confirmed once registration is completed, including insurance. Registration next steps are sent by email, so there is no registration button on this page.'),N('Free consultations','No registration step is needed for a free consultation, so the registration messaging is not shown.'),N('API','Confirmation shown after a successful API response.'),N('In-person visits','In-person confirmations add a “Getting to your visit” section with a photo of the office, the address and arrival instructions (arrive 10 to 15 minutes early, and that the facility is part of PM Pediatrics Urgent Care). Instruction copy is placeholder.')],render(){
+def('confirm','17 Confirmation and next steps',{step:4,notes:[N('Registration caveat','For therapy and medication visits, the visit is only confirmed once registration is completed, including insurance. Registration next steps are sent by email, so there is no registration button on this page.'),N('Free consultations','No registration step is needed for a free consultation, so the registration messaging is not shown.'),N('API','Confirmation shown after a successful API response.'),N('Virtual vs in-person copy','Next step 3 changes by visit type. Virtual: “Check your email for your appointment details and link to join your virtual session. If you have any questions, call us at XXX-XXX-XXXX.” In-person: “We’re located inside PM Pediatric Urgent Care. Plan to arrive 10-15 minutes early so you have time to check in before your appointment.”')],render(){
  const b=S.book, d=S.sel.date, mode=S.sel.mode, p=S.assigned, consult=b.kind==='consult', email=esc(S.f.email||'your email');
  const who=b.kind==='consult'?'a Care Navigator':p?`${p.n}${p.c?', '+p.c:''}`:'your provider';
  const loc=mode==='in-person'?(b.p?.addr||p?.addr||selLocs()[0]?.addr||S.location?.addr):null;
  const head=consult?Header('Your free consultation is booked','<span style="font-size:20px;line-height:28px">We’ve sent the details to your email.</span>'):Header('Your appointment is reserved',`We’ll email the registration next steps to ${email}.`);
  const caveat=consult?'':Banner('Your visit isn’t confirmed yet',`<p>Your visit will be confirmed when you complete registration, including your insurance information. We’ll send the registration next steps by email.</p>`,'banner--strong');
- const steps=consult?['<strong>Check your inbox:</strong> You’ll receive a confirmation email with your appointment details and the link to join your virtual consultation.','<strong>Watch for reminders:</strong> We’ll send appointment reminders by email and text. If you have any questions before your visit, we’re here to help.']:[`Check ${email} for your registration next steps.`,'Complete registration and add your insurance information to confirm your visit.',loc?'Arrive 10 to 15 minutes early. We’ll send a reminder by text.':'Join your visit on time. We’ll send a reminder by text.'];
+ const steps=consult?['<strong>Check your inbox:</strong> You’ll receive a confirmation email with your appointment details and the link to join your virtual consultation.','<strong>Watch for reminders:</strong> We’ll send appointment reminders by email and text. If you have any questions before your visit, we’re here to help.']:['<strong>Check your inbox:</strong> You’ll receive a confirmation email with your appointment details.','<strong>Watch for reminders:</strong> We’ll send appointment reminders by email and text. If you have any questions before your visit, we’re here to help.',loc?'We’re located inside PM Pediatric Urgent Care. Plan to arrive 10-15 minutes early so you have time to check in before your appointment.':'Check your email for your appointment details and link to join your virtual session. If you have any questions, call us at XXX-XXX-XXXX.'];
  return `<div class="col">${Stepper(4)}${head}
  ${caveat}
  <div class="confirm" data-component="Confirm Card"><strong>${b.kind==='consult'?'Free Informational Consultation':'Initial Assessment'} with ${who}</strong>
  <div class="detail"><span class="ic">${IC.cal}</span>${fmtLong(d)}</div><div class="detail"><span class="ic">${IC.clock}</span>${S.sel.time} · ${b.kind==='consult'?30:60} Minutes</div><div class="detail"><span class="ic">${IC.pin}</span>${loc?`<u>${loc}</u>`:'Virtual'}</div>${CostRow()}</div>
  <div class="btn-row">${Btn('Add to calendar','data-do="stub:Calendar file"')}</div>
- ${loc?`<section class="visit" data-component="Visit Location"><h2>Getting to your visit</h2><div class="visit__photo chk" role="img" aria-label="Photo of the office"></div><p><strong>${loc}</strong></p><ul class="visit__list"><li>Please arrive 10 to 15 minutes early so we can get you checked in.</li><li>[Placeholder] This facility is part of PM Pediatrics Urgent Care. Look for the PM Pediatrics Urgent Care signs when you arrive.</li><li>[Placeholder] Parking and public transit directions to the office.</li><li>[Placeholder] Entrance and check-in instructions (floor, suite, buzzer).</li><li>[Placeholder] What to bring: photo ID and insurance card.</li></ul></section>`:''}
  <h2>Next steps</h2><ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">${steps.map(s=>`<li>${s}</li>`).join('')}</ol>
  <p class="small">Need to change something? Call <a href="tel:${PHONE}">${PHONE}</a>.</p></div>`}});
 
@@ -999,6 +1008,8 @@ const A={
  stub(name){stub(name)},
  restart(){S=blank(); render()},
  serviceGo(){go('landing')},
+ startOther(id){S=blank(); S.entry='provider-other'; S.interest=OTHER_PROVIDERS.find(x=>x.id===id); go('provider-other-page')},
+ otherGo(){S.service=S.interest.svc; go('landing')},
  locationBook(){S.pre={mode:'in-person',date:S.sel.date,time:S.sel.time}; go('landing')},
  providerBook(){S.pre={mode:S.sel.mode,date:S.sel.date,time:S.sel.time}; go('landing')},
  start(kind){const pg=kind==='provider'||kind==='location'||kind==='service'; S=blank(); S.entry=kind;
