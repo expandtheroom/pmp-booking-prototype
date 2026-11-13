@@ -388,7 +388,7 @@ const SERVICES=[
  {id:'parent',l:'Parent Coaching',d:'Practical guidance for parents supporting their child.'},
  {id:'maternal',l:'Maternal Mental Health',d:'Support for moms through every stage of the perinatal journey.'},
  {id:'dbt',l:'DBT Skills Group',d:'A skills-based group for managing intense emotions.'},
- {id:'unsure',l:'I’m not sure',d:'No problem. A free consultation will help you find the right fit.'}];
+ {id:'unsure',l:'I’m not sure',d:'Not sure which service is right for you? Start with a free consultation.'}];
 const BY_STATE={
  CT:['therapy','med','ef','parent'],
  FL:['therapy','med','adhd','ef','parent','maternal'],
@@ -785,6 +785,12 @@ function SelfPayRates(svc){
   <table class="fees"><caption>${r.t} Self Pay Rates</caption><thead><tr><th scope="col">Service</th><th scope="col">Fee</th></tr></thead>
   <tbody>${rows.map(x=>`<tr><th scope="row">${x[0]}</th><td>${x[1]}</td></tr>`).join('')}</tbody></table></section>`;}
 
+def('services-more','05b Other services of interest (optional)',{step:1,notes:[N('Optional','Open text question shown after the service is chosen. “optional” sits in small italics at the end of the headline. It can be left blank and the visitor continues either way.'),N('Skipped for “I’m not sure”','If the visitor chose “I’m not sure”, this question is skipped and they go straight to the free consultation, since that is already the next step for anyone who is unsure.'),N('Why we ask','Lets the care team see other services the visitor wants to explore, so they can follow up even if the visitor books one service first.'),N('Copy','Question wording is final. Character limit and where the answer is stored are open questions for development.')],render(){
+ return `<div class="col">${Back()}${Stepper(1)}${Header('Are there any other services you’re interested in exploring? <em class="small">optional</em>')}
+ <div class="field" data-component="Textarea"><label for="f-otherSvc" class="sr">Other services you’re interested in (optional)</label>
+  <textarea class="input" id="f-otherSvc" name="otherSvc" rows="5" data-bind="f.otherSvc" style="min-height:120px;resize:vertical">${esc(S.f.otherSvc||'')}</textarea></div>
+ <div class="btn-row">${Btn('Continue','data-do="moreNext"','btn--primary')}</div>${Help()}</div>`}});
+
 def('insurance','06 Check your insurance',{step:1,notes:[N('Insurance checker','Uses the existing Insurance Checker pattern: choose from plans covered in the selected state, “I prefer self-pay” or “I don’t see my insurance plan”. Plan names are placeholders.'),N('Result message','Shows “we cover you” or the self-pay message, then continues.'),N('Self-pay rates','“I prefer self-pay” and “I don’t see my insurance plan” both show the Self Pay Rates from the Insurance & Cost page: the rates for the selected service (Therapy or Medication Management), listed as a fee chart. The free consultation box is not shown, since they are requesting an intake, not a consultation. Rates and copy are from the wireframe, so confirm with the client.')],render(){
  const st=userState(), list=[...(INS[st]||[]),SELF_PAY,NO_PLAN];
  let msg='',rates='';
@@ -1030,8 +1036,8 @@ const A={
   if(dob){const a=age(dob); if(!c&&a<18)return go('block-minor'); if(c&&a>=18)return go('block-adult');}
   go('heard'); },
  heardNext(){ if(S.who==='child'&&patientAge()!==null&&patientAge()<5){S.svc='unsure';return go('consult-intro');} go('services'); },
- svcNext(){const id=S.svc||S.service; const ids=BY_STATE[userState()]; if(!id||(!ids.includes(id)&&id!=='unsure')){S.err.svc='Choose a service to continue.';return render();} S.svc=id;
-  go(id==='therapy'||id==='med'?'insurance':'consult-intro');},
+ svcNext(){const id=S.svc||S.service; const ids=BY_STATE[userState()]; if(!id||(!ids.includes(id)&&id!=='unsure')){S.err.svc='Choose a service to continue.';return render();} S.svc=id; if(id==='unsure')return go('consult-intro'); go('services-more');},
+ moreNext(){ const id=S.svc; go(id==='therapy'||id==='med'?'insurance':'consult-intro'); },
  insPick(v,el){S.ins=el.value; render()},
  insNext(){ if(!S.ins){S.err.ins='Choose an option to continue.';return render();}
   if(S.svc==='med')return go('assessment-intro');
