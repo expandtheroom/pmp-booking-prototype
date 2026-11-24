@@ -18,7 +18,7 @@
 :root{
   /* tokens: names mirror the Figma variables in "Design | PMP Mental Health" */
   --text-utility:#473f31; --text-nav:#2d271d; --text-primary:#5d5341; --text-heading:#463210; --text-supporting:#785711;
-  --text-link:#255053; --text-on-action:#fff; --text-accent:#924327; --text-signal-error:#801f2c; --text-signal-info:#255053; --text-muted:#67635d;
+  --text-link:#255053; --text-on-action:#fff; --text-accent:#924327; --text-signal-error:#801f2c; --text-signal-info:#255053; --text-muted:#67635d; --text-disabled:#a9a6a0;
   --surface-page:#fff; --surface-action-primary:#006b70; --surface-action-secondary:#f7fafa; --text-on-action-secondary:#1a3c3e;
   --border-action:#418589; --border-default:#dbd3c4; --border-subtle:#ede7dc; --border-strong:#7c715e; --border-error:#d0364e; --border-focus:#006b70;
   --surface-warm-subtle:#fbfaf4; --surface-warm-neutral-subtle:#fcf9f5; --surface-glow-sky:#e8f5f9; --surface-warm-muted:#faf5e6;
@@ -214,12 +214,11 @@ details.why p{padding:8px 0 0;max-width:560px}
 .cal__nav .mo:after{content:"";width:12px;height:12px;background:url(assets/angle-down.svg) center/12px no-repeat}
 .cal__grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
 .cal__wd{height:36px;display:flex;align-items:center;justify-content:center;font-size:12px;line-height:17px}
-.cal__day{height:48px;border:0;background:none;border-radius:var(--radius-md);font-size:14px;line-height:20px;color:var(--text-muted);text-decoration:line-through;cursor:default;display:flex;align-items:center;justify-content:center;padding:0}
-.cal__day.out{text-decoration:none}
-.cal__day.avail{color:var(--text-primary);text-decoration:none;cursor:pointer;font-weight:700}
-.cal__day.out{font-weight:700}
+.cal__day{height:48px;border:0;background:none;border-radius:var(--radius-md);font-size:14px;line-height:20px;font-weight:400;color:var(--text-disabled);-webkit-text-fill-color:var(--text-disabled);opacity:1;cursor:default;display:flex;align-items:center;justify-content:center;padding:0}
+.cal__day.out{font-weight:700;color:var(--text-muted);-webkit-text-fill-color:var(--text-muted)}
+.cal__day.avail{font-weight:700;color:var(--text-heading);-webkit-text-fill-color:var(--text-heading);cursor:pointer}
 .cal__day.avail:hover{background:var(--surface-warm-muted)}
-.cal__day.sel{background:var(--surface-cool-strong);color:#fff;font-weight:700}
+.cal__day.sel{background:var(--surface-cool-strong);color:#fff;-webkit-text-fill-color:#fff;font-weight:700}
 
 /* Slot picker */
 .slots{display:flex;gap:32px;align-items:flex-start}
@@ -750,8 +749,8 @@ function Calendar(book){
   for(let i=lead;i>0;i--)cells+=`<span class="cal__day out" aria-hidden="true">${prevN-i+1}</span>`;
   for(let d=1;d<=n;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d); const av=daySlots(book,dt,mode).length>0;
     const sel=S.sel.date&&S.sel.date.toDateString()===dt.toDateString();
-    cells+=`<button type="button" class="cal__day ${av?'avail':''} ${sel?'sel':''}" data-component="Date Picker Day" ${av?`data-do="pickDate:${dt.getTime()}" data-key="d${d}"`:'disabled'} ${sel?'aria-pressed="true"':''} aria-label="${fmtLong(dt)}${av?'':', no availability'}">${d}</button>`;}
-  const tail=(7-(lead+n)%7)%7; for(let i=1;i<=tail;i++)cells+=`<span class="cal__day" aria-hidden="true">${i}</span>`;
+    cells+=`<button type="button" class="cal__day ${av?'avail':''} ${sel?'sel':''}" data-component="Date Picker Day" ${av?`data-do="pickDate:${dt.getTime()}" data-key="d${d}"`:'disabled'} ${sel?'aria-pressed="true"':''} aria-label="${fmtLong(dt)}${av?'':', no availability'}"><span class="d">${d}</span></button>`;}
+  const tail=(7-(lead+n)%7)%7; for(let i=1;i<=tail;i++)cells+=`<span class="cal__day" aria-hidden="true"><span class="d">${i}</span></span>`;
   const prevOk=m>new Date(today.getFullYear(),today.getMonth(),1), nextOk=m<new Date(today.getFullYear(),today.getMonth()+1,1);
   return `<div class="cal" data-component="DatePicker"><div class="cal__nav"><button type="button" class="prev" data-do="month:-1" aria-label="Previous month" ${prevOk?'':'disabled'}>‹</button><span class="mo">${MONTHS[m.getMonth()].slice(0,3)} ${m.getFullYear()}</span><button type="button" class="next" data-do="month:1" aria-label="Next month" ${nextOk?'':'disabled'}>›</button></div>
    <div class="cal__grid" aria-hidden="true">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(x=>`<span class="cal__wd">${x}</span>`).join('')}</div>
