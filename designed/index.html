@@ -325,6 +325,176 @@ dialog h2{padding-right:56px}
 .step span.small{font-size:16px;line-height:22px}
 .is-mobile .step strong{font-size:22px;line-height:27px}
 
+
+/* ===== Entry-point pages (Figma: Provider Profile, Concern Page, Individual Location Page) ===== */
+.page--provider-page,.page--provider-other-page,.page--location-page,.page--service-page{padding:0;align-items:stretch;background:#fff}
+.pg{display:flex;flex-direction:column}
+.wrap{width:100%;max-width:1272px;margin:0 auto;padding:0 24px}
+.pg h1.pg-name{font-size:72px;line-height:79px;letter-spacing:-.5px}
+.pg h1.pg-name--c{text-align:center}
+.is-mobile .pg h1.pg-name{font-size:48px;line-height:56px}
+.pg h2.sec-t{font-family:var(--font-display);font-weight:300;font-size:48px;line-height:58px;letter-spacing:-.5px;color:var(--text-heading)}
+.is-mobile .pg h2.sec-t{font-size:36px;line-height:43px}
+.pg h2.sec-t--muted{color:var(--text-primary)}
+.pg .lead{font-size:18px;line-height:28px;color:var(--text-primary);margin:0}
+.ctr{text-align:center;display:flex;flex-direction:column;align-items:center;gap:24px}
+.pg .ln{font-weight:600;color:var(--text-link);text-decoration:underline;text-decoration-thickness:8%;text-underline-offset:3px;font-size:16px}
+.crumbs{display:flex;gap:8px;align-items:center;font-size:16px;line-height:22px;color:var(--text-primary)}
+.crumbs a{color:var(--text-primary);text-decoration:none;font-weight:400}
+.crumbs .chv{width:4px;height:8px}
+.sec{padding:128px 0}
+.sec--tight{padding:96px 0}
+.is-mobile .sec{padding:64px 0}
+.sec--white{background:#fff}
+.sec--light{background:var(--surface-warm-subtle)}
+.sec--warm{background:#fcf4e4}
+.sec--cta{background:#f9edd0}
+.sec .wrap{display:flex;flex-direction:column;gap:48px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.sec-sub{font-size:16px;line-height:22px;margin-top:12px}
+.pg-top{background:linear-gradient(180deg,#e8f5f9 0,#fbfaf4 46%,#f8ecd0 100%);padding:64px 0}
+.pg-top .wrap{display:flex;flex-direction:column;gap:24px}
+.frame:has(.pg-top) .navbar,.frame:has(.hero-c) .navbar{background:#e8f5f9}
+.pg-hero{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center;margin-bottom:24px}
+.is-mobile .pg-hero{grid-template-columns:1fr;gap:24px}
+.pg-hero__t{display:flex;flex-direction:column;gap:16px;padding-right:48px}
+.pg-role{font-size:24px;line-height:36px;font-weight:600;color:var(--text-primary);margin:0}
+.pg-hero__img img,.sbs__m img,.loc-media>img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius-3xl)}
+.pg-hero__img{height:410px}
+.is-mobile .pg-hero__img{height:260px}
+.book{border:1px solid var(--text-primary);border-radius:var(--radius-3xl);padding:40px 32px;display:flex;flex-direction:column;gap:16px}
+.book__t{font-family:var(--font-display);font-weight:300;font-size:40px;line-height:48px;letter-spacing:-.5px;color:var(--text-heading)}
+.is-mobile .book{padding:24px 16px}.is-mobile .book__t{font-size:30px;line-height:36px}
+.book .slots{margin-top:8px}
+.book--start{gap:24px;align-items:flex-start}
+.band--loc .book,.band--c .ins{background:var(--surface-warm-subtle);border:0;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.sbs{display:grid!important;grid-template-columns:1fr 1fr;gap:24px!important;align-items:center}
+.sbs__t{display:flex;flex-direction:column;gap:24px;padding:0 96px 0 0;align-items:flex-start}
+.sbs--rev .sbs__t{padding:0 0 0 96px}
+.sbs--one{grid-template-columns:1fr}.sbs--c .sbs__t{max-width:768px;margin:0 auto;padding:0}
+.sbs__m{height:450px;position:relative}
+.sbs__m--shape img{border-radius:24px 24px 224px 24px}
+.sbs__m--play{height:381px}
+.play{position:absolute;left:24px;bottom:24px;width:76px;height:76px;border-radius:50%;border:2px solid var(--border-action);background:var(--surface-action-secondary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='28' viewBox='0 0 24 28'%3E%3Cpath d='M2 2l20 12L2 26z' fill='%23006b70'/%3E%3C/svg%3E") 55% 50%/24px no-repeat;cursor:pointer}
+.is-mobile .sbs{grid-template-columns:1fr}.is-mobile .sbs__t,.is-mobile .sbs--rev .sbs__t{padding:0}.is-mobile .sbs__m{height:auto;aspect-ratio:4/3}
+.sec--details{padding:0 0 80px}
+.sec:has(+ .sec--details){padding-bottom:64px}
+.sec--details .wrap{gap:0}
+.drow{display:grid;grid-template-columns:392px 1fr;gap:24px;padding:49px 0 48px;border-top:1px solid var(--border-subtle)}
+.is-mobile .drow{grid-template-columns:1fr}
+.drow h3{font-size:24px;line-height:36px;font-weight:600;color:var(--text-heading)}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:32px 24px;margin:0;align-content:start}
+.dgrid .full{grid-column:1/-1}
+.fld dt{font-size:14px;line-height:22px;font-weight:600;color:var(--text-primary)}
+.fld dd{margin:8px 0 0;font-size:18px;line-height:28px;color:var(--text-heading)}
+.logos{display:flex;flex-wrap:wrap;gap:24px 32px;align-items:center}
+.logos img{height:52px;width:auto;mix-blend-mode:multiply;filter:contrast(1.25) brightness(1.04)}
+.dgrid .note{background:var(--surface-info-subtle);border-radius:var(--radius-md);padding:16px 24px;width:fit-content;font-size:14px;line-height:22px;margin:0}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.is-mobile .rgrid{grid-template-columns:1fr}
+.rcard{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.rcard img{width:100%;aspect-ratio:387/240;object-fit:cover;border-radius:var(--radius-xl)}
+.rmeta{font-size:14px;line-height:20px;display:flex;gap:8px;align-items:center;margin:0}
+.rmeta span{width:1px;height:12px;background:var(--border-strong)}
+.rcard h3{font-size:20px;line-height:28px;font-weight:600;color:var(--text-primary)}
+.rcard p:not(.rmeta){font-size:16px;line-height:22px;margin:0}
+.rtag{border:1px solid var(--border-default);background:#fff;border-radius:999px;padding:4px 12px;font-size:14px;line-height:20px;color:var(--text-heading)}
+.pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.is-mobile .pcards{grid-template-columns:1fr}
+.pcard img{width:100%;aspect-ratio:392/532;object-fit:cover;border-radius:var(--radius-xl);display:block}
+.car-ctl{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+.dots2{display:flex;gap:8px;margin-right:12px}.dots2 i{width:8px;height:8px;border-radius:50%;background:#4f7f82}.dots2 i.on{width:24px;border-radius:8px;background:var(--surface-action-primary)}
+.circ{width:48px;height:48px;border-radius:50%;border:2px solid var(--border-action);background:var(--surface-action-secondary) center/12px no-repeat;cursor:pointer}
+.circ.prev{background-image:url(assets/chev-left.svg)}.circ.next{background-image:url(assets/chev-right.svg)}
+.faq{display:grid!important;grid-template-columns:1fr 2fr;gap:48px!important;align-items:start}
+.is-mobile .faq{grid-template-columns:1fr}
+.faq__list{display:flex;flex-direction:column}
+.faq details{border-bottom:1px solid var(--border-default);padding:0 4px}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px 0;font-size:22px;line-height:28px;font-weight:600;color:var(--text-heading)}
+.faq summary::-webkit-details-marker{display:none}
+.faq .pm{width:16px;height:16px;position:relative;flex:none;margin-right:8px}
+.faq .pm:before,.faq .pm:after{content:"";position:absolute;background:var(--surface-action-primary);left:0;right:0;top:7px;height:2px}
+.faq .pm:after{transform:rotate(90deg)}
+.faq details[open] .pm:after{display:none}
+.faq details p{padding:0 0 28px;max-width:660px;margin:0}
+.quotes{display:flex;flex-direction:column}
+.quotes figure{margin:0;display:grid;grid-template-columns:56px 1fr;gap:0 8px;padding:24px 0;border-bottom:1px solid var(--border-default)}
+.quotes .qm{width:30px;height:24px;margin:8px 0 0 8px}
+.quotes blockquote{margin:0;font-size:20px;line-height:28px;color:var(--text-heading)}
+.quotes figcaption{grid-column:2;margin-top:12px;font-size:14px;line-height:20px;font-weight:600}
+.cta-t{max-width:760px;font-size:56px!important;line-height:64px!important}
+.cta-p{font-size:16px;margin:0}
+.hero-c{background:linear-gradient(180deg,#e8f5f9 0,#fbfaf4 55%,#f8ecd0 100%);padding:48px 0 64px;text-align:center}
+.hero-c .wrap{display:flex;flex-direction:column;align-items:center;gap:24px;max-width:760px}
+.how{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
+.how__m img{width:100%;border-radius:24px}
+.how__l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:48px}
+.how__l li{display:flex;gap:24px;align-items:flex-start}
+.how__l b{font-size:36px;line-height:42px;font-weight:600;color:var(--text-supporting);width:20px}
+.is-mobile .how{grid-template-columns:1fr;gap:32px}
+.svc{display:grid;grid-template-columns:repeat(2,1fr);gap:80px 64px}
+.svc article{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.svc p{margin:0}
+.svc img{width:100%;aspect-ratio:580/435;object-fit:cover;border-radius:var(--radius-xl);margin-bottom:12px}
+.svc h3{font-size:24px;line-height:29px}
+.svc .btn{margin-top:12px;min-height:49px;padding:10px 24px;font-size:16px;line-height:22px}
+.is-mobile .svc{grid-template-columns:1fr}
+.band{position:relative;padding:240px 0 120px;background:linear-gradient(180deg,#336b6d 0,#27585b 100%);overflow:hidden}
+.band:before{content:"";position:absolute;left:0;right:0;top:0;height:242px;background-size:100% 100%;z-index:0}
+.band--c:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1512 242%22 preserveAspectRatio=%22none%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 x2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23e3f1fb%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%239edbe2%22/%3E%3Cstop offset=%221%22 stop-color=%22%23cfeaf1%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d=%22M0 0H1512V36C1100 58 820 108 410 140C260 152 120 158 0 154Z%22 fill=%22%23fbf8ee%22/%3E%3Cpath d=%22M0 154C120 158 260 152 410 140C820 108 1100 58 1512 36V74C1100 82 820 124 410 160C270 172 120 190 0 212Z%22 fill=%22url%28%23g%29%22/%3E%3C/svg%3E")}
+.band--loc:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1512 242%22 preserveAspectRatio=%22none%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 x2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23e3f1fb%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%239edbe2%22/%3E%3Cstop offset=%221%22 stop-color=%22%23cfeaf1%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d=%22M0 0H1512V36C1100 58 820 108 410 140C260 152 120 158 0 154Z%22 fill=%22%23f9eed2%22/%3E%3Cpath d=%22M0 154C120 158 260 152 410 140C820 108 1100 58 1512 36V74C1100 82 820 124 410 160C270 172 120 190 0 212Z%22 fill=%22url%28%23g%29%22/%3E%3C/svg%3E")}
+.band .wrap{position:relative;z-index:1}
+.ins{border-radius:24px;overflow:hidden;max-width:1024px;margin:0 auto}
+.ins__top{padding:56px 160px 48px;display:flex;flex-direction:column;gap:24px;align-items:center;background:var(--surface-warm-subtle)}
+.ins__top .lead{max-width:640px}
+.logos--c{justify-content:center;max-width:620px}.logos--c img{height:44px}
+.logos .more{font-weight:600;color:var(--text-link);text-decoration:none}
+.ins__bot{background:#fcf4e4;padding:48px 192px;display:flex;flex-direction:column;gap:24px}
+.ins__bot h3{font-size:30px;line-height:36px}
+.ins__f{display:flex;flex-direction:column;gap:24px}
+.fld2{display:flex;flex-direction:column;gap:8px}.fld2 label{font-size:16px}.fld2 p{margin:0}.fld2 select:disabled{background-color:#eef3f5}
+.is-mobile .ins__top,.is-mobile .ins__bot{padding:32px 20px}
+.aud{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.aud__c{background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:16px;text-decoration:none;font-size:24px;line-height:30px;font-weight:600;color:var(--text-heading)}
+.aud__c img{width:100%;aspect-ratio:346/260;object-fit:cover;border-radius:var(--radius-md)}
+.is-mobile .aud{grid-template-columns:1fr}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center}
+.stats b{display:block;font-size:72px;line-height:80px;font-weight:600;color:var(--text-supporting)}
+.stats span{font-weight:600;color:var(--text-supporting)}
+.is-mobile .stats{grid-template-columns:1fr}
+.loc-head{display:grid;grid-template-columns:341px 1fr;gap:89px;align-items:start}
+.is-mobile .loc-head{grid-template-columns:1fr;gap:24px}
+.infocard{background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:24px;font-size:16px;line-height:25px}
+.infocard p{margin:0}
+.infocard--s{background:var(--surface-warm-subtle)}
+.infocard .ln{font-size:20px;line-height:28px}
+.hrs ul{margin:16px 0;padding-left:24px;display:flex;flex-direction:column;gap:8px}
+.loc-media{display:flex;flex-direction:column;gap:16px;align-items:stretch}
+.loc-media>img{height:476px}
+.loc-media .car-ctl{justify-content:center}
+.findus{display:grid;grid-template-columns:341px 1fr;gap:48px;align-items:start}
+.is-mobile .findus{grid-template-columns:1fr}
+.map img{width:100%;aspect-ratio:835/484;object-fit:cover}
+.lgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.is-mobile .lgrid{grid-template-columns:1fr}
+.lcard{background:var(--surface-warm-subtle);border:1px solid var(--border-subtle);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:16px;align-items:stretch}
+.lcard p{margin:0}
+.lcard h3{font-size:24px;line-height:29px;font-weight:400}
+.lcard .ln{font-size:14px;line-height:22px}
+.lcard .ph{font-size:14px}
+.sfoot{background:#1c3e40;color:#fff;padding:80px 0 64px}
+.sfoot .wrap{display:flex;flex-direction:column;gap:56px}
+.sfoot__top{display:flex;gap:40px;align-items:center;font-weight:600;font-size:18px}
+.sfoot__cols{display:grid;grid-template-columns:repeat(6,1fr);gap:24px 32px}
+.is-mobile .sfoot__cols{grid-template-columns:1fr 1fr}
+.sfoot h4{font-size:16px;line-height:22px;font-weight:600;margin:0 0 10px;color:#fff}
+.sfoot h4.gap{margin-top:28px}
+.sfoot__cols a{display:block;color:#fff;text-decoration:none;font-size:14px;line-height:20px;padding:6px 0}
+.soc{display:flex;gap:20px;padding-top:12px}.soc svg{width:28px;height:28px}
+.sfoot__crisis{background:#f7fafa;color:#1a3c3e;border-radius:16px;text-align:center;padding:16px;font-weight:600}
+.sfoot__legal{font-size:12px;line-height:16px;margin:0}.sfoot__legal a{color:#fff;text-decoration:none}
+/* legacy simulation-page styles below */
+
 /* ===== Entry-point simulation pages (provider / location / service / launcher). Not in the Figma designs; kept in the same palette. ===== */
 .page--provider-page>.col,.page--provider-other-page>.col,.page--location-page>.col{background:none;border:0;border-radius:0;padding:0;max-width:1224px}
 .page--service-page,.page--entry{padding:0}
@@ -651,79 +821,122 @@ def('entry','00 Prototype start (scaffold)',{step:null,notes:[N('Prototype scaff
   <div class="card"><h3>Location page → Book at this location</h3><p class="small">Remembers ${LOCATION.name} location; in-person pre-selected.</p>${Btn('Book at this location','data-do="start:location"','btn--primary')}</div>
  </div></div>`}});
 
-function BookPanel(o){ // shared by the provider and location entry pages
+/* ===== Entry-point pages (provider, condition, location): follow Figma 992:18768, 3459:24368, 3470:31149 ===== */
+const PG_IMG=(n,alt='')=>`<img src="assets/pages/${n}.jpg" alt="${alt}" loading="lazy">`;
+const CHEV_S='<svg class="chv" viewBox="0 0 4 8" aria-hidden="true"><path d="M.5 .5l3 3.5-3 3.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>';
+const Crumbs=(a,b)=>`<nav class="crumbs" aria-label="Breadcrumb"><a href="#" data-do="stub:${a}">${a}</a>${CHEV_S}<span>${b}</span></nav>`;
+const Ctl=(n,on=0)=>`<div class="car-ctl"><span class="dots2" aria-hidden="true">${Array.from({length:n},(_,i)=>`<i class="${i===on?'on':''}"></i>`).join('')}</span><button type="button" class="circ prev" aria-label="Previous" data-do="stub:Carousel"></button><button type="button" class="circ next" aria-label="Next" data-do="stub:Carousel"></button></div>`;
+function BookPanel(o){ // the real booking component (date picker, times, confirm card); shared by the provider and location pages
  const b=o.b, mode=S.sel.mode, d=S.sel.date, slots=d?daySlots(b,d,mode):[];
  const groups=[['Morning',t=>t.includes('AM')],['Afternoon',t=>t.includes('PM')&&parseInt(t)!==6&&parseInt(t)!==7||parseInt(t)===12],['Evening',t=>t.includes('PM')&&(parseInt(t)===6||parseInt(t)===7)]];
- const timeCol=d?groups.map(([g,f])=>{const ts=slots.filter(([t])=>f(t));return ts.length?`<div><div class="period">${g}</div><div class="pills">${ts.map(([t])=>`<button type="button" class="pill" data-component="Pill" data-do="pickTime:${t}" data-key="t${t.replace(/\W/g,'')}" aria-pressed="${S.sel.time===t}">${t}</button>`).join('')}</div></div>`:''}).join(''):`<p class="small">Choose a date to see available times.</p>`;
+ const timeCol=d?groups.map(([g,f])=>{const ts=slots.filter(([t])=>f(t));return ts.length?`<div><div class="period">${g}</div><div class="pills">${ts.map(([t])=>`<button type="button" class="pill" data-component="FilterChip" data-do="pickTime:${t}" data-key="t${t.replace(/\W/g,'')}" aria-pressed="${S.sel.time===t}">${t}</button>`).join('')}</div></div>`:''}).join(''):`<p>Choose a date to see available times.</p>`;
  const addr=mode==='in-person'?o.addr:null;
  const confirm=S.sel.time?`<div class="confirm" data-component="Confirm Card"><strong>Initial Assessment</strong>
    <div class="detail"><span class="ic">${IC.cal}</span>${fmtLong(d)}</div><div class="detail"><span class="ic">${IC.clock}</span>${S.sel.time} · 60 Minutes</div><div class="detail"><span class="ic">${IC.pin}</span>${addr?`<u>${addr}</u>`:'Virtual'}</div>
-   <div style="margin-top:8px">${Btn('Book Appointment',`data-do="${o.action}"`,'btn--primary')}</div></div>`:`<p class="small">Choose a time to continue.</p>`;
- return `<section class="pg-book" data-component="Booking Widget"><div><h2>${o.title}</h2><p class="small" style="margin-top:6px">60 minutes${o.both?'':` <span style="margin-left:12px">${o.type}</span>`}</p>
-  ${o.both?`<fieldset style="margin-top:8px;border:0;padding:0" aria-label="Appointment type"><div class="inline-radios">${['virtual','in-person'].map(m=>`<label class="radio-inline" data-component="Radio"><input type="radio" name="mode" value="${m}" ${mode===m?'checked':''} data-do="setMode:${m}"><span class="mark"></span>${m==='virtual'?'Virtual':'In-Person'}</label>`).join('')}</div></fieldset>`:''}</div>
-  <div class="slots"><div class="slots__col"><h3>Select Date</h3>${Calendar(b)}</div>
-  <div class="slots__col slots__time"><h3>Select Time</h3>${timeCol}</div>
+   <div class="act">${Btn('Book Appointment',`data-do="${o.action}"`,'btn--primary')}</div></div>`:`<p>Choose a time to continue.</p>`;
+ return `<section class="book" data-component="Booking"><h2 class="book__t">${o.title}</h2><p class="duration">60 minutes</p>
+  ${o.both?`<fieldset aria-label="Appointment type"><div class="inline-radios">${['virtual','in-person'].map(m=>`<label class="radio-inline" data-component="Radio"><input type="radio" name="mode" value="${m}" ${mode===m?'checked':''} data-do="setMode:${m}"><span class="mark"></span>${m==='virtual'?'Virtual':'In-Person'}</label>`).join('')}</div></fieldset>`:`<p class="mode-t">${o.type}</p>`}
+  <div class="slots"><div class="slots__col slots__date"><h3>Select Date</h3>${Calendar(b)}</div>
+  <div class="slots__col slots__time"><h3>Select Time</h3><div class="slots__times">${timeCol}</div></div>
   <div class="slots__col slots__confirm"><h3>${o.confirmTitle||'Confirm Appointment'}</h3>${confirm}</div></div></section>`;}
 
-def('provider-page','00a Provider page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates the provider profile page a visitor books from. The booking widget works like the slot picker: the visitor can change type, date and time, then “Book Appointment” starts the flow with that choice remembered.')],render(){
- const p=PROVIDERS[0], b=S.book;
- const F=(k,v)=>`<div class="prof__f"><dt>${k}</dt><dd>${v}</dd></div>`;
+/* shared sections */
+function ProvCarousel(){return `<section class="sec sec--warm" data-component="ProviderCarousel"><div class="wrap"><div class="sec-head"><div><h2 class="sec-t">More providers you might like</h2><p class="sec-sub">Optional description</p></div>${Btn('See all providers','data-do="stub:All providers"')}</div>
+ <div class="pcards">${[['jw-car1','Maria Ramírez, LCSW'],['jw-car2','Marcia Stewart, LCSWR'],['jw-car3','Lucas Reynolds, MD, FAPA']].map(([i,n])=>`<a class="pcard" href="#" data-do="stub:${n}" aria-label="${n}, virtual and in-person, available Oct 5">${PG_IMG(i,n)}</a>`).join('')}</div>${Ctl(5)}</div></section>`;}
+function Resources(title,tag,imgs,btn){return `<section class="sec sec--light" data-component="FeaturedResources"><div class="wrap"><h2 class="sec-t sec-t--muted">${title}</h2>
+ <div class="rgrid">${imgs.map(i=>`<article class="rcard">${PG_IMG(i,'')}<p class="rmeta">Article <span></span> August 1, 2026</p><h3>Managing Anxiety: Cognitive and Behavioral Approaches</h3><p>Discover practical methods to reduce anxiety symptoms and enhance daily functioning through therapy and lifestyle changes.</p><span class="rtag">${tag}</span></article>`).join('')}</div>
+ <div class="ctr">${Btn(btn,'data-do="stub:Resources"')}</div></div></section>`;}
+const FAQS=[['How do I know if therapy is right for me or my child?','Our care team will talk through your concerns and goals, then recommend the right type of care. There’s no commitment until you decide to book.'],['Do you accept my insurance?','We’re in-network with many major plans and offer self-pay rates for everyone else. Use the insurance checker to see your options.'],['Can sessions be virtual or in person?','Most providers offer virtual visits. In-person visits are available at select locations.'],['How quickly can I get a first appointment?','Many families can book a first visit within a few days. Times depend on the provider and your state.'],['What ages do you work with?','We support kids, teens, young adults, adults and parents.']];
+function FAQ(){return `<section class="sec sec--warm" data-component="FAQ"><div class="wrap faq"><div><h2 class="sec-t">Frequently asked questions</h2><p class="sec-sub">Can’t find what you’re looking for? <a href="#" data-do="stub:Contact us">Contact us</a></p></div>
+ <div class="faq__list">${FAQS.map((q,i)=>`<details ${i===0?'open':''} name="faq"><summary>${q[0]}<span class="pm" aria-hidden="true"></span></summary><p>${q[1]}</p></details>`).join('')}</div></div></section>`;}
+const CTAsec=GS=>`<section class="sec sec--cta" data-component="CTA"><div class="wrap ctr"><h2 class="sec-t cta-t">Take the next step towards mental health support.</h2>${GS}<p class="cta-p">Still have questions? Check out our <a href="#" data-do="stub:FAQs">Frequently Asked Questions</a> or <a href="#" data-do="stub:Contact Us">Contact Us</a></p></div></section>`;
+function SiteFooter(){
+ const L=a=>a.map(x=>`<a href="#" data-do="stub:${x}">${x}</a>`).join('');
+ const soc={li:'<path d="M4 2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm2.5 7v9h2.8V9zm1.4-4.2a1.7 1.7 0 100 3.4 1.7 1.7 0 000-3.4zM11 9v9h2.8v-4.7c0-1.3.6-2 1.6-2s1.5.7 1.5 2V18h2.8v-5.3c0-2.4-1.3-3.8-3.2-3.8-1.3 0-2.1.7-2.6 1.4V9z"/>',fb:'<path d="M12 2a10 10 0 00-1.6 19.9V15H7.9v-3h2.5V9.8c0-2.500 1.500-3.900 3.800-3.900 1.100 0 2.200.2 2.200.2v2.500h-1.300c-1.200 0-1.600.8-1.600 1.600V12h2.800l-.4 3h-2.400v6.900A10 10 0 0012 2z"/>',ig:'<path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3zm5 3.500a4.500 4.500 0 110 9 4.500 4.500 0 010-9zm0 2a2.500 2.500 0 100 5 2.500 2.500 0 000-5zm5.200-3.200a1 1 0 110 2 1 1 0 010-2z"/>'};
+ return `<footer class="sfoot" data-component="Footer"><div class="wrap"><div class="sfoot__top"><img src="assets/pm-logo-white.svg" alt="PM Mental Health" width="176" height="48"><span>Part of PM Pediatric Care</span></div>
+ <div class="sfoot__cols"><div><h4>Our Care</h4>${L(['Therapy','Medication & Psychiatry','Evaluations','Executive Function Coaching','Parent Coaching','DBT Skills Group','Maternal Mental Health','School-Based Services'])}</div>
+ <div><h4>Insurance & Cost</h4><h4 class="gap">Locations</h4></div>
+ <div><h4>Resources</h4>${L(['FAQs','Blog','Patient Portal','Pay My Bill','Records Request','Policies & Forms','Contact Us'])}</div>
+ <div><h4>About Us</h4>${L(['Our Approach','Why PM Mental Health?','Meet our Provider Team','Meet our Leadership Team','Careers'])}</div>
+ <div><h4>Providers & Partners</h4>${L(['Overview','Make a referral','For Schools','For Health Systems','For Employers','For Referring Providers'])}</div>
+ <div><h4>Connect With Us</h4><div class="soc">${Object.entries({LinkedIn:soc.li,Facebook:soc.fb,Instagram:soc.ig}).map(([n,p])=>`<svg viewBox="0 0 24 24" role="img" aria-label="${n}" fill="#fff">${p}</svg>`).join('')}</div></div></div>
+ <div class="sfoot__crisis">Having a mental health crisis? Text or call 988 for immediate 24/7 support</div>
+ <p class="sfoot__legal">© 2026 PM Mental Health. All Rights Reserved. <a href="#">Privacy Policy</a> | <a href="#">HIPAA Notice</a> | <a href="#">Terms of Use</a> | <a href="#">Accessibility Statement</a></p></div></footer>`;}
+
+def('provider-page','00a Provider page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates the provider profile page a visitor books from (Figma: Provider Profile). The booking component is the real date and time picker: the visitor can change type, date and time, then “Book Appointment” starts the flow with that choice remembered.')],render(){
+ const p=PROVIDERS[0];
  const both=p.modes.includes('virtual')&&p.modes.includes('in-person');
- return `<div class="col col--wide" style="padding-top:40px;padding-bottom:64px;gap:40px"><span class="crumb"><a href="#" data-do="stub:Meet Our Providers">Meet Our Providers</a> &gt; ${p.n}</span>
- <div class="pg-head" style="align-items:center" data-component="Provider Header"><div class="pg-photo" role="img" aria-label="Photo of ${p.n}"></div>
-  <div class="prof__who"><h1 class="prof__name" id="h1" tabindex="-1">${p.n}</h1><span class="prof__cred">${p.role}</span><span class="prof__cred">${p.creds}</span></div></div>
- ${BookPanel({b,title:`Book Initial Assessment with ${p.n}`,both,addr:p.addr,type:'Virtual',action:'providerBook',confirmTitle:'Confirm Appointment Details'})}
- <section class="prof__sec"><h2>About this provider</h2>${(p.about||[]).map(t=>`<p>${t}</p>`).join('')}</section>
- <section class="prof__sec"><h2>Specialty</h2><dl class="prof__grid" style="margin:0">${F('Concerns',p.areas.join(', '))}${F('Life stage',p.aud)}${F('Therapy type',p.therapyType||'Cognitive Behavioral Therapy (CBT)')}${F('Services',p.offers)}</dl></section>
- <section class="prof__sec"><h2>Location</h2><dl class="prof__grid" style="margin:0">${F('Licensed in',p.st.map(s=>ST_FULL[s]).join(', '))}${F('Appointment type',p.modes.map(m=>m==='virtual'?'Virtual':'In-Person').join(', '))}${p.modes.includes('in-person')?F('In-person practice address',p.addr):''}</dl></section>
- <section class="prof__sec"><h2>Education and Background</h2><dl class="prof__grid" style="margin:0">${F('Education',p.edu||'')}${F('Languages spoken',p.lang.join(', '))}</dl></section>
- <section class="prof__sec"><h2>Covered Insurance</h2><p>${p.n} accepts the following insurance plans. Self-pay is also an option.</p>
-  <div class="prof__ins">${p.st.map(s=>`<div><strong>${ST_FULL[s]}</strong><ul>${(INS[s]||[]).slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}</div></section></div>`}});
+ const F=(k,v,c='')=>`<div class="fld ${c}"><dt>${k}</dt><dd>${v}</dd></div>`;
+ const row=(t,body)=>`<div class="drow"><h3>${t}</h3><dl class="dgrid">${body}</dl></div>`;
+ return `<div class="pg" data-component="Provider Page">
+ <section class="pg-top"><div class="wrap"><div class="pg-hero"><div class="pg-hero__t">${Crumbs('Meet Our Providers',p.n)}<h1 id="h1" tabindex="-1" class="pg-name">${p.n}</h1><p class="pg-role">${p.role}</p><p class="pg-role">${p.creds}</p></div>
+  <div class="pg-hero__img">${PG_IMG('jw-hero','Photo of '+p.n)}</div></div>
+  ${BookPanel({b:S.book,title:`Book initial assessment with ${p.n}`,both,addr:p.addr,type:'Virtual',action:'providerBook'})}</div></section>
+ <section class="sec sec--white" data-component="SideBySide"><div class="wrap sbs"><div class="sbs__t"><h2 class="sec-t">About this provider</h2><p class="lead">${(p.about||[''])[0]}</p><a class="ln" href="#" data-do="stub:Full bio">Read More</a></div><div class="sbs__m sbs__m--play">${PG_IMG('jw-about','')}<button type="button" class="play" aria-label="Play video" data-do="stub:Provider video"></button></div></div></section>
+ <section class="sec sec--white sec--details" data-component="Provider Details"><div class="wrap">
+  ${row('Specialty',F('Concerns',p.areas.join(', '),'full')+F('Life stage',p.aud)+F('Therapy type',p.therapyType||'')+F('Services',p.offers))}
+  ${row('Location',F('Licensed in',p.st.map(s=>ST_FULL[s]).join(', '))+F('Appointment type',p.modes.map(m=>m==='virtual'?'Virtual':'In-Person').join(', '))+F('In-person practice address',`${p.addr}<br><a class="ln" href="#" data-do="stub:Location page">Learn more about this location →</a>`,'full'))}
+  ${row('Education and background',F('Education',p.edu||'')+F('Languages spoken',p.lang.join(', ')))}
+  <div class="drow"><h3>Covered insurance</h3><div class="dgrid dgrid--ins"><p class="full">${p.n} accepts the following insurance plans. Self-pay is also an option.</p>
+   <div class="logos full">${['aetna','cigna','anthem','horizon','pcg'].map(l=>`<img src="assets/pages/logo-${l}.jpg" alt="${l}">`).join('')}</div>
+   ${p.st.map(s=>`<div class="fld"><dt>${ST_FULL[s]}</dt><dd>${(INS[s]||[]).slice(0,3).join('<br>')}</dd></div>`).join('')}
+   <p class="note full">Paying out of pocket? <a href="#" data-do="stub:Self-pay">Self-pay</a> is also an option.</p></div></div></div></section>
+ ${Resources('Resources written by this provider','Anxiety',['res-p1','res-p2','res-p3'],'See more resources by this provider')}
+ ${ProvCarousel()}${CTAsec(Btn('Get Started','data-do="providerBook"','btn--primary'))}</div>`}});
 
 def('provider-other-page','00d Provider page: psychiatrist, nurse practitioner, parent coach (entry point)',{step:null,notes:[N('No calendar for non-therapists','If the visitor chooses a provider other than a therapist (parent coach, psychiatrist, nurse practitioner) we don’t show a booking calendar, because they shouldn’t book an appointment with that person. A “How to get started” box explains the process for that type of provider instead.'),N('Psychiatrist / nurse practitioner','First step is an initial assessment, then we work together to develop a treatment plan. Links to book an intake.'),N('Parent coach','First step is a free consultation, then we work together to develop a plan for the family. Links to book a consultation.'),N('Hand-off to the intake team','The people running the intake or consultation need a report of what the visitor entered, including the provider page they came from. Example: someone books an intake after choosing Nicole Mavrides, Psychiatrist, so the intake person can say “you expressed interest in meeting with one of our psychiatrists, Dr. Mavrides…”. The prototype keeps this on the landing screen as a reminder chip.')],render(){
  const o=S.interest||OTHER_PROVIDERS[0];
- return `<div class="col col--wide" style="padding-top:40px;padding-bottom:64px;gap:40px"><span class="crumb"><a href="#" data-do="stub:Meet Our Providers">Meet Our Providers</a> &gt; ${o.n}</span>
- <div class="pg-head" style="align-items:center" data-component="Provider Header"><div class="pg-photo" role="img" aria-label="Photo of ${o.n}"></div>
-  <div class="prof__who"><h1 class="prof__name" id="h1" tabindex="-1">${o.n}</h1><span class="prof__cred">${o.role}</span><span class="prof__cred">${o.creds}</span></div></div>
- <section class="pg-book" data-component="Getting Started Box" style="gap:16px"><div><h2>How to get started with ${o.n.split(' ')[0]}</h2><p style="margin-top:8px">${o.step}</p></div><div class="btn-row">${Btn(o.cta,'data-do="otherGo"','btn--primary')}</div></section>
- <section class="prof__sec"><h2>About this provider</h2><p>[Placeholder] Provider bio and approach.</p></section>
- <section class="prof__sec"><h2>Education and Background</h2><dl class="prof__grid" style="margin:0"><div class="prof__f"><dt>Education</dt><dd>[Placeholder] Education details</dd></div><div class="prof__f"><dt>Languages spoken</dt><dd>English</dd></div></dl></section></div>`}});
+ return `<div class="pg" data-component="Provider Page">
+ <section class="pg-top"><div class="wrap"><div class="pg-hero"><div class="pg-hero__t">${Crumbs('Meet Our Providers',o.n)}<h1 id="h1" tabindex="-1" class="pg-name">${o.n}</h1><p class="pg-role">${o.role}</p><p class="pg-role">${o.creds}</p></div><div class="pg-hero__img">${PG_IMG('jw-hero','Photo of '+o.n)}</div></div>
+ <section class="book book--start" data-component="Getting Started Box"><h2 class="book__t">How to get started with ${o.n.split(' ')[0]}</h2><p class="lead">${o.step}</p><div class="btn-row">${Btn(o.cta,'data-do="otherGo"','btn--primary')}</div></section></div></section>
+ <section class="sec sec--white"><div class="wrap sbs sbs--one"><div class="sbs__t"><h2 class="sec-t">About this provider</h2><p class="lead">[Placeholder] Provider bio and approach.</p></div></div></section>
+ ${CTAsec(Btn('Get Started','data-do="otherGo"','btn--primary'))}</div>`}});
 
-def('location-page','00b Location page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates an individual location page. The booking widget is in-person only. “Book Appointment” starts the flow with this location remembered and in-person pre-selected.')],render(){
+def('location-page','00b Location page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates an individual location page (Figma: Individual Location Page). The booking component is in-person only. “Book Appointment” starts the flow with this location remembered and in-person pre-selected.')],render(){
  const L=LOCATION, [street,city]=[L.addr.split(', ')[0],L.addr.split(', ').slice(1).join(', ')], nm=L.name+', '+L.state;
  const hrs=['Sunday: 8:00 AM - 10:00 PM','Monday: 8:00 AM - 10:00 PM','Tuesday: 10:00 AM - 10:00 PM','Wednesday: 10:00 AM - 10:00 PM','Thursday: 10:00 AM - 10:00 PM','Friday: 10:00 AM - 10:00 PM','Saturday: 8:00 AM - 10:00 PM'];
- return `<div class="col col--wide" style="padding-top:40px;padding-bottom:64px;gap:40px"><span class="crumb"><a href="#" data-do="stub:Locations">Locations</a> &gt; ${nm}</span>
- <div class="pg-head" data-component="Location Header"><div class="loc__info"><h1 class="prof__name" id="h1" tabindex="-1">${nm}</h1>
-   <p class="pg-hours"><u>${street}<br>${city}</u></p>
-   <div class="pg-hours">Hours:<ul>${hrs.map(h=>`<li>${h}</li>`).join('')}</ul>All times are displayed in EDT</div>
-   <p class="pg-hours">Phone: <u>${PHONE}</u></p>
-   <p class="pg-hours">All mental health related visits are by appointment only, we do not accept walk-ins. Please click below to schedule your visit or give us a call.</p></div>
-  <div class="loc__media"><div class="pg-photo" role="img" aria-label="Photos of the ${L.name} location"></div>
-   <div class="carousel" aria-hidden="true"><span class="carousel__btn">‹</span><span class="dots"><i class="on"></i><i></i><i></i></span><span class="carousel__btn">›</span></div></div></div>
- ${BookPanel({b:S.book,title:'Book Initial Assessment at this location',both:false,type:'In Person',addr:L.addr,action:'locationBook'})}
- <section class="pg-sec"><h2>About this location</h2><p>[Placeholder] Description of the ${L.name} practice, parking and transit information, and what to expect at your first visit.</p></section></div>`}});
+ const addr=`<a class="ln ln--b" href="#" data-do="stub:Directions">${street}<br>${city}</a>`;
+ const locs=[['Bensonhurst, NY','1823 86th Street','Brooklyn, NY 11214'],['Commack, NY','6218 Jericho Tpke','Commack, NY 11725'],['Forest Hills, NY','70-20 Austin Street','Forest Hills, NY 11375'],['Mamaroneck, NY','620 East Boston Post Road','Mamaroneck, NY 10543']];
+ return `<div class="pg pg--loc" data-component="Location Page">
+ <section class="pg-top"><div class="wrap">${Crumbs('Locations',nm)}<h1 id="h1" tabindex="-1" class="pg-name">${nm}</h1>
+  <div class="loc-head"><div class="infocard"><p>${addr}</p><div class="hrs"><p>Hours:</p><ul>${hrs.map(h=>`<li>${h}</li>`).join('')}</ul><p>All times are displayed in EDT</p></div><p><b>Phone:</b> <a class="ln ln--b" href="#" data-do="stub:Call">516-738-5600</a></p><p><b>Note:</b> All mental health related visits are by appointment only, we do not accept walk-ins. Please click below to schedule your visit or give us a call</p></div>
+  <div class="loc-media">${PG_IMG('loc-hero','Photo of the '+L.name+' location')}${Ctl(4)}</div></div></div></section>
+ <section class="band band--loc" data-component="Decision Band"><div class="wrap">${BookPanel({b:S.book,title:'Book initial assessment at this location',both:false,type:'In-person',addr:L.addr,action:'locationBook'})}</div></section>
+ <section class="sec sec--white"><div class="wrap sbs sbs--one sbs--c"><div class="sbs__t"><h2 class="sec-t">About this location</h2><p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div></div></section>
+ <section class="sec sec--light"><div class="wrap sbs sbs--rev"><div class="sbs__m sbs__m--shape">${PG_IMG('loc-side','')}</div><div class="sbs__t"><h2 class="sec-t">A Partnership with Urgent Care</h2><p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>${Btn('Visit '+L.name+' Urgent Care','data-do="stub:Urgent care"')}</div></div></section>
+ <section class="sec sec--light"><div class="wrap sbs"><div class="sbs__t"><h2 class="sec-t">Heading 2</h2><p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div><div class="sbs__m sbs__m--shape">${PG_IMG('loc-side2','')}</div></div></section>
+ <section class="sec sec--white" data-component="Find us"><div class="wrap"><h2 class="sec-t">Find us</h2><div class="findus"><div class="infocard infocard--s"><p>${addr}</p><p>Phone: <a class="ln ln--b" href="#" data-do="stub:Call">516-738-5600</a></p></div><div class="map">${PG_IMG('loc-map','Map showing the '+L.name+' location')}</div></div></div></section>
+ ${ProvCarousel()}
+ <section class="sec sec--warm" data-component="LocationCarousel"><div class="wrap"><div class="sec-head"><h2 class="sec-t">Other in-person locations near me</h2><div class="car-ctl"><button type="button" class="circ prev" aria-label="Previous" data-do="stub:Carousel"></button><button type="button" class="circ next" aria-label="Next" data-do="stub:Carousel"></button></div></div>
+  <div class="lgrid">${locs.map(l=>`<article class="lcard"><h3>${l[0]}</h3><p><a class="ln ln--b" href="#" data-do="stub:Directions">${l[1]}<br>${l[2]}</a></p><p class="ph">Phone: <a class="ln ln--b" href="#" data-do="stub:Call">516-738-5600</a></p>${Btn('View location','data-do="stub:Location page"')}</article>`).join('')}</div>
+  <p class="ctr"><a class="ln" href="#" data-do="stub:Locations">See more in-person locations →</a></p></div></section>
+ ${FAQ()}${CTAsec(Btn('Get Started','data-do="locationBook"','btn--primary'))}</div>`}});
 
-def('service-page','00c Service / condition page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates a condition page (Anxiety). Every “Get Started” on the page launches the booking flow with the condition remembered (it preselects the area of help later). “Learn More” links and the insurance checker are not part of this prototype.')],render(){
- const LOREM='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', GS=Btn('Get Started','data-do="serviceGo"');
- const svc=['Therapy','Medication & Psychiatry','ADHD Evaluations','Executive Functioning Coaching','Parent Coaching'];
- const pc=()=>`<div class="cp-pcard" data-component="Provider Card"><div class="top"><span class="av chk"></span><div><div style="font-size:18px">Jennifer Weber</div><div>LCSW • Offers Medication &amp; Psychiatry</div><div>New Jersey</div></div></div><div class="small">Virtual<br>Kids, Teens, Young Adults, Adults<br>ADHD, Depression, Anxiety +3 more</div><div class="small">“Dr. Jennifer Weber is a child and adolescent psychologist, specializing in trauma, identity development, mood and anxiety disorders, ADHD, and adjustment disorders. She works directly with children, teens, and young adults…”</div><div><strong class="nextappt">Next Available Appointment: November 5th</strong></div><div class="small" style="text-align:right">View Profile →</div></div>`;
- return `<div class="cp" data-component="Concern Page"><div class="cp-hero"><h1 id="h1" tabindex="-1">Anxiety</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>${GS}</div>
- <div class="cp-wrap">
-  <div class="cp-sbs"><div><h2>[Intro section about the condition]</h2><p>${LOREM}</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div><div class="chk"></div></div>
-  <div class="cp-sbs"><div class="chk"></div><div><h2>Optional additional side-by-side block</h2><p>${LOREM}</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div></div>
-  <div><h2>Optional Simple Header/Text block</h2><p style="margin-top:16px;max-width:1000px">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p><p style="margin-top:16px;max-width:1000px">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p></div>
-  <div data-component="How It Works"><h2 style="text-align:center;margin-bottom:32px">How it works</h2><div class="cp-how">${['Give us some details on you or your family member, what you need support with and your preferences.','We’ll match you with a provider right away, or you have the option for a free consultation to get more information before making a decision.','Schedule and meet with your provider online or in-person to start your journey of a better you. Billing and scheduling is handled in our convenient patient portal.'].map((t,i)=>`<div><div class="num">${i+1}<span class="dot"></span></div><h3 style="font-size:18px;line-height:26px">Optional Heading</h3><p>${t}</p></div>`).join('')}</div><div style="text-align:center;margin-top:32px">${GS}</div></div>
-  <div data-component="Service Grid"><h2 style="margin-bottom:32px">Services to treat anxiety</h2><div class="cp-grid">${svc.map(x=>`<div><div class="chk"></div><h3>${x}</h3><p>${LOREM}</p>${Btn('Learn More About '+x,'data-do="stub:'+x+'"')}</div>`).join('')}</div></div>
-  <div class="cp-ins" data-component="Insurance Checker"><div><h2>Check if you’re covered</h2><p>We are proudly in-network with many major insurance providers, offer competitive self-pay rates if we are out-of-network with your insurance or prefer to pay directly, and most services, including therapy, psychiatry, and medication management, are HSA/FSA eligible.</p><div class="logos"><span>aetna</span><span>cigna</span><span>Anthem</span><span>Horizon</span><span>Point Comfort</span><span>+ More</span></div><a href="#" data-do="stub:Covered insurance plans">See all covered insurance plans by state</a></div>
-   <div><h3 style="font-size:20px">Check your insurance eligibility</h3><div class="sel"><div><span class="small">State</span><span class="fake"></span></div><div><span class="small">Insurance Plan</span><span class="fake"></span></div></div></div></div>
-  <div data-component="Provider Carousel"><h2 style="margin-bottom:24px">Providers Who Treat Anxiety</h2><div class="cp-pcards">${pc()}${pc()}${pc()}</div><p style="text-align:center;margin-top:24px"><a href="#" data-do="stub:Providers">See more providers who work in Medication &amp; Psychiatry →</a></p></div>
-  <div><h2 style="text-align:center;margin-bottom:32px">Effective Help for All Stages of Life</h2><div class="cp-life">${['Kids','Teens','Young Adults','Adults','Maternal & Perinatal','Parents & Families'].map(x=>`<div class="chk">${x}</div>`).join('')}</div></div>
-  <div><h2 style="text-align:center;margin-bottom:32px">Proven results</h2><div class="cp-stats"><div><strong>3,000+</strong>positive reviews</div><div><strong>20,000+</strong>appointments completed</div><div><strong>90%</strong>Improvement rate over 5 sessions</div></div></div>
-  <div><h2 style="text-align:center;margin-bottom:32px">Don’t Just Take Our Word for It</h2><div class="cp-test">${[1,2,3].map(()=>`<div><p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p><p>-- Danielle, Parent</p></div>`).join('')}</div></div>
-  <div class="cp-faq"><h2>Frequently Asked Questions</h2>${[1,2,3,4,5,6,7].map(()=>'<div><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</span><span>+</span></div>').join('')}</div>
-  <div><h2 style="margin-bottom:24px">Anxiety Resources</h2><div class="cp-res">${[1,2,3].map(()=>'<div><div class="chk"></div><span class="small">Article • August 1st 2023</span><h3 style="font-size:20px;line-height:28px">Managing Anxiety: Cognitive and Behavioral Approaches</h3><p class="small">Discover practical methods to reduce anxiety symptoms and enhance daily functioning through therapy and lifestyle changes.</p><span class="tag">Anxiety</span></div>').join('')}</div><p style="text-align:center;margin-top:24px"><a href="#" data-do="stub:Resources">See more anxiety resources →</a></p></div>
- </div>
- <div class="cp-cta" data-component="CTA"><h2>Take the next step towards mental health support.</h2>${GS}<p>Still have questions? Check out our <a href="#" data-do="stub:FAQs">Frequency Asked Questions</a> or <a href="#" data-do="stub:Contact Us">Contact Us</a></p></div></div>`}});
+def('service-page','00c Service / condition page (entry point)',{step:null,notes:[N('Prototype entry point','Simulates a condition page (Figma: Concern Page, Anxiety). Every “Get Started” on the page launches the booking flow with the condition remembered (it preselects the area of help later). Other links and the insurance checker are not part of this prototype.')],render(){
+ const GS=Btn('Get Started','data-do="serviceGo"'), GSp=Btn('Get Started','data-do="serviceGo"','btn--primary');
+ const LOREM='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+ const svc=[['Therapy','therapy'],['Medication & Psychiatry','medication & psychiatry'],['ADHD Evaluations','ADHD evaluations'],['Executive Functioning Coaching','executive functioning coaching'],['Parent Coaching','parent coaching']];
+ const aud=['Kids','Teens','Young adults','Adults','Maternal & perinatal','Parents & families'];
+ const how=['Give us some details on you or your family member, what you need support with and your preferences.','We’ll match you with a provider right away, or you have the option for a free consult to get more information before making a decision.','Schedule and meet with your provider online or in person to start your journey of a better you. Billing and scheduling is handled in our convenient patient portal.'];
+ const quotes=[['The intake process was quick, and our therapist made my daughter feel comfortable from the very first session.','Danielle, Parent','#b95c3c'],['I finally have a psychiatrist who listens. Virtual visits fit around my work schedule without any stress.','Marcus, Adult patient','#4f7f82'],['Our son’s school counselor and his therapist worked together. We noticed a difference within a few weeks.','Priya, Parent','#ee9a76']];
+ return `<div class="pg pg--cond" data-component="Concern Page">
+ <section class="hero-c"><div class="wrap"><h1 id="h1" tabindex="-1" class="pg-name pg-name--c">Anxiety</h1><p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>${GSp}</div></section>
+ <section class="sec sec--white" data-component="SideBySide"><div class="wrap sbs"><div class="sbs__t"><h2 class="sec-t">[Intro section about the condition]</h2><p class="lead">${LOREM}</p><p class="lead">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div><div class="sbs__m sbs__m--shape">${PG_IMG('c-side1','')}</div></div></section>
+ <section class="sec sec--white" data-component="SideBySide"><div class="wrap sbs sbs--rev"><div class="sbs__m sbs__m--shape">${PG_IMG('c-side2','')}</div><div class="sbs__t"><h2 class="sec-t">Optional additional side-by-side block</h2><p class="lead">${LOREM}</p><p class="lead">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div></div></section>
+ <section class="sec sec--white" data-component="TextBlock"><div class="wrap"><h2 class="sec-t">Optional Simple Header/Text block</h2><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p><p class="lead">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p><p class="lead">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p></div></section>
+ <section class="sec sec--light" data-component="HowItWorks"><div class="wrap"><h2 class="sec-t ctr">How it works</h2><div class="how"><div class="how__m">${PG_IMG('c-how','')}</div><ol class="how__l">${how.map((t,i)=>`<li><b>${i+1}</b><p>${t}</p></li>`).join('')}</ol></div><div class="ctr">${GS}</div></div></section>
+ <section class="sec sec--light sec--tight" data-component="ServiceGrid"><div class="wrap"><h2 class="sec-t">Services to treat anxiety</h2><div class="svc">${svc.map((s,i)=>`<article>${PG_IMG('svc'+(i+1),s[0])}<h3>${s[0]}</h3><p>${LOREM}</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>${Btn('Learn more about '+s[1],'data-do="stub:'+s[0]+'"')}</article>`).join('')}</div></div></section>
+ <section class="band band--c" data-component="InsuranceChecker"><div class="wrap"><div class="ins"><div class="ins__top"><h2 class="sec-t ctr">Check if you’re covered</h2><p class="lead ctr">We are proudly in-network with many major insurance providers, offer competitive self-pay rates if we are out-of-network with your insurance or prefer to pay directly, and most services, including therapy, psychiatry, and medication management, are HSA/FSA eligible.</p>
+  <div class="logos logos--c">${['aetna','cigna','anthem','horizon','pcg'].map(l=>`<img src="assets/pages/logo-${l}.jpg" alt="${l}">`).join('')}<a href="#" class="more" data-do="stub:More plans">+ More</a></div><p class="ctr"><a class="ln" href="#" data-do="stub:Covered plans">See all covered insurance plans by state →</a></p></div>
+  <div class="ins__bot"><h3 class="ctr">Check your insurance eligibility</h3><div class="ins__f"><div class="fld2"><label for="ci-state">State</label><select class="select" id="ci-state" data-do="ciState"><option value=""></option>${['CT','FL','NJ','NY','TX'].map(s=>`<option value="${s}">${ST_FULL[s]}</option>`).join('')}</select></div>
+  <div class="fld2"><label for="ci-plan">Insurance Plan</label><p id="ci-hint">Choose a state first.</p><select class="select" id="ci-plan" disabled aria-describedby="ci-hint"></select></div></div></div></div></div></section>
+ ${ProvCarousel().replace('sec--warm','sec--warm')}
+ <section class="sec sec--light" data-component="AudienceList"><div class="wrap"><h2 class="sec-t">Effective help for all stages of life</h2><div class="aud">${aud.map((a,i)=>`<a class="aud__c" href="#" data-do="stub:${a}">${PG_IMG('aud'+(i+1),'')}<span>${a} →</span></a>`).join('')}</div></div></section>
+ <section class="sec sec--light sec--tight" data-component="Stats"><div class="wrap"><h2 class="sec-t ctr">Proven results</h2><div class="stats">${[['3,000+','positive reviews'],['20,000+','appointments completed'],['90%','Improvement rate over 5 sessions']].map(s=>`<div><b>${s[0]}</b><span>${s[1]}</span></div>`).join('')}</div></div></section>
+ <section class="sec sec--warm" data-component="TestimonialCarousel"><div class="wrap faq"><div><h2 class="sec-t">Don’t just take our word for it</h2></div><div class="quotes">${quotes.map(q=>`<figure><svg class="qm" viewBox="0 0 30 24" aria-hidden="true" fill="${q[2]}"><path d="M0 24V13C0 5 4 1 12 0v4C8 5 7 8 7 10h5v14zM17 24V13c0-8 4-12 12-13v4c-4 1-5 4-5 6h5v14z"/></svg><blockquote>“${q[0]}”</blockquote><figcaption>— ${q[1]}</figcaption></figure>`).join('')}${Ctl(3)}</div></div></section>
+ ${FAQ()}
+ ${Resources('Anxiety Resources','Anxiety',['res-c1','res-c2','res-c3'],'See more anxiety resources').replace('sec sec--light','sec sec--warm')}
+ ${CTAsec(GSp)}</div>`}});
 
 def('landing','01 Get started landing',{step:0,notes:[
  N('Remembered context','Provider + appointment type + day/time, selected service or condition (one or the other), or location is remembered from the entry point and shown here as a reminder chip.'),
@@ -991,7 +1204,8 @@ function Navbar(){
   <div class="nav-pill">${logo}<div class="nav-items">
   <a class="navlink" href="#">Our Care ${CARET}</a><a class="navlink" href="#">Insurance & Cost</a><a class="navlink" href="#">Locations</a><a class="navlink" href="#">Resources ${CARET}</a><a class="navlink" href="#">About Us ${CARET}</a><a class="navlink" href="#">For Providers & Partners ${CARET}</a></div>
   ${Btn('Get Started','data-do="stub:Get started"','btn--primary')}</div></header>`;}
-const Footer=()=>'';
+const PAGE_SCREENS=['provider-page','provider-other-page','location-page','service-page'];
+const Footer=()=>PAGE_SCREENS.includes(S.screen)?SiteFooter():'';
 
 /* =====================================================================
    RENDER / NAV
@@ -1096,6 +1310,7 @@ function showTaken(slots){const d=$('#dlg'); const alts=slots.filter(([t])=>t!==
   d.showModal();}
 $('#profile').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();
   if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.currentTarget.close()});
+A.ciState=(v,el)=>{const p=$('#ci-plan'); const l=INS[el.value]||[]; p.disabled=!l.length; p.innerHTML=l.length?'<option value="">Select...</option>'+l.map(x=>`<option>${x}</option>`).join(''):''; $('#ci-hint').hidden=!!l.length;};
 A.altTime=t=>{$('#dlg').close(); S.sel.time=t; render();};
 
 /* ---- events ---- */
@@ -1128,7 +1343,7 @@ $('#tb-restart').onclick=()=>{S=blank(); render(); scrollTo({top:0});};
 $('#tb-fill').onclick=()=>{sample(); render()};
 $('#tb-vp').value=UI.vp;
 $('#tb-jump').innerHTML=Object.values(SC).map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-function jumpTo(id){ if(id==='entry'){S=blank();return render();} if(!S.entry)S.entry='get-started';
+function jumpTo(id){ if(id==='entry'){S=blank();return render();} const PGK={'provider-page':'provider','location-page':'location','service-page':'service'}; if(PGK[id]){S.hist=[];return A.start(PGK[id]);} if(id==='provider-other-page'){return A.startOther('nm');} if(!S.entry)S.entry='get-started';
  if(id!=='landing'&&id!=='who'){sample();}
  if(id==='slots'||id==='confirm'){S.book=S.book||{kind:'therapy',p:PROVIDERS[0]}; S.sel=S.sel.date?S.sel:{date:null,time:null,mode:null}; if(id==='confirm'){const d=new Date(today);d.setDate(d.getDate()+3);while(!daySlots(S.book,d,'virtual').length)d.setDate(d.getDate()+1);S.sel={date:d,time:daySlots(S.book,d,'virtual')[0][0],mode:'virtual'};S.assigned=S.book.p;}}
  if(id==='alt'){S.provider=S.provider||PROVIDERS[1];S._altReason=S._altReason||'state';}
